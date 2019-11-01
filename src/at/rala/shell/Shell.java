@@ -84,11 +84,11 @@ public class Shell implements Runnable {
     }
 
     public void printLine(String s) {
-        context.getOutput().println(s);
+        context.printLine(s);
     }
 
     public void printError(String s) {
-        context.getError().println(s);
+        context.printError(s);
     }
 
     @Override

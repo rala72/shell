@@ -37,7 +37,7 @@ public class HelpCommand implements Command {
             if (documentation == null) documentation = DEFAULT_DOCUMENTATION;
             return formatLine(command, documentation, maxLength);
         }).collect(Collectors.joining("\n"));
-        context.getOutput().println(output);
+        context.printLine(output);
     }
 
     private void printInput(Context context, List<String> arguments) {
@@ -46,14 +46,14 @@ public class HelpCommand implements Command {
         for (String argument : arguments) {
             Command command = context.getCommands().get(argument);
             if (command == null) {
-                context.getError().println("command " + argument + " not found");
+                context.printError("command " + argument + " not found");
                 return;
             }
             String documentation = getDocumentationOfCommand(command);
             if (documentation == null) documentation = DEFAULT_DOCUMENTATION;
             output.add(formatLine(argument, documentation, maxLength));
         }
-        output.forEach(string -> context.getOutput().println(string));
+        output.forEach(context::printLine);
     }
 
     private String formatLine(String command, String documentation, int maxLength) {

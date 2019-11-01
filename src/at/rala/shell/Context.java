@@ -22,12 +22,12 @@ public class Context {
         this.commands = Collections.unmodifiableMap(commands);
     }
 
-    public PrintWriter getOutput() {
-        return output;
+    public void printLine(String s) {
+        getOutput().println(s);
     }
 
-    public PrintWriter getError() {
-        return error != null ? error : output;
+    public void printError(String s) {
+        getError().println(s);
     }
 
     public Map<String, Command> getCommands() {
@@ -41,5 +41,13 @@ public class Context {
             ", error=" + error +
             ", commands=" + commands +
             '}';
+    }
+
+    protected PrintWriter getOutput() {
+        return output;
+    }
+
+    protected PrintWriter getError() {
+        return error != null ? error : output;
     }
 }

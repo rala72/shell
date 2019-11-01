@@ -48,7 +48,7 @@ public class Input {
             .collect(Collectors.toList());
         return new Input(
             1 <= parts.size() ? parts.get(0) : null,
-            2 <= parts.size() ? parts.subList(2, parts.size()) : Collections.emptyList()
+            1 <= parts.size() ? parts.subList(1, parts.size()) : Collections.emptyList()
         );
     }
 }

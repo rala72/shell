@@ -69,7 +69,7 @@ public class CommandMethodAdapter implements Command {
             return Double.parseDouble(value);
         }
         if (char.class.isAssignableFrom(type) || Character.class.isAssignableFrom(type)) {
-            return (value != null && value.length() == 1) ? value.charAt(0) : null;
+            return value.length() == 1 ? value.charAt(0) : null;
         }
         return value;
     }

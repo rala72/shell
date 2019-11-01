@@ -18,7 +18,7 @@ public class ExitCommand implements Command {
 
     @Override
     public void execute(Input input, Context context) {
-        if (!input.getArguments().isEmpty()) {
+        if (input.hasArguments()) {
             context.printError("error: no arguments expected");
             return;
         }

@@ -28,6 +28,10 @@ public class Input {
         return arguments;
     }
 
+    public boolean hasArguments() {
+        return !getArguments().isEmpty();
+    }
+
     public Optional<String> get(int i) {
         return 0 <= i && i < getArguments().size() ?
             Optional.ofNullable(getArguments().get(i)) : Optional.empty();

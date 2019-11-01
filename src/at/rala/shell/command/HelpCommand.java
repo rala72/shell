@@ -23,8 +23,8 @@ public class HelpCommand implements Command {
 
     @Override
     public void execute(Input input, Context context) {
-        Collection<String> commands = input.getArguments().isEmpty() ?
-            context.getCommands().keySet() : input.getArguments();
+        Collection<String> commands = input.hasArguments() ?
+            input.getArguments() : context.getCommands().keySet();
         printCommands(context, commands);
     }
 

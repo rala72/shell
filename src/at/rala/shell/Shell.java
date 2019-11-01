@@ -33,7 +33,7 @@ public class Shell implements Runnable {
             new PrintWriter(errorStream, true),
             commands
         );
-        this.commands.putAll(new CommandLoader(object).getCommandMethodMap());
+        register(object);
     }
 
     @Override
@@ -64,6 +64,12 @@ public class Shell implements Runnable {
         isStopOnInvalidCommandEnabled = stopOnInvalidCommandEnabled;
     }
 
+    public void register(String name, Command command) {
+        if (commands.containsKey(name))
+            throw new IllegalStateException("command already present");
+        commands.put(name, command);
+    }
+
     public void printLine(String s) {
         context.getOutput().println(s);
     }
@@ -91,5 +97,9 @@ public class Shell implements Runnable {
         if (prompt.isEmpty()) return;
         context.getOutput().print(prompt);
         context.getOutput().flush();
+    }
+
+    private void register(Object object) {
+        commands.putAll(new CommandLoader(object).getCommandMethodMap());
     }
 }

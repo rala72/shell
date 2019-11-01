@@ -55,8 +55,7 @@ public class Input {
 
     public static Input parse(String line, boolean filterBlank) {
         List<String> parts = List.of(line.split(" ")).stream()
-            .filter(string -> !string.isEmpty())
-            .filter(string -> !filterBlank || !string.isBlank())
+            .filter(string -> !filterBlank || !string.isEmpty())
             .collect(Collectors.toList());
         return new Input(
             1 <= parts.size() ? parts.get(0) : null,

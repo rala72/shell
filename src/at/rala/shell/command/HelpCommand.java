@@ -52,7 +52,7 @@ public class HelpCommand implements Command {
     }
 
     private String formatLine(String command, String documentation, int maxLength) {
-        return String.format("%-" + maxLength + "s", command) + " " + documentation;
+        return String.format("%-" + maxLength + "s", command) + " \t" + documentation;
     }
 
     private String getDocumentationOfCommand(Command command) {

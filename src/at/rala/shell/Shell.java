@@ -20,22 +20,21 @@ public class Shell implements Runnable {
     private String prompt = DEFAULT_PROMPT;
     private boolean isStopOnInvalidCommandEnabled = false;
 
-    public Shell(Object object) {
-        this(object, System.in, System.out, System.err);
+    public Shell() {
+        this(System.in, System.out, System.err);
     }
 
-    public Shell(Object object, InputStream inputStream, OutputStream outputStream) {
-        this(object, inputStream, outputStream, outputStream);
+    public Shell(InputStream inputStream, OutputStream outputStream) {
+        this(inputStream, outputStream, outputStream);
     }
 
-    public Shell(Object object, InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
+    public Shell(InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         this.input = new BufferedReader(new InputStreamReader(inputStream));
         this.context = new Context(
             new PrintWriter(outputStream, true),
             new PrintWriter(errorStream, true),
             commands
         );
-        register(object);
     }
 
     @Override
@@ -68,6 +67,10 @@ public class Shell implements Runnable {
 
     public void setStopOnInvalidCommandEnabled(boolean stopOnInvalidCommandEnabled) {
         isStopOnInvalidCommandEnabled = stopOnInvalidCommandEnabled;
+    }
+
+    public void register(Object object) {
+        commands.putAll(new CommandLoader(object).getCommandMethodMap());
     }
 
     public void register(DefaultCommand defaultCommand) {
@@ -113,9 +116,5 @@ public class Shell implements Runnable {
         if (prompt.isEmpty()) return;
         context.getOutput().print(prompt);
         context.getOutput().flush();
-    }
-
-    private void register(Object object) {
-        commands.putAll(new CommandLoader(object).getCommandMethodMap());
     }
 }

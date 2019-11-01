@@ -8,7 +8,8 @@ public class ManualTest implements Runnable {
     private final Shell shell;
 
     private ManualTest() {
-        shell = new Shell(this);
+        shell = new Shell();
+        shell.register(this);
         shell.register(DefaultCommand.HELP);
         shell.register(DefaultCommand.EXIT);
     }

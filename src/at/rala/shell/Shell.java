@@ -64,6 +64,10 @@ public class Shell implements Runnable {
         isStopOnInvalidCommandEnabled = stopOnInvalidCommandEnabled;
     }
 
+    public void register(DefaultCommand defaultCommand) {
+        register(defaultCommand.getName(), defaultCommand.getCommand());
+    }
+
     public void register(String name, Command command) {
         if (commands.containsKey(name))
             throw new IllegalStateException("command already present");

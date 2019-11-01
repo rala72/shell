@@ -29,12 +29,15 @@ public class CommandMethod {
     }
 
     public int getMinParameterCount() {
-        return getMethod().getParameterCount();
+        return 0 < getMethod().getParameterCount() &&
+            getMethod().getParameters()[getMethod().getParameters().length - 1]
+                .isVarArgs() ? getMethod().getParameterCount() - 1 : getMethod().getParameterCount();
     }
 
     public int getMaxParameterCount() {
-        return getMethod().getParameters()[getMethod().getParameters().length - 1]
-            .isVarArgs() ? Integer.MAX_VALUE : getMinParameterCount();
+        return 0 < getMethod().getParameterCount() &&
+            getMethod().getParameters()[getMethod().getParameters().length - 1]
+                .isVarArgs() ? Integer.MAX_VALUE : getMinParameterCount();
     }
 
     @Override

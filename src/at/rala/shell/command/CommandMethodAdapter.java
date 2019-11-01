@@ -39,9 +39,8 @@ public class CommandMethodAdapter implements Command {
             Parameter[] parameters = commandMethod.getMethod().getParameters();
             Object[] objects = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
-                String argument = input.get(i).orElseThrow(() -> new MethodCallException("argument missing"));
-                Parameter parameter = parameters[i];
                 Object value;
+                Parameter parameter = parameters[i];
                 if (parameter.isVarArgs()) {
                     Class<?> componentType = parameter.getType().getComponentType();
                     value = input.getArguments()
@@ -50,7 +49,11 @@ public class CommandMethodAdapter implements Command {
                         .map(s -> mapParameter(componentType, s))
                         .map(componentType::cast)
                         .toArray(n -> (Object[]) Array.newInstance(componentType, n));
-                } else value = mapParameter(parameter.getType(), argument);
+                } else {
+                    String argument = input.get(i)
+                        .orElseThrow(() -> new MethodCallException("argument missing"));
+                    value = mapParameter(parameter.getType(), argument);
+                }
                 objects[i] = value;
             }
             commandMethod.getMethod().invoke(object, objects);

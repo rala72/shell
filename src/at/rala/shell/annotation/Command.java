@@ -1,4 +1,4 @@
-package at.rala.shell;
+package at.rala.shell.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

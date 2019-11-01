@@ -1,7 +1,9 @@
 package at.rala.shell;
 
+import at.rala.shell.annotation.Command;
+import at.rala.shell.command.CommandMethod;
+
 import java.io.*;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +13,7 @@ public class Shell implements Runnable {
     private final Object object;
     private final BufferedReader input;
     private final PrintWriter output;
-    private final Map<String, CommandMethodHolder> commandMethodMap = new HashMap<>();
+    private final Map<String, CommandMethod> commandMethodMap = new HashMap<>();
 
     public Shell(Object object) {
         this(object, System.in, System.out);
@@ -43,8 +45,8 @@ public class Shell implements Runnable {
 
     private boolean handleInput(Input input) {
         String command = input.getCommand();
-        CommandMethodHolder commandMethodHolder = commandMethodMap.get(command);
-        if (commandMethodHolder == null) {
+        CommandMethod commandMethod = commandMethodMap.get(command);
+        if (commandMethod == null) {
             printLine("command not found: " + command);
             return false;
         }
@@ -56,30 +58,12 @@ public class Shell implements Runnable {
             .stream()
             .filter(method -> method.isAnnotationPresent(Command.class))
             .forEach(method -> {
-                    CommandMethodHolder commandMethodHolder = new CommandMethodHolder(method.getAnnotation(Command.class), method);
-                    if (commandMethodMap.containsKey(commandMethodHolder.getName()))
-                        throw new IllegalStateException(commandMethodHolder.getName() + " is defined more than once");
+                CommandMethod commandMethod = new CommandMethod(method.getAnnotation(Command.class), method);
+                if (commandMethodMap.containsKey(commandMethod.getName()))
+                    throw new IllegalStateException(commandMethod.getName() + " is defined more than once");
                     else
-                        commandMethodMap.put(commandMethodHolder.getName(), commandMethodHolder);
+                    commandMethodMap.put(commandMethod.getName(), commandMethod);
                 }
             );
-    }
-
-    private static class CommandMethodHolder {
-        private final Command command;
-        private final Method method;
-
-        private CommandMethodHolder(Command command, Method method) {
-            this.command = command;
-            this.method = method;
-        }
-
-        private String getName() {
-            return !command.value().isEmpty() ? command.value() : method.getName();
-        }
-
-        private void validateArguments(List<String> arguments) {
-
-        }
     }
 }

@@ -40,8 +40,15 @@ public class CommandMethod {
     @Override
     public String toString() {
         return "CommandMethod{" +
-            "command=" + command +
+            "command=" + convertCommandToString(command) +
             ", method=" + method +
             '}';
+    }
+
+    private static String convertCommandToString(Command command) {
+        return command == null ? null :
+            "Command(value=\"" + command.value() + "\"" +
+                ", documentation=\"" + command.documentation() + "\"" +
+                ")";
     }
 }

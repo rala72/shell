@@ -10,9 +10,12 @@ import java.util.Map;
 
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Shell implements Runnable {
+    public static final String DEFAULT_PROMPT = "> ";
+
     private final BufferedReader input;
     private final Context context;
     private final Map<String, Command> commands = new HashMap<>();
+    private String prompt = DEFAULT_PROMPT;
     private boolean isStopOnInvalidCommandEnabled = false;
 
     public Shell(Object object) {
@@ -37,6 +40,7 @@ public class Shell implements Runnable {
     public void run() {
         try {
             while (true) {
+                prompt();
                 String line = input.readLine();
                 if (line == null) return;
                 if (line.isBlank()) continue;
@@ -45,6 +49,11 @@ public class Shell implements Runnable {
             }
         } catch (IOException ignored) {
         }
+    }
+
+    public void setPrompt(String prompt) {
+        if (prompt == null) prompt = DEFAULT_PROMPT;
+        this.prompt = prompt;
     }
 
     public boolean isStopOnInvalidCommandEnabled() {
@@ -76,5 +85,11 @@ public class Shell implements Runnable {
             return false;
         }
         return true;
+    }
+
+    private void prompt() {
+        if (prompt.isEmpty()) return;
+        context.getOutput().print(prompt);
+        context.getOutput().flush();
     }
 }

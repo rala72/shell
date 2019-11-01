@@ -46,7 +46,7 @@ public class HelpCommand implements Command {
             if (documentation == null) documentation = DEFAULT_DOCUMENTATION;
             output.add(formatLine(argument, documentation, maxLength));
         }
-        context.printLine(String.join("\n", output));
+        context.printLine(output.isEmpty() ? "no commands found" : String.join("\n", output));
     }
 
     private String formatLine(String command, String documentation, int maxLength) {

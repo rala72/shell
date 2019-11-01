@@ -19,8 +19,8 @@ public class ManualTest implements Runnable {
     }
 
     @Command
-    public void echo(String line) {
-        shell.printLine(line);
+    public void echo(String... line) {
+        shell.printLine(String.join(" ", line));
     }
 
     public static void main(String[] args) {

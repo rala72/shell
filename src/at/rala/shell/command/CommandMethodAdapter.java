@@ -5,10 +5,9 @@ import at.rala.shell.Input;
 import at.rala.shell.annotation.CommandMethod;
 import at.rala.shell.exception.MethodCallException;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommandMethodAdapter implements Command {
     private final Object object;
@@ -32,15 +31,25 @@ public class CommandMethodAdapter implements Command {
         }
         try {
             Parameter[] parameters = commandMethod.getMethod().getParameters();
-            List<Object> objects = new ArrayList<>();
+            Object[] objects = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
                 String argument = input.get(i).orElseThrow(() -> new MethodCallException("argument missing"));
-                objects.add(mapParameter(parameters[i].getType(), argument));
-                if (parameters[i].isVarArgs())
-                    for (int j = i + 1; j < input.getArguments().size(); j++)
-                        objects.add(mapParameter(parameters[i].getType(), argument));
+                Parameter parameter = parameters[i];
+                Object value;
+                if (parameter.isVarArgs()) {
+                    Class<?> componentType = parameter.getType().getComponentType();
+                    Object[] varargs = input.getArguments()
+                        .subList(i, input.getArguments().size())
+                        .stream()
+                        .map(s -> mapParameter(componentType, s))
+                        .map(componentType::cast).toArray();
+                    Object[] cache = (Object[]) Array.newInstance(componentType, varargs.length);
+                    System.arraycopy(varargs, 0, cache, 0, varargs.length);
+                    value = cache;
+                } else value = mapParameter(parameter.getType(), argument);
+                objects[i] = value;
             }
-            commandMethod.getMethod().invoke(object, objects.toArray());
+            commandMethod.getMethod().invoke(object, objects);
         } catch (IllegalAccessException e) {
             throw new MethodCallException("illegal access");
         } catch (InvocationTargetException e) {

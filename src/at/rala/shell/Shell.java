@@ -16,6 +16,7 @@ public class Shell implements Runnable {
     private final BufferedReader input;
     private final Context context;
     private final Map<String, Command> commands = new TreeMap<>();
+    private Command fallback;
     private String prompt = DEFAULT_PROMPT;
     private boolean isStopOnInvalidCommandEnabled = false;
 
@@ -52,6 +53,10 @@ public class Shell implements Runnable {
         }
     }
 
+    public void setFallback(Command fallback) {
+        this.fallback = fallback;
+    }
+
     public void setPrompt(String prompt) {
         if (prompt == null) prompt = DEFAULT_PROMPT;
         this.prompt = prompt;
@@ -85,12 +90,13 @@ public class Shell implements Runnable {
 
     private boolean handleInput(Input input) {
         Command command = commands.get(input.getCommand());
-        if (command == null) {
+        if (command == null && fallback == null) {
             printError("command not found: " + input.getCommand());
             return false;
         }
         try {
-            command.execute(input, context);
+            if (command != null) command.execute(input, context);
+            else fallback.execute(input, context);
         } catch (MethodCallException e) {
             e.printStackTrace();
             return false;

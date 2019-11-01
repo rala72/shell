@@ -57,6 +57,15 @@ public class CommandMethodAdapter implements Command {
         if (boolean.class.isAssignableFrom(type) || Boolean.class.isAssignableFrom(type)) {
             return Boolean.parseBoolean(value);
         }
+        if (byte.class.isAssignableFrom(type) || Byte.class.isAssignableFrom(type)) {
+            return Byte.parseByte(value);
+        }
+        if (char.class.isAssignableFrom(type) || Character.class.isAssignableFrom(type)) {
+            return value.length() == 1 ? value.charAt(0) : null;
+        }
+        if (short.class.isAssignableFrom(type) || Short.class.isAssignableFrom(type)) {
+            return Short.parseShort(value);
+        }
         if (int.class.isAssignableFrom(type) || Integer.class.isAssignableFrom(type)) {
             return Integer.parseInt(value);
         }
@@ -68,9 +77,6 @@ public class CommandMethodAdapter implements Command {
         }
         if (double.class.isAssignableFrom(type) || Double.class.isAssignableFrom(type)) {
             return Double.parseDouble(value);
-        }
-        if (char.class.isAssignableFrom(type) || Character.class.isAssignableFrom(type)) {
-            return value.length() == 1 ? value.charAt(0) : null;
         }
         return value;
     }

@@ -2,6 +2,7 @@ package at.rala.shell;
 
 import at.rala.shell.annotation.CommandLoader;
 import at.rala.shell.command.Command;
+import at.rala.shell.exception.MethodCallException;
 
 import java.io.*;
 import java.util.HashMap;
@@ -10,16 +11,23 @@ import java.util.Map;
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Shell implements Runnable {
     private final BufferedReader input;
-    private final PrintWriter output;
+    private final Context context;
     private final Map<String, Command> commands = new HashMap<>();
 
     public Shell(Object object) {
-        this(object, System.in, System.out);
+        this(object, System.in, System.out, System.err);
     }
 
     public Shell(Object object, InputStream inputStream, OutputStream outputStream) {
+        this(object, inputStream, outputStream, outputStream);
+    }
+
+    public Shell(Object object, InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         this.input = new BufferedReader(new InputStreamReader(inputStream));
-        this.output = new PrintWriter(outputStream, true);
+        this.context = new Context(
+            new PrintWriter(outputStream, true),
+            new PrintWriter(errorStream, true),
+            commands);
         this.commands.putAll(new CommandLoader(object).getCommandMethodMap());
     }
 
@@ -37,7 +45,7 @@ public class Shell implements Runnable {
     }
 
     public void printLine(String s) {
-        output.println(s);
+        context.getOutput().println(s);
     }
 
     private boolean handleInput(Input input) {
@@ -46,7 +54,12 @@ public class Shell implements Runnable {
             printLine("command not found: " + input.getCommand());
             return false;
         }
-        command.execute(input);
+        try {
+            command.execute(input, context);
+        } catch (MethodCallException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 }

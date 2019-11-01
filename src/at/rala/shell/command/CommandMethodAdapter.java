@@ -1,5 +1,6 @@
 package at.rala.shell.command;
 
+import at.rala.shell.Context;
 import at.rala.shell.Input;
 import at.rala.shell.annotation.CommandMethod;
 import at.rala.shell.exception.MethodCallException;
@@ -19,7 +20,7 @@ public class CommandMethodAdapter implements Command {
     }
 
     @Override
-    public void execute(Input input) {
+    public void execute(Input input, Context context) {
         try {
             Parameter[] parameters = commandMethod.getMethod().getParameters();
             List<Object> objects = new ArrayList<>();
@@ -31,7 +32,9 @@ public class CommandMethodAdapter implements Command {
                         objects.add(mapParameter(parameters[i].getType(), argument));
             }
             commandMethod.getMethod().invoke(object, objects.toArray());
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+            throw new MethodCallException("illegal access");
+        } catch (InvocationTargetException e) {
             throw new MethodCallException(e);
         }
     }

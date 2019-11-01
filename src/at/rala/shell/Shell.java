@@ -13,6 +13,7 @@ public class Shell implements Runnable {
     private final BufferedReader input;
     private final Context context;
     private final Map<String, Command> commands = new HashMap<>();
+    private boolean isStopOnInvalidCommandEnabled = false;
 
     public Shell(Object object) {
         this(object, System.in, System.out, System.err);
@@ -39,10 +40,19 @@ public class Shell implements Runnable {
                 String line = input.readLine();
                 if (line == null) return;
                 if (line.isBlank()) continue;
-                handleInput(Input.parse(line));
+                boolean success = handleInput(Input.parse(line));
+                if (isStopOnInvalidCommandEnabled() && !success) break;
             }
         } catch (IOException ignored) {
         }
+    }
+
+    public boolean isStopOnInvalidCommandEnabled() {
+        return isStopOnInvalidCommandEnabled;
+    }
+
+    public void setStopOnInvalidCommandEnabled(boolean stopOnInvalidCommandEnabled) {
+        isStopOnInvalidCommandEnabled = stopOnInvalidCommandEnabled;
     }
 
     public void printLine(String s) {

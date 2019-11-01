@@ -15,10 +15,13 @@ public class CommandLoader {
             .filter(method -> method.isAnnotationPresent(Command.class))
             .forEach(method -> {
                 CommandMethod commandMethod = new CommandMethod(method.getAnnotation(Command.class), method);
-                if (commandMethodMap.containsKey(commandMethod.getName()))
+                if (getCommandMethodMap().containsKey(commandMethod.getName()))
                     throw new IllegalStateException(commandMethod.getName() + " is defined more than once");
                 else
-                    commandMethodMap.put(commandMethod.getName(), new CommandMethodAdapter(object, commandMethod));
+                    getCommandMethodMap().put(
+                        commandMethod.getName(),
+                        new CommandMethodAdapter(object, commandMethod)
+                    );
             });
     }
 

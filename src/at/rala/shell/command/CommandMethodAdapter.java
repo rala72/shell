@@ -53,6 +53,7 @@ public class CommandMethodAdapter implements Command {
     }
 
     private static Object mapParameter(Class<?> type, String value) {
+        if (!type.isPrimitive() && value.equals("null")) return null;
         if (boolean.class.isAssignableFrom(type) || Boolean.class.isAssignableFrom(type)) {
             return Boolean.parseBoolean(value);
         }

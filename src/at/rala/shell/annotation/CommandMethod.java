@@ -23,4 +23,17 @@ public class CommandMethod {
     public Method getMethod() {
         return method;
     }
+
+    public boolean isParameterCountValid(int i) {
+        return getMinParameterCount() <= i && i <= getMaxParameterCount();
+    }
+
+    public int getMinParameterCount() {
+        return getMethod().getParameterCount();
+    }
+
+    public int getMaxParameterCount() {
+        return getMethod().getParameters()[getMethod().getParameters().length - 1]
+            .isVarArgs() ? Integer.MAX_VALUE : getMinParameterCount();
+    }
 }

@@ -13,5 +13,5 @@ public @interface Command {
 
     String documentation() default "";
 
-    // String usage() default "";
+    String usage() default "";
 }

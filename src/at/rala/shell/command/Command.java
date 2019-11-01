@@ -8,5 +8,9 @@ public interface Command {
         return null;
     }
 
+    default String getUsage() {
+        return null;
+    }
+
     void execute(Input input, Context context);
 }

@@ -19,7 +19,7 @@ public class ManualTest implements Runnable {
         shell.run();
     }
 
-    @Command(documentation = "prints arguments written afterwards")
+    @Command(documentation = "prints arguments written afterwards", usage = "echo [text [text...]]")
     public void echo(String... line) {
         shell.printLine(String.join(" ", line));
     }

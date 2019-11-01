@@ -18,6 +18,11 @@ public class HelpCommand implements Command {
     }
 
     @Override
+    public String getUsage() {
+        return "help [command [command ...]]";
+    }
+
+    @Override
     public void execute(Input input, Context context) {
         if (input.getArguments().isEmpty()) printAll(context);
         else printInput(context, input.getArguments());

@@ -8,32 +8,58 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Map;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class TestContext extends Context {
     private final CacheOutputStream cacheOutputStream;
+    private final CacheOutputStream cacheErrorStream;
 
     public TestContext() {
-        this(null);
+        this(new CacheOutputStream());
     }
 
     public TestContext(Map<String, Command> commands) {
         this(new CacheOutputStream(), commands);
     }
 
-    private TestContext(CacheOutputStream cacheOutputStream, Map<String, Command> commands) {
+    public TestContext(CacheOutputStream outputStream) {
+        this(outputStream, outputStream);
+    }
+
+    public TestContext(CacheOutputStream outputStream, Map<String, Command> commands) {
+        this(
+            outputStream,
+            outputStream,
+            commands
+        );
+    }
+
+    public TestContext(CacheOutputStream outputStream, CacheOutputStream errorStream) {
+        this(outputStream, errorStream, null);
+    }
+
+    public TestContext(CacheOutputStream outputStream, CacheOutputStream errorStream,
+                       Map<String, Command> commands) {
         super(
-            new PrintWriter(cacheOutputStream, true),
+            new PrintWriter(outputStream, true),
+            new PrintWriter(errorStream, true),
             commands != null ? commands : Collections.emptyMap()
         );
-        this.cacheOutputStream = cacheOutputStream;
+        this.cacheOutputStream = outputStream;
+        this.cacheErrorStream = errorStream;
     }
 
     public CacheOutputStream getCacheOutputStream() {
         return cacheOutputStream;
     }
 
+    public CacheOutputStream getCacheErrorStream() {
+        return cacheErrorStream;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + "\t" + cacheOutputStream;
+        return super.toString() +
+            "\n\t" + cacheOutputStream +
+            "\n\t" + cacheErrorStream;
     }
 }

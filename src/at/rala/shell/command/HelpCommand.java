@@ -4,9 +4,8 @@ import at.rala.shell.Context;
 import at.rala.shell.Input;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class HelpCommand implements Command {
@@ -24,8 +23,9 @@ public class HelpCommand implements Command {
 
     @Override
     public void execute(Input input, Context context) {
-        if (input.getArguments().isEmpty()) printAll(context);
-        else printInput(context, input.getArguments());
+        Collection<String> commands = input.getArguments().isEmpty() ?
+            context.getCommands().keySet() : input.getArguments();
+        printCommands(context, commands);
     }
 
     @Override
@@ -33,19 +33,7 @@ public class HelpCommand implements Command {
         return "HelpCommand";
     }
 
-    private void printAll(Context context) {
-        Set<String> commands = context.getCommands().keySet();
-        int maxLength = commands.stream().mapToInt(String::length).max().orElse(0);
-        String output = context.getCommands().entrySet().stream().map(stringCommandEntry -> {
-            String command = stringCommandEntry.getKey();
-            String documentation = getDocumentationOfCommand(stringCommandEntry.getValue());
-            if (documentation == null) documentation = DEFAULT_DOCUMENTATION;
-            return formatLine(command, documentation, maxLength);
-        }).collect(Collectors.joining("\n"));
-        context.printLine(output);
-    }
-
-    private void printInput(Context context, List<String> arguments) {
+    private void printCommands(Context context, Collection<String> arguments) {
         List<String> output = new ArrayList<>();
         int maxLength = arguments.stream().mapToInt(String::length).max().orElse(0);
         for (String argument : arguments) {
@@ -58,7 +46,7 @@ public class HelpCommand implements Command {
             if (documentation == null) documentation = DEFAULT_DOCUMENTATION;
             output.add(formatLine(argument, documentation, maxLength));
         }
-        output.forEach(context::printLine);
+        context.printLine(String.join("\n", output));
     }
 
     private String formatLine(String command, String documentation, int maxLength) {

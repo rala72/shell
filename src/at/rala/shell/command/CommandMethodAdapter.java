@@ -1,6 +1,7 @@
 package at.rala.shell.command;
 
 import at.rala.shell.Input;
+import at.rala.shell.annotation.CommandMethod;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -7,8 +7,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@SuppressWarnings("unused")
 public @interface Command {
     String value() default "";
 
     String documentation() default "";
+
+    // String usage() default "";
 }

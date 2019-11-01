@@ -1,9 +1,8 @@
-package at.rala.shell.command;
-
-import at.rala.shell.annotation.Command;
+package at.rala.shell.annotation;
 
 import java.lang.reflect.Method;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class CommandMethod {
     private final Command command;
     private final Method method;

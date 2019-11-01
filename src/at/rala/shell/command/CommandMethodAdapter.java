@@ -26,7 +26,7 @@ public class CommandMethodAdapter implements Command {
 
     @Override
     public void execute(Input input, Context context) {
-        if (commandMethod.isParameterCountValid(input.getArguments().size())) {
+        if (!commandMethod.isParameterCountValid(input.getArguments().size())) {
             context.getError().println("error: expected argument count: " + commandMethod.getMinParameterCount());
             return;
         }

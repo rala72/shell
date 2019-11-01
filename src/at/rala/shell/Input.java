@@ -17,7 +17,7 @@ public class Input {
 
     public Input(String command, List<String> arguments) {
         this.command = command;
-        this.arguments = arguments;
+        this.arguments = Collections.unmodifiableList(arguments);
     }
 
     public String getCommand() {

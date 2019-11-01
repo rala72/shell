@@ -3,6 +3,7 @@ package at.rala.shell;
 import at.rala.shell.command.Command;
 
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Map;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -18,7 +19,7 @@ public class Context {
     public Context(PrintWriter output, PrintWriter error, Map<String, Command> commands) {
         this.output = output;
         this.error = error;
-        this.commands = commands;
+        this.commands = Collections.unmodifiableMap(commands);
     }
 
     public PrintWriter getOutput() {

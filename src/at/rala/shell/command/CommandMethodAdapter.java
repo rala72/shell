@@ -20,6 +20,11 @@ public class CommandMethodAdapter implements Command {
     }
 
     @Override
+    public String getDocumentation() {
+        return getCommandMethod().getCommand().documentation();
+    }
+
+    @Override
     public void execute(Input input, Context context) {
         try {
             Parameter[] parameters = commandMethod.getMethod().getParameters();

@@ -38,8 +38,14 @@ public class Input {
     }
 
     public static Input parse(String line) {
-        List<String> parts = List.of(line.split(" "))
-            .stream().filter(string -> !string.isBlank()).collect(Collectors.toList());
+        return parse(line, false);
+    }
+
+    public static Input parse(String line, boolean filterBlank) {
+        List<String> parts = List.of(line.split(" ")).stream()
+            .filter(string -> !string.isEmpty())
+            .filter(string -> !filterBlank || !string.isBlank())
+            .collect(Collectors.toList());
         return new Input(
             1 <= parts.size() ? parts.get(0) : null,
             2 <= parts.size() ? parts.subList(2, parts.size()) : Collections.emptyList()

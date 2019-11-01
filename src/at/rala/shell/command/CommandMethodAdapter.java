@@ -39,6 +39,10 @@ public class CommandMethodAdapter implements Command {
         }
     }
 
+    CommandMethod getCommandMethod() {
+        return commandMethod;
+    }
+
     private static Object mapParameter(Class<?> type, String value) {
         if (boolean.class.isAssignableFrom(type) || Boolean.class.isAssignableFrom(type)) {
             return Boolean.parseBoolean(value);

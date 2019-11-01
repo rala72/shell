@@ -27,7 +27,8 @@ public class Shell implements Runnable {
         this.context = new Context(
             new PrintWriter(outputStream, true),
             new PrintWriter(errorStream, true),
-            commands);
+            commands
+        );
         this.commands.putAll(new CommandLoader(object).getCommandMethodMap());
     }
 

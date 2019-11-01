@@ -40,8 +40,11 @@ class InputTest {
         Assertions.assertFalse(input.hasArguments());
         Assertions.assertTrue(input.getArguments().isEmpty());
         Assertions.assertEquals(Optional.empty(), input.get(-1));
+        Assertions.assertNull(input.getOrNull(-1));
         Assertions.assertEquals(Optional.empty(), input.get(0));
+        Assertions.assertNull(input.getOrNull(0));
         Assertions.assertEquals(Optional.empty(), input.get(1));
+        Assertions.assertNull(input.getOrNull(1));
     }
 
     @Test
@@ -51,8 +54,11 @@ class InputTest {
         Assertions.assertTrue(input.hasArguments());
         Assertions.assertFalse(input.getArguments().isEmpty());
         Assertions.assertEquals(Optional.empty(), input.get(-1));
+        Assertions.assertNull(input.getOrNull(-1));
         Assertions.assertEquals(Optional.of("arg"), input.get(0));
+        Assertions.assertEquals("arg", input.getOrNull(0));
         Assertions.assertEquals(Optional.empty(), input.get(1));
+        Assertions.assertNull(input.getOrNull(1));
     }
 
     @Test

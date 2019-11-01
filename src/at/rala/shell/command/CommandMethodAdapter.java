@@ -38,14 +38,12 @@ public class CommandMethodAdapter implements Command {
                 Object value;
                 if (parameter.isVarArgs()) {
                     Class<?> componentType = parameter.getType().getComponentType();
-                    Object[] varargs = input.getArguments()
+                    value = input.getArguments()
                         .subList(i, input.getArguments().size())
                         .stream()
                         .map(s -> mapParameter(componentType, s))
-                        .map(componentType::cast).toArray();
-                    Object[] cache = (Object[]) Array.newInstance(componentType, varargs.length);
-                    System.arraycopy(varargs, 0, cache, 0, varargs.length);
-                    value = cache;
+                        .map(componentType::cast)
+                        .toArray(n -> (Object[]) Array.newInstance(componentType, n));
                 } else value = mapParameter(parameter.getType(), argument);
                 objects[i] = value;
             }

@@ -3,6 +3,7 @@ package at.rala.shell;
 import at.rala.shell.annotation.CommandLoader;
 import at.rala.shell.command.Command;
 import at.rala.shell.exception.MethodCallException;
+import at.rala.shell.exception.StopShellException;
 
 import java.io.*;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class Shell implements Runnable {
                 boolean success = handleInput(Input.parse(line));
                 if (isStopOnInvalidCommandEnabled() && !success) break;
             }
-        } catch (IOException ignored) {
+        } catch (StopShellException | IOException ignored) {
         }
     }
 

@@ -1,10 +1,12 @@
 package at.rala.shell;
 
 import at.rala.shell.command.Command;
+import at.rala.shell.command.ExitCommand;
 import at.rala.shell.command.HelpCommand;
 
 @SuppressWarnings("unused")
 public enum DefaultCommand {
+    EXIT("exit", new ExitCommand()),
     HELP("help", new HelpCommand());
 
     private final String name;

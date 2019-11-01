@@ -49,10 +49,14 @@ public class Shell implements Runnable {
         context.getOutput().println(s);
     }
 
+    public void printError(String s) {
+        context.getError().println(s);
+    }
+
     private boolean handleInput(Input input) {
         Command command = commands.get(input.getCommand());
         if (command == null) {
-            printLine("command not found: " + input.getCommand());
+            printError("command not found: " + input.getCommand());
             return false;
         }
         try {

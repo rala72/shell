@@ -14,7 +14,7 @@ public class ExitCommand implements Command {
     @Override
     public void execute(Input input, Context context) {
         if (!input.getArguments().isEmpty()) {
-            context.printError("no arguments expected");
+            context.printError("error: no arguments expected");
             return;
         }
         throw new StopShellException();

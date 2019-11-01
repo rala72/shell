@@ -46,7 +46,7 @@ public class HelpCommand implements Command {
         for (String argument : arguments) {
             Command command = context.getCommands().get(argument);
             if (command == null) {
-                context.printError("command " + argument + " not found");
+                context.printError("error: command " + argument + " not found");
                 return;
             }
             String documentation = getDocumentationOfCommand(command);

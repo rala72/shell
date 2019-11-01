@@ -5,8 +5,8 @@ import at.rala.shell.command.Command;
 import at.rala.shell.exception.MethodCallException;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Shell implements Runnable {
@@ -14,7 +14,7 @@ public class Shell implements Runnable {
 
     private final BufferedReader input;
     private final Context context;
-    private final Map<String, Command> commands = new HashMap<>();
+    private final Map<String, Command> commands = new TreeMap<>();
     private String prompt = DEFAULT_PROMPT;
     private boolean isStopOnInvalidCommandEnabled = false;
 

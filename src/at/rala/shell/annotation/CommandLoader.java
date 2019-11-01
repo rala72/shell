@@ -28,4 +28,9 @@ public class CommandLoader {
     public Map<String, at.rala.shell.command.Command> getCommandMethodMap() {
         return commandMethodMap;
     }
+
+    @Override
+    public String toString() {
+        return commandMethodMap.toString();
+    }
 }

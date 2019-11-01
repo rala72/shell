@@ -37,6 +37,14 @@ public class Input {
         return get(i).orElse(null);
     }
 
+    @Override
+    public String toString() {
+        return "Input{" +
+            "command='" + command + '\'' +
+            ", arguments=" + arguments +
+            '}';
+    }
+
     public static Input parse(String line) {
         return parse(line, false);
     }

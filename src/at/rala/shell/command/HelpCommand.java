@@ -23,6 +23,11 @@ public class HelpCommand implements Command {
         else printInput(context, input.getArguments());
     }
 
+    @Override
+    public String toString() {
+        return "HelpCommand";
+    }
+
     private void printAll(Context context) {
         Set<String> commands = context.getCommands().keySet();
         int maxLength = commands.stream().mapToInt(String::length).max().orElse(0);

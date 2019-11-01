@@ -2,6 +2,7 @@ package at.rala;
 
 import at.rala.shell.DefaultCommand;
 import at.rala.shell.Shell;
+import at.rala.shell.annotation.Command;
 
 public class ManualTest implements Runnable {
     private final Shell shell;
@@ -15,6 +16,11 @@ public class ManualTest implements Runnable {
     @Override
     public void run() {
         shell.run();
+    }
+
+    @Command
+    public void echo(String line) {
+        shell.printLine(line);
     }
 
     public static void main(String[] args) {

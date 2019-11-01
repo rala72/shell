@@ -19,4 +19,9 @@ public class ExitCommand implements Command {
         }
         throw new StopShellException();
     }
+
+    @Override
+    public String toString() {
+        return "ExitCommand";
+    }
 }

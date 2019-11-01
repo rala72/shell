@@ -36,4 +36,12 @@ public class CommandMethod {
         return getMethod().getParameters()[getMethod().getParameters().length - 1]
             .isVarArgs() ? Integer.MAX_VALUE : getMinParameterCount();
     }
+
+    @Override
+    public String toString() {
+        return "CommandMethod{" +
+            "command=" + command +
+            ", method=" + method +
+            '}';
+    }
 }

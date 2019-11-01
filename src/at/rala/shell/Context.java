@@ -33,4 +33,13 @@ public class Context {
     public Map<String, Command> getCommands() {
         return commands;
     }
+
+    @Override
+    public String toString() {
+        return "Context{" +
+            "output=" + output +
+            ", error=" + error +
+            ", commands=" + commands +
+            '}';
+    }
 }

@@ -88,6 +88,11 @@ public class Shell implements Runnable {
         context.getError().println(s);
     }
 
+    @Override
+    public String toString() {
+        return "Shell";
+    }
+
     private boolean handleInput(Input input) {
         Command command = commands.get(input.getCommand());
         if (command == null && fallback == null) {

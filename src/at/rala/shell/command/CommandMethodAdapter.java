@@ -48,6 +48,14 @@ public class CommandMethodAdapter implements Command {
         }
     }
 
+    @Override
+    public String toString() {
+        return "CommandMethodAdapter{" +
+            "object=" + object +
+            ", commandMethod=" + commandMethod +
+            '}';
+    }
+
     CommandMethod getCommandMethod() {
         return commandMethod;
     }

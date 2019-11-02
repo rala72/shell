@@ -5,8 +5,8 @@ import at.rala.shell.utils.TestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 class HelpCommandTest {
     private static final String COMMAND = "help";
@@ -29,7 +29,7 @@ class HelpCommandTest {
 
         new HelpCommand().execute(new Input(COMMAND), testContext);
 
-        List<String> outputs = testContext.getCacheOutputStream().getOutputs();
+        BlockingQueue<String> outputs = testContext.getCacheOutputStream().getOutputs();
         Assertions.assertFalse(outputs.isEmpty());
         Assertions.assertEquals(1, outputs.size());
         Assertions.assertTrue(outputs.contains("no commands found"));
@@ -42,7 +42,7 @@ class HelpCommandTest {
 
         helpCommand.execute(new Input(COMMAND), testContext);
 
-        List<String> outputs = testContext.getCacheOutputStream().getOutputs();
+        BlockingQueue<String> outputs = testContext.getCacheOutputStream().getOutputs();
         Assertions.assertFalse(outputs.isEmpty());
         Assertions.assertEquals(1, outputs.size());
         Assertions.assertTrue(outputs.contains("help \tprints help of all commands or provided ones"));
@@ -56,7 +56,7 @@ class HelpCommandTest {
 
         helpCommand.execute(new Input(COMMAND), testContext);
 
-        List<String> outputs = testContext.getCacheOutputStream().getOutputs();
+        BlockingQueue<String> outputs = testContext.getCacheOutputStream().getOutputs();
         Assertions.assertFalse(outputs.isEmpty());
         Assertions.assertEquals(2, outputs.size());
         Assertions.assertTrue(outputs.contains("help \tprints help of all commands or provided ones"));
@@ -71,7 +71,7 @@ class HelpCommandTest {
 
         helpCommand.execute(new Input(COMMAND, "exit"), testContext);
 
-        List<String> outputs = testContext.getCacheOutputStream().getOutputs();
+        BlockingQueue<String> outputs = testContext.getCacheOutputStream().getOutputs();
         Assertions.assertFalse(outputs.isEmpty());
         Assertions.assertEquals(1, outputs.size());
         Assertions.assertFalse(outputs.contains("help \tprints help of all commands or provided ones"));

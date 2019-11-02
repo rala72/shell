@@ -12,6 +12,13 @@ class CommandLoaderTest {
     }
 
     @Test
+    void testErrorCommandMethodLoading() {
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new CommandLoader(new ErrorTestObject())
+        );
+    }
+
+    @Test
     void testToString() {
         CommandLoader commandLoader = new CommandLoader(new TestObject());
         Assertions.assertEquals("simpleCommand", commandLoader.toString());
@@ -21,6 +28,17 @@ class CommandLoaderTest {
     private static class TestObject {
         @Command
         public void simpleCommand() {
+        }
+    }
+
+    @SuppressWarnings({"unused"})
+    private static class ErrorTestObject {
+        @Command("cmd")
+        public void simpleCommand1() {
+        }
+
+        @Command("cmd")
+        public void simpleCommand2() {
         }
     }
 }

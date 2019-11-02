@@ -11,6 +11,12 @@ class CommandLoaderTest {
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("simpleCommand"));
     }
 
+    @Test
+    void testToString() {
+        CommandLoader commandLoader = new CommandLoader(new TestObject());
+        Assertions.assertEquals("simpleCommand", commandLoader.toString());
+    }
+
     @SuppressWarnings({"unused"})
     private static class TestObject {
         @Command

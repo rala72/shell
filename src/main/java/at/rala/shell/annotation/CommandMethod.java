@@ -45,7 +45,7 @@ public class CommandMethod {
     public String toString() {
         return "CommandMethod{" +
             "command=" + convertCommandToString(command) +
-            ", method=" + method +
+            ", method=" + method.getName() +
             '}';
     }
 

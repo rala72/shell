@@ -55,11 +55,4 @@ public class TestContext extends Context {
     public CacheOutputStream getCacheErrorStream() {
         return cacheErrorStream;
     }
-
-    @Override
-    public String toString() {
-        return super.toString() +
-            "\n\t" + cacheOutputStream +
-            "\n\t" + cacheErrorStream;
-    }
 }

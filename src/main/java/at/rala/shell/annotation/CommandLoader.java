@@ -31,6 +31,6 @@ public class CommandLoader {
 
     @Override
     public String toString() {
-        return commandMethodMap.toString();
+        return String.join(",", commandMethodMap.keySet());
     }
 }

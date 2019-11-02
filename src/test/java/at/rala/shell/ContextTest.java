@@ -56,4 +56,10 @@ class ContextTest {
         Assertions.assertEquals(0, outputs.size());
         Assertions.assertFalse(outputs.contains("error"));
     }
+
+    @Test
+    void testToString() {
+        String toString = "Context{output==error=false, commands={}}";
+        Assertions.assertEquals(toString, new TestContext().toString());
+    }
 }

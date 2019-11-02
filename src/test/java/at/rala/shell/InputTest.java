@@ -78,4 +78,10 @@ class InputTest {
         Assertions.assertFalse(input.getArguments().isEmpty());
         Assertions.assertEquals(List.of("is", "a", "very", "fancy", "line"), input.getArguments());
     }
+
+    @Test
+    void testToString() {
+        String toString = "Input{command='cmd', arguments=[]}";
+        Assertions.assertEquals(toString, new Input("cmd").toString());
+    }
 }

@@ -87,4 +87,11 @@ class CommandMethodTest {
         Assertions.assertTrue(commandMethod.isParameterCountValid(Integer.MAX_VALUE - 1));
         Assertions.assertFalse(commandMethod.isParameterCountValid(Integer.MAX_VALUE));
     }
+
+    @Test
+    void testToString() throws NoSuchMethodException {
+        CommandMethod commandMethod = new CommandMethod(new CommandAnnotation(), TestObject.class.getMethod("toString"));
+        String toString = "CommandMethod{command=Command(value=\"\", documentation=\"\"), method=toString}";
+        Assertions.assertEquals(toString, commandMethod.toString());
+    }
 }

@@ -30,4 +30,9 @@ class ExitCommandTest {
         }
         Assertions.fail();
     }
+
+    @Test
+    void testToString() {
+        Assertions.assertEquals("ExitCommand", new ExitCommand().toString());
+    }
 }

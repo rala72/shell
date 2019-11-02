@@ -77,4 +77,9 @@ class HelpCommandTest {
         Assertions.assertFalse(outputs.contains("help \tprints help of all commands or provided ones"));
         Assertions.assertTrue(outputs.contains("exit \tstops shell"));
     }
+
+    @Test
+    void testToString() {
+        Assertions.assertEquals("HelpCommand", new HelpCommand().toString());
+    }
 }

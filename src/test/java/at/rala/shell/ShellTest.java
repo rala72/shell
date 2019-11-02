@@ -52,4 +52,9 @@ class ShellTest {
         Assertions.assertTrue(errorStream.getOutputs().isEmpty());
         thread.interrupt();
     }
+
+    @Test
+    void testToString() {
+        Assertions.assertEquals("Shell", new Shell().toString());
+    }
 }

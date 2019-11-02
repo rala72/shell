@@ -24,6 +24,10 @@ public class TestObject {
     public void commandWithoutAttributesAndMethodWithOneStringArrayParameter(String[] s) {
     }
 
+    @Command(value = "value", documentation = "documentation", usage = "usage")
+    public void commandWithAttributesAndMethodWithoutParameter() {
+    }
+
     @Override
     public String toString() {
         return "TestObject";

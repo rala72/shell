@@ -27,7 +27,25 @@ class CommandMethodAdapterTest {
     }
 
     @Test
-    void testToStringOfWithoutAttributes() {
+    void testDocumentationOfCommandWithAttributes() {
+        Assertions.assertNull(getCommand("commandWithAttributesAndMethodWithoutParameter"));
+        Command command = getCommand("value");
+        Assertions.assertNotNull(command);
+        Assertions.assertFalse(command.getDocumentation().isBlank());
+        Assertions.assertEquals("documentation", command.getDocumentation());
+    }
+
+    @Test
+    void testUsageOfCommandWithAttributes() {
+        Assertions.assertNull(getCommand("commandWithAttributesAndMethodWithoutParameter"));
+        Command command = getCommand("value");
+        Assertions.assertNotNull(command);
+        Assertions.assertFalse(command.getUsage().isBlank());
+        Assertions.assertEquals("usage", command.getUsage());
+    }
+
+    @Test
+    void testToStringOfCommandWithoutAttributes() {
         Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
         String toString = "CommandMethodAdapter{object=TestObject, " +
             "commandMethod=CommandMethod{" +

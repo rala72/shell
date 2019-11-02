@@ -54,7 +54,7 @@ class ContextTest {
 
     @Test
     void testErrorButNotOutput() {
-        TestContext testContext = TestContext.getInstanceWithSeparateStreams();
+        TestContext testContext = TestContext.getInstanceWithDifferentStreams();
 
         testContext.printError("error");
 

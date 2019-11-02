@@ -45,7 +45,7 @@ public class TestContext extends Context {
         this.errorHistory = errorStream.getHistory();
     }
 
-    public static TestContext getInstanceWithSeparateStreams() {
+    public static TestContext getInstanceWithDifferentStreams() {
         return new TestContext(new HistoryOutputStream(), new HistoryOutputStream());
     }
 

@@ -36,6 +36,18 @@ class HelpCommandTest {
     }
 
     @Test
+    void testExecuteWithInvalidArguments() {
+        TestContext testContext = new TestContext();
+
+        new HelpCommand().execute(new Input(COMMAND, "cmd"), testContext);
+
+        BlockingQueue<String> outputs = testContext.getOutputHistory();
+        Assertions.assertFalse(outputs.isEmpty());
+        Assertions.assertEquals(1, outputs.size());
+        Assertions.assertTrue(outputs.contains("error: command cmd not found"));
+    }
+
+    @Test
     void testExecuteWithHelp() {
         HelpCommand helpCommand = new HelpCommand();
         TestContext testContext = new TestContext(Map.of("help", helpCommand));

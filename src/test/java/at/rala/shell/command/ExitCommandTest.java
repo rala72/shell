@@ -22,10 +22,19 @@ class ExitCommandTest {
     }
 
     @Test
-    void testExecute() {
+    void testExecuteWithoutParameters() {
         Assertions.assertThrows(StopShellException.class, () ->
             new ExitCommand().execute(new Input(COMMAND), new TestContext())
         );
+    }
+
+    @Test
+    void testExecuteWithParameters() {
+        TestContext testContext = TestContext.getInstanceWithDifferentStreams();
+        new ExitCommand().execute(new Input(COMMAND, "cmd"), testContext);
+        Assertions.assertTrue(testContext.getOutputHistory().isEmpty());
+        Assertions.assertFalse(testContext.getErrorHistory().isEmpty());
+        Assertions.assertTrue(testContext.getErrorHistory().contains("error: no arguments expected"));
     }
 
     @Test

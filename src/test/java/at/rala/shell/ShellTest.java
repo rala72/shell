@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 class ShellTest {
     private static final Command ECHO_COMMAND = (input, context) ->
@@ -47,7 +46,7 @@ class ShellTest {
         Thread thread = new Thread(shell);
         thread.start();
         queue.put("echo echo\n");
-        String take = outputStream.getOutputs().poll(10, TimeUnit.SECONDS);
+        String take = outputStream.getOutputs().take();
         Assertions.assertNotNull(take);
         Assertions.assertEquals("> echo", take);
         Assertions.assertTrue(errorStream.getOutputs().isEmpty());

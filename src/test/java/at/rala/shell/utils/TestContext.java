@@ -46,7 +46,11 @@ public class TestContext extends Context {
     }
 
     public static TestContext getInstanceWithDifferentStreams() {
-        return new TestContext(new HistoryOutputStream(), new HistoryOutputStream());
+        return getInstanceWithDifferentStreams(Collections.emptyMap());
+    }
+
+    public static TestContext getInstanceWithDifferentStreams(Map<String, Command> commands) {
+        return new TestContext(new HistoryOutputStream(), new HistoryOutputStream(), commands);
     }
 
     public BlockingQueue<String> getOutputHistory() {

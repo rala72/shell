@@ -1,34 +1,43 @@
 package at.rala.shell.command;
 
+import at.rala.shell.Input;
 import at.rala.shell.annotation.CommandLoader;
+import at.rala.shell.utils.TestContext;
 import at.rala.shell.utils.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CommandMethodAdapterTest {
-    private CommandLoader commandLoader;
+    private TestContext context;
 
     @BeforeEach
     void setUp() {
-        commandLoader = new CommandLoader(new TestObject());
+        CommandLoader commandLoader = new CommandLoader(new TestObject());
+        context = TestContext.getInstanceWithDifferentStreams(commandLoader.getCommandMethodMap());
     }
 
     @Test
     void testDocumentationOfCommandWithoutAttributes() {
-        Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
+        Command command = getCommand(
+            "commandWithoutAttributesAndMethodWithoutParameter"
+        );
         Assertions.assertTrue(command.getDocumentation().isBlank());
     }
 
     @Test
     void testUsageOfCommandWithoutAttributes() {
-        Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
+        Command command = getCommand(
+            "commandWithoutAttributesAndMethodWithoutParameter"
+        );
         Assertions.assertTrue(command.getUsage().isBlank());
     }
 
     @Test
     void testDocumentationOfCommandWithAttributes() {
-        Assertions.assertNull(getCommand("commandWithAttributesAndMethodWithoutParameter"));
+        Assertions.assertNull(getCommand(
+            "commandWithAttributesAndMethodWithoutParameter"
+        ));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
         Assertions.assertFalse(command.getDocumentation().isBlank());
@@ -37,11 +46,53 @@ class CommandMethodAdapterTest {
 
     @Test
     void testUsageOfCommandWithAttributes() {
-        Assertions.assertNull(getCommand("commandWithAttributesAndMethodWithoutParameter"));
+        Assertions.assertNull(getCommand(
+            "commandWithAttributesAndMethodWithoutParameter"
+        ));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
         Assertions.assertFalse(command.getUsage().isBlank());
         Assertions.assertEquals("usage", command.getUsage());
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithoutParameterWithoutParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithoutParameter"
+        ));
+        Assertions.assertTrue(context.getOutputHistory().isEmpty());
+        Assertions.assertTrue(context.getErrorHistory().isEmpty());
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithoutParameterWithParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithoutParameter",
+            "dummy"
+        ));
+        Assertions.assertTrue(context.getOutputHistory().isEmpty());
+        Assertions.assertFalse(context.getErrorHistory().isEmpty());
+        Assertions.assertTrue(context.getErrorHistory().contains("error: expected argument count: 0"));
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithoutParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithOneStringParameter"
+        ));
+        Assertions.assertTrue(context.getOutputHistory().isEmpty());
+        Assertions.assertFalse(context.getErrorHistory().isEmpty());
+        Assertions.assertTrue(context.getErrorHistory().contains("error: expected argument count: 1"));
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithOneStringParameter",
+            "dummy"
+        ));
+        Assertions.assertTrue(context.getOutputHistory().isEmpty());
+        Assertions.assertTrue(context.getErrorHistory().isEmpty());
     }
 
     @Test
@@ -54,7 +105,13 @@ class CommandMethodAdapterTest {
         Assertions.assertEquals(toString, command.toString());
     }
 
+    private void executeCommand(Input input) {
+        Command command = getCommand(input.getCommand());
+        Assertions.assertNotNull(command);
+        command.execute(input, context);
+    }
+
     private Command getCommand(String name) {
-        return commandLoader.getCommandMethodMap().get(name);
+        return context.getCommands().get(name);
     }
 }

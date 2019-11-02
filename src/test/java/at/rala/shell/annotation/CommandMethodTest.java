@@ -1,5 +1,6 @@
 package at.rala.shell.annotation;
 
+import at.rala.shell.utils.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,12 +30,12 @@ class CommandMethodTest {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithOneParameter", String.class)
+            TestObject.class.getMethod("simpleCommandWithOneStringParameter", String.class)
         );
-        Assertions.assertEquals("simpleCommandWithOneParameter", commandMethod.getName());
+        Assertions.assertEquals("simpleCommandWithOneStringParameter", commandMethod.getName());
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithOneParameter", String.class),
+            TestObject.class.getMethod("simpleCommandWithOneStringParameter", String.class),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(1, commandMethod.getMinParameterCount());
@@ -49,12 +50,12 @@ class CommandMethodTest {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithTwoParameter", String.class, String.class)
+            TestObject.class.getMethod("simpleCommandWithTwoStringParameter", String.class, String.class)
         );
-        Assertions.assertEquals("simpleCommandWithTwoParameter", commandMethod.getName());
+        Assertions.assertEquals("simpleCommandWithTwoStringParameter", commandMethod.getName());
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithTwoParameter", String.class, String.class),
+            TestObject.class.getMethod("simpleCommandWithTwoStringParameter", String.class, String.class),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(2, commandMethod.getMinParameterCount());
@@ -69,12 +70,12 @@ class CommandMethodTest {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithVarargsParameter", String[].class)
+            TestObject.class.getMethod("simpleCommandWithOneStringVarargsParameter", String[].class)
         );
-        Assertions.assertEquals("simpleCommandWithVarargsParameter", commandMethod.getName());
+        Assertions.assertEquals("simpleCommandWithOneStringVarargsParameter", commandMethod.getName());
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithVarargsParameter", String[].class),
+            TestObject.class.getMethod("simpleCommandWithOneStringVarargsParameter", String[].class),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
@@ -93,12 +94,12 @@ class CommandMethodTest {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithArrayParameter", String[].class)
+            TestObject.class.getMethod("simpleCommandWithOneStringArrayParameter", String[].class)
         );
-        Assertions.assertEquals("simpleCommandWithArrayParameter", commandMethod.getName());
+        Assertions.assertEquals("simpleCommandWithOneStringArrayParameter", commandMethod.getName());
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithArrayParameter", String[].class),
+            TestObject.class.getMethod("simpleCommandWithOneStringArrayParameter", String[].class),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());

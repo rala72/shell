@@ -77,13 +77,14 @@ class CommandMethodAdapterTest {
         else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
     }
 
+    // region execute exception
+
     @Test
     void testExceptionCommandWithoutAttributes() {
         Assertions.assertThrows(MethodCallException.class,
             () -> executeCommand(new Input("exceptionCommand"))
         );
     }
-
 
     @Test
     void testIllegalAccessCommandWithoutAttributes() throws NoSuchMethodException {
@@ -97,6 +98,8 @@ class CommandMethodAdapterTest {
             () -> illegalAccessCommand.execute(new Input("illegalAccessCommand"), context)
         );
     }
+
+    // endregion
 
     @Test
     void testToStringOfCommandWithoutAttributes() {

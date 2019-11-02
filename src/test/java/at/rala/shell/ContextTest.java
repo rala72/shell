@@ -6,21 +6,34 @@ import at.rala.shell.utils.io.CacheOutputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
+@SuppressWarnings("unused")
 class ContextTest {
     @Test
     void testEmptyCommands() {
-        Assertions.assertTrue(new TestContext().getCommands().isEmpty());
+        Context context = new Context(getSystemOutPrintWriter(), Collections.emptyMap());
+        Assertions.assertTrue(context.getCommands().isEmpty());
+    }
+
+    @Test
+    void testConstructorWithSameOutputs() {
+        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(System.out));
+        Context context = new Context(printWriter, Collections.emptyMap());
+        Assertions.assertEquals(context.getOutput(), context.getError());
     }
 
     @Test
     void testCommandsWithExit() {
-        TestContext testContext = new TestContext(Map.of("help", new ExitCommand()));
-        Assertions.assertFalse(testContext.getCommands().isEmpty());
-        Assertions.assertTrue(testContext.getCommands().containsKey("help"));
-        Assertions.assertNotNull(testContext.getCommands().get("help"));
+        Context context = new Context(getSystemOutPrintWriter(), Map.of("help", new ExitCommand()));
+        Assertions.assertFalse(context.getCommands().isEmpty());
+        Assertions.assertTrue(context.getCommands().containsKey("help"));
+        Assertions.assertNotNull(context.getCommands().get("help"));
     }
 
     @Test
@@ -61,5 +74,17 @@ class ContextTest {
     void testToString() {
         String toString = "Context{output==error=false, commands={}}";
         Assertions.assertEquals(toString, new TestContext().toString());
+    }
+
+    private static PrintWriter getSystemOutPrintWriter() {
+        return getPrintWriteOfOutputStream(System.out);
+    }
+
+    private static PrintWriter getSystemErrorPrintWriter() {
+        return getPrintWriteOfOutputStream(System.err);
+    }
+
+    private static PrintWriter getPrintWriteOfOutputStream(OutputStream outputStream) {
+        return new PrintWriter(new OutputStreamWriter(outputStream));
     }
 }

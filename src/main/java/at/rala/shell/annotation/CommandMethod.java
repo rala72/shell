@@ -25,10 +25,6 @@ public class CommandMethod {
         return method;
     }
 
-    public boolean isParameterCountValid(int i) {
-        return getMinParameterCount() <= i && i < getMaxParameterCount();
-    }
-
     public int getMinParameterCount() {
         return 0 < getMethod().getParameterCount() && isLastParameterDynamic() ?
             getMethod().getParameterCount() - 1 : getMethod().getParameterCount();
@@ -38,18 +34,22 @@ public class CommandMethod {
         return isLastParameterDynamic() ? Integer.MAX_VALUE : getMinParameterCount() + 1;
     }
 
+    public boolean isParameterCountValid(int i) {
+        return getMinParameterCount() <= i && i < getMaxParameterCount();
+    }
+
+    public boolean isLastParameterDynamic() {
+        if (getMethod().getParameterCount() == 0) return false;
+        Parameter lastParameter = getMethod().getParameters()[getMethod().getParameters().length - 1];
+        return isDynamicParameter(lastParameter);
+    }
+
     @Override
     public String toString() {
         return "CommandMethod{" +
             "command=" + convertCommandToString(command) +
             ", method=" + method.getName() +
             '}';
-    }
-
-    private boolean isLastParameterDynamic() {
-        if (getMethod().getParameterCount() == 0) return false;
-        Parameter lastParameter = getMethod().getParameters()[getMethod().getParameters().length - 1];
-        return isDynamicParameter(lastParameter);
     }
 
     private static boolean isDynamicParameter(Parameter parameter) {

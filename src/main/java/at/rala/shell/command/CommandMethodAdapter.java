@@ -41,7 +41,7 @@ public class CommandMethodAdapter implements Command {
             for (int i = 0; i < parameters.length; i++) {
                 Object value;
                 Parameter parameter = parameters[i];
-                if (parameter.isVarArgs()) {
+                if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
                     Class<?> componentType = parameter.getType().getComponentType();
                     value = input.getArguments()
                         .subList(i, input.getArguments().size())

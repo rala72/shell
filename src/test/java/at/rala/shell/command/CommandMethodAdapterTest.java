@@ -1,7 +1,10 @@
 package at.rala.shell.command;
 
 import at.rala.shell.Input;
+import at.rala.shell.annotation.CommandAnnotation;
 import at.rala.shell.annotation.CommandLoader;
+import at.rala.shell.annotation.CommandMethod;
+import at.rala.shell.exception.MethodCallException;
 import at.rala.shell.utils.TestContext;
 import at.rala.shell.utils.TestObject;
 import at.rala.shell.utils.TestObjectArgumentStreams;
@@ -72,6 +75,27 @@ class CommandMethodAdapterTest {
         if (expectedArguments == null || input.getArguments().size() == expectedArguments)
             assertOutputsAreEmpty();
         else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
+    }
+
+    @Test
+    void testExceptionCommandWithoutAttributes() {
+        Assertions.assertThrows(MethodCallException.class,
+            () -> executeCommand(new Input("exceptionCommand"))
+        );
+    }
+
+
+    @Test
+    void testIllegalAccessCommandWithoutAttributes() throws NoSuchMethodException {
+        CommandMethodAdapter illegalAccessCommand = new CommandMethodAdapter(
+            new TestObject(),
+            new CommandMethod(new CommandAnnotation(),
+                TestObject.class.getDeclaredMethod("illegalAccessCommand")
+            )
+        );
+        Assertions.assertThrows(MethodCallException.class,
+            () -> illegalAccessCommand.execute(new Input("illegalAccessCommand"), context)
+        );
     }
 
     @Test

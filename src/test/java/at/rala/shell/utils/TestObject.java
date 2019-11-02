@@ -24,6 +24,15 @@ public class TestObject {
     public void commandWithoutAttributesAndMethodWithOneStringArrayParameter(String[] s) {
     }
 
+    @Command
+    public void exceptionCommand() {
+        throw new RuntimeException();
+    }
+
+    @Command
+    private void illegalAccessCommand() {
+    }
+
     @Command(value = "value", documentation = "documentation", usage = "usage")
     public void commandWithAttributesAndMethodWithoutParameter() {
     }

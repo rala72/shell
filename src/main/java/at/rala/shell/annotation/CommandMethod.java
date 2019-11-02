@@ -1,6 +1,7 @@
 package at.rala.shell.annotation;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class CommandMethod {
@@ -29,16 +30,13 @@ public class CommandMethod {
     }
 
     public int getMinParameterCount() {
-        return 0 < getMethod().getParameterCount() &&
-            getMethod().getParameters()[getMethod().getParameters().length - 1]
-                .isVarArgs() ? getMethod().getParameterCount() - 1 : getMethod().getParameterCount();
+        return 0 < getMethod().getParameterCount() && isLastParameterDynamic() ?
+            getMethod().getParameterCount() - 1 : getMethod().getParameterCount();
     }
 
     public int getMaxParameterCount() {
         return 0 == getMethod().getParameterCount() ? 0 :
-            0 < getMethod().getParameterCount() &&
-                getMethod().getParameters()[getMethod().getParameters().length - 1]
-                    .isVarArgs() ? Integer.MAX_VALUE : getMinParameterCount() + 1;
+            isLastParameterDynamic() ? Integer.MAX_VALUE : getMinParameterCount() + 1;
     }
 
     @Override
@@ -47,6 +45,16 @@ public class CommandMethod {
             "command=" + convertCommandToString(command) +
             ", method=" + method.getName() +
             '}';
+    }
+
+    private boolean isLastParameterDynamic() {
+        if (getMethod().getParameterCount() == 0) return false;
+        Parameter lastParameter = getMethod().getParameters()[getMethod().getParameters().length - 1];
+        return isDynamicParameter(lastParameter);
+    }
+
+    private static boolean isDynamicParameter(Parameter parameter) {
+        return parameter.isVarArgs() || parameter.getType().isArray();
     }
 
     private static String convertCommandToString(Command command) {

@@ -89,6 +89,30 @@ class CommandMethodTest {
     }
 
     @Test
+    void testSimpleCommandWithArrayParameter() throws NoSuchMethodException {
+        CommandAnnotation commandAnnotation = new CommandAnnotation();
+        CommandMethod commandMethod = new CommandMethod(
+            commandAnnotation,
+            TestObject.class.getMethod("simpleCommandWithArrayParameter", String[].class)
+        );
+        Assertions.assertEquals("simpleCommandWithArrayParameter", commandMethod.getName());
+        Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
+        Assertions.assertEquals(
+            TestObject.class.getMethod("simpleCommandWithArrayParameter", String[].class),
+            commandMethod.getMethod()
+        );
+        Assertions.assertEquals(0, commandMethod.getMinParameterCount());
+        Assertions.assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+        Assertions.assertFalse(commandMethod.isParameterCountValid(-1));
+        Assertions.assertTrue(commandMethod.isParameterCountValid(0));
+        Assertions.assertTrue(commandMethod.isParameterCountValid(1));
+        Assertions.assertTrue(commandMethod.isParameterCountValid(2));
+        Assertions.assertTrue(commandMethod.isParameterCountValid(3));
+        Assertions.assertTrue(commandMethod.isParameterCountValid(Integer.MAX_VALUE - 1));
+        Assertions.assertFalse(commandMethod.isParameterCountValid(Integer.MAX_VALUE));
+    }
+
+    @Test
     void testToString() throws NoSuchMethodException {
         CommandMethod commandMethod = new CommandMethod(new CommandAnnotation(), TestObject.class.getMethod("toString"));
         String toString = "CommandMethod{command=Command(value=\"\", documentation=\"\"), method=toString}";

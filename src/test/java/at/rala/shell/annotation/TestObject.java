@@ -17,4 +17,8 @@ class TestObject {
     @Command
     public void simpleCommandWithVarargsParameter(String... s) {
     }
+
+    @Command
+    public void simpleCommandWithArrayParameter(String[] s) {
+    }
 }

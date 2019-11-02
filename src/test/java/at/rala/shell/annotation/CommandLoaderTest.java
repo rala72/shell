@@ -31,6 +31,8 @@ class CommandLoaderTest {
         Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
     }
 
+    // region TestObject
+
     @SuppressWarnings({"unused"})
     private static class TestObjectWithoutAttributes {
         @Command
@@ -55,4 +57,6 @@ class CommandLoaderTest {
         public void commandWithoutAttributes2() {
         }
     }
+
+    // endregion
 }

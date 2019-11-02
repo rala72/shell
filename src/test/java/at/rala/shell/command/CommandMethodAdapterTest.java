@@ -17,6 +17,8 @@ class CommandMethodAdapterTest {
         context = TestContext.getInstanceWithDifferentStreams(commandLoader.getCommandMethodMap());
     }
 
+    // region documentation & usage
+
     @Test
     void testDocumentationOfCommandWithoutAttributes() {
         Command command = getCommand(
@@ -55,6 +57,10 @@ class CommandMethodAdapterTest {
         Assertions.assertEquals("usage", command.getUsage());
     }
 
+    // endregion
+
+    // region commandWithoutAttributesAndMethodWithoutParameter
+
     @Test
     void testCommandWithoutAttributesAndMethodWithoutParameterWithoutParameter() {
         executeCommand(new Input(
@@ -75,6 +81,10 @@ class CommandMethodAdapterTest {
         Assertions.assertTrue(context.getErrorHistory().contains("error: expected argument count: 0"));
     }
 
+    // endregion
+
+    // region commandWithoutAttributesAndMethodWithOneStringParameter
+
     @Test
     void testCommandWithoutAttributesAndMethodWithOneStringParameterWithoutParameter() {
         executeCommand(new Input(
@@ -94,6 +104,8 @@ class CommandMethodAdapterTest {
         Assertions.assertTrue(context.getOutputHistory().isEmpty());
         Assertions.assertTrue(context.getErrorHistory().isEmpty());
     }
+
+    // endregion
 
     @Test
     void testToStringOfCommandWithoutAttributes() {

@@ -44,7 +44,29 @@ public class TestObjectArgumentStreams {
             Arguments.of(new Input(
                 "commandWithoutAttributesAndMethodWithTwoStringParameter",
                 "dummy", "dummy", "dummy"
-            ), 2)
+            ), 2),
+            Arguments.of(new Input(
+                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter"
+            ), null),
+            Arguments.of(new Input(
+                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                "dummy"
+            ), null),
+            Arguments.of(new Input(
+                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                "dummy", "dummy"
+            ), null),
+            Arguments.of(new Input(
+                "commandWithoutAttributesAndMethodWithOneStringArrayParameter"
+            ), null),
+            Arguments.of(new Input(
+                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                "dummy"
+            ), null),
+            Arguments.of(new Input(
+                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                "dummy", "dummy"
+            ), null)
         );
     }
 }

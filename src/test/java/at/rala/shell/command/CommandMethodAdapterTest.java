@@ -67,9 +67,10 @@ class CommandMethodAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getTestCommandWithoutAttributesArguments")
-    void testCommandWithoutAttributes(Input input, int expectedArguments) {
+    void testCommandWithoutAttributes(Input input, Integer expectedArguments) {
         executeCommand(input);
-        if (input.getArguments().size() == expectedArguments) assertOutputsAreEmpty();
+        if (expectedArguments == null || input.getArguments().size() == expectedArguments)
+            assertOutputsAreEmpty();
         else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
     }
 

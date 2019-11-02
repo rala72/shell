@@ -66,8 +66,7 @@ class CommandMethodAdapterTest {
         executeCommand(new Input(
             "commandWithoutAttributesAndMethodWithoutParameter"
         ));
-        Assertions.assertTrue(context.getOutputHistory().isEmpty());
-        Assertions.assertTrue(context.getErrorHistory().isEmpty());
+        assertOutputsAreEmpty();
     }
 
     @Test
@@ -76,9 +75,7 @@ class CommandMethodAdapterTest {
             "commandWithoutAttributesAndMethodWithoutParameter",
             "dummy"
         ));
-        Assertions.assertTrue(context.getOutputHistory().isEmpty());
-        Assertions.assertFalse(context.getErrorHistory().isEmpty());
-        Assertions.assertTrue(context.getErrorHistory().contains("error: expected argument count: 0"));
+        assertErrorOutputContainsExpectedArgumentCount(0);
     }
 
     // endregion
@@ -90,19 +87,57 @@ class CommandMethodAdapterTest {
         executeCommand(new Input(
             "commandWithoutAttributesAndMethodWithOneStringParameter"
         ));
-        Assertions.assertTrue(context.getOutputHistory().isEmpty());
-        Assertions.assertFalse(context.getErrorHistory().isEmpty());
-        Assertions.assertTrue(context.getErrorHistory().contains("error: expected argument count: 1"));
+        assertErrorOutputContainsExpectedArgumentCount(1);
     }
 
     @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithParameter() {
+    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithOneParameter() {
         executeCommand(new Input(
             "commandWithoutAttributesAndMethodWithOneStringParameter",
             "dummy"
         ));
-        Assertions.assertTrue(context.getOutputHistory().isEmpty());
-        Assertions.assertTrue(context.getErrorHistory().isEmpty());
+        assertOutputsAreEmpty();
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithTwoParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithOneStringParameter",
+            "dummy",
+            "dummy"
+        ));
+        assertErrorOutputContainsExpectedArgumentCount(1);
+    }
+
+    // endregion
+
+    // region commandWithoutAttributesAndMethodWithTwoStringParameter
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithTwoStringParameterWithoutParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithTwoStringParameter"
+        ));
+        assertErrorOutputContainsExpectedArgumentCount(2);
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithTwoStringParameterWithOneParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithTwoStringParameter",
+            "dummy"
+        ));
+        assertErrorOutputContainsExpectedArgumentCount(2);
+    }
+
+    @Test
+    void testCommandWithoutAttributesAndMethodWithTwoStringParameterWithTwoParameter() {
+        executeCommand(new Input(
+            "commandWithoutAttributesAndMethodWithTwoStringParameter",
+            "dummy",
+            "dummy"
+        ));
+        assertOutputsAreEmpty();
     }
 
     // endregion
@@ -121,6 +156,19 @@ class CommandMethodAdapterTest {
         Command command = getCommand(input.getCommand());
         Assertions.assertNotNull(command);
         command.execute(input, context);
+    }
+
+    private void assertOutputsAreEmpty() {
+        Assertions.assertTrue(context.getOutputHistory().isEmpty());
+        Assertions.assertTrue(context.getErrorHistory().isEmpty());
+    }
+
+    private void assertErrorOutputContainsExpectedArgumentCount(int count) {
+        Assertions.assertTrue(context.getOutputHistory().isEmpty());
+        Assertions.assertFalse(context.getErrorHistory().isEmpty());
+        Assertions.assertTrue(context.getErrorHistory().contains(
+            "error: expected argument count: " + count
+        ));
     }
 
     private Command getCommand(String name) {

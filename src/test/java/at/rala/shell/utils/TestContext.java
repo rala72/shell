@@ -2,30 +2,31 @@ package at.rala.shell.utils;
 
 import at.rala.shell.Context;
 import at.rala.shell.command.Command;
-import at.rala.shell.utils.io.CacheOutputStream;
+import at.rala.shell.utils.io.HistoryOutputStream;
 
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class TestContext extends Context {
-    private final CacheOutputStream cacheOutputStream;
-    private final CacheOutputStream cacheErrorStream;
+    private final BlockingQueue<String> outputHistory;
+    private final BlockingQueue<String> errorHistory;
 
     public TestContext() {
-        this(new CacheOutputStream());
+        this(new HistoryOutputStream());
     }
 
     public TestContext(Map<String, Command> commands) {
-        this(new CacheOutputStream(), commands);
+        this(new HistoryOutputStream(), commands);
     }
 
-    public TestContext(CacheOutputStream outputStream) {
+    public TestContext(HistoryOutputStream outputStream) {
         this(outputStream, outputStream);
     }
 
-    public TestContext(CacheOutputStream outputStream, Map<String, Command> commands) {
+    public TestContext(HistoryOutputStream outputStream, Map<String, Command> commands) {
         this(
             outputStream,
             outputStream,
@@ -33,26 +34,26 @@ public class TestContext extends Context {
         );
     }
 
-    public TestContext(CacheOutputStream outputStream, CacheOutputStream errorStream) {
+    public TestContext(HistoryOutputStream outputStream, HistoryOutputStream errorStream) {
         this(outputStream, errorStream, null);
     }
 
-    public TestContext(CacheOutputStream outputStream, CacheOutputStream errorStream,
+    public TestContext(HistoryOutputStream outputStream, HistoryOutputStream errorStream,
                        Map<String, Command> commands) {
         super(
             new PrintWriter(outputStream, true),
             new PrintWriter(errorStream, true),
             commands != null ? commands : Collections.emptyMap()
         );
-        this.cacheOutputStream = outputStream;
-        this.cacheErrorStream = errorStream;
+        this.outputHistory = outputStream.getHistory();
+        this.errorHistory = errorStream.getHistory();
     }
 
-    public CacheOutputStream getCacheOutputStream() {
-        return cacheOutputStream;
+    public BlockingQueue<String> getOutputHistory() {
+        return outputHistory;
     }
 
-    public CacheOutputStream getCacheErrorStream() {
-        return cacheErrorStream;
+    public BlockingQueue<String> getErrorHistory() {
+        return errorHistory;
     }
 }

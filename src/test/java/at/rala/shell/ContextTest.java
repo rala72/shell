@@ -2,7 +2,7 @@ package at.rala.shell;
 
 import at.rala.shell.command.ExitCommand;
 import at.rala.shell.utils.TestContext;
-import at.rala.shell.utils.io.CacheOutputStream;
+import at.rala.shell.utils.io.HistoryOutputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -42,29 +42,29 @@ class ContextTest {
 
         testContext.printLine("line");
 
-        BlockingQueue<String> outputs = testContext.getCacheOutputStream().getOutputs();
+        BlockingQueue<String> outputs = testContext.getOutputHistory();
         Assertions.assertFalse(outputs.isEmpty());
         Assertions.assertEquals(1, outputs.size());
         Assertions.assertTrue(outputs.contains("line"));
 
         testContext.printError("error");
 
-        BlockingQueue<String> errors = testContext.getCacheErrorStream().getOutputs();
+        BlockingQueue<String> errors = testContext.getErrorHistory();
         Assertions.assertEquals(outputs, errors);
     }
 
     @Test
     void testErrorButNotOutput() {
-        TestContext testContext = new TestContext(new CacheOutputStream(), new CacheOutputStream());
+        TestContext testContext = new TestContext(new HistoryOutputStream(), new HistoryOutputStream());
 
         testContext.printError("error");
 
-        BlockingQueue<String> errors = testContext.getCacheErrorStream().getOutputs();
+        BlockingQueue<String> errors = testContext.getErrorHistory();
         Assertions.assertFalse(errors.isEmpty());
         Assertions.assertEquals(1, errors.size());
         Assertions.assertTrue(errors.contains("error"));
 
-        BlockingQueue<String> outputs = testContext.getCacheOutputStream().getOutputs();
+        BlockingQueue<String> outputs = testContext.getOutputHistory();
         Assertions.assertTrue(outputs.isEmpty());
         Assertions.assertEquals(0, outputs.size());
         Assertions.assertFalse(outputs.contains("error"));

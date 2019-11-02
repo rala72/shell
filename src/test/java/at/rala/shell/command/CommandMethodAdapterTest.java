@@ -4,11 +4,15 @@ import at.rala.shell.Input;
 import at.rala.shell.annotation.CommandLoader;
 import at.rala.shell.utils.TestContext;
 import at.rala.shell.utils.TestObject;
+import at.rala.shell.utils.TestObjectArgumentStreams;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 class CommandMethodAdapterTest {
     private TestContext context;
@@ -62,15 +66,12 @@ class CommandMethodAdapterTest {
     // endregion
 
     @ParameterizedTest
-    @MethodSource(
-        "at.rala.shell.utils.TestObjectArgumentStreams#getMethodParameterArguments"
-    )
+    @MethodSource("getTestCommandWithoutAttributesArguments")
     void testCommandWithoutAttributes(Input input, int expectedArguments) {
         executeCommand(input);
         if (input.getArguments().size() == expectedArguments) assertOutputsAreEmpty();
         else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
     }
-
 
     @Test
     void testToStringOfCommandWithoutAttributes() {
@@ -82,11 +83,7 @@ class CommandMethodAdapterTest {
         Assertions.assertEquals(toString, command.toString());
     }
 
-    private void executeCommand(Input input) {
-        Command command = getCommand(input.getCommand());
-        Assertions.assertNotNull(command);
-        command.execute(input, context);
-    }
+    // region assert
 
     private void assertOutputsAreEmpty() {
         Assertions.assertTrue(context.getOutputHistory().isEmpty());
@@ -101,7 +98,25 @@ class CommandMethodAdapterTest {
         ));
     }
 
+    // endregion
+    // region command
+
+    private void executeCommand(Input input) {
+        Command command = getCommand(input.getCommand());
+        Assertions.assertNotNull(command);
+        command.execute(input, context);
+    }
+
     private Command getCommand(String name) {
         return context.getCommands().get(name);
     }
+
+    // endregion
+    // region arguments stream
+
+    private static Stream<Arguments> getTestCommandWithoutAttributesArguments() {
+        return TestObjectArgumentStreams.getMethodParameterArguments();
+    }
+
+    // endregion
 }

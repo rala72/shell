@@ -5,11 +5,12 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
 
+@SuppressWarnings("unused")
 public class TestObjectArgumentStreams {
     private TestObjectArgumentStreams() {
     }
 
-    static Stream<Arguments> getMethodParameterArguments() {
+    public static Stream<Arguments> getMethodParameterArguments() {
         return Stream.of(
             Arguments.of(new Input(
                 "commandWithoutAttributesAndMethodWithoutParameter"

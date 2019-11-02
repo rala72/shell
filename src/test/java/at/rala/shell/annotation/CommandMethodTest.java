@@ -6,16 +6,23 @@ import org.junit.jupiter.api.Test;
 
 class CommandMethodTest {
     @Test
-    void testSimpleCommandWithoutParameter() throws NoSuchMethodException {
+    void testCommandWithoutAttributesAndMethodWithoutParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithoutParameter")
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithoutParameter"
+            )
         );
-        Assertions.assertEquals("simpleCommandWithoutParameter", commandMethod.getName());
+        Assertions.assertEquals(
+            "commandWithoutAttributesAndMethodWithoutParameter",
+            commandMethod.getName()
+        );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithoutParameter"),
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithoutParameter"
+            ),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
@@ -26,16 +33,25 @@ class CommandMethodTest {
     }
 
     @Test
-    void testSimpleCommandWithOneParameter() throws NoSuchMethodException {
+    void testCommandWithoutAttributesAndMethodWithOneStringParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithOneStringParameter", String.class)
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithOneStringParameter",
+                String.class
+            )
         );
-        Assertions.assertEquals("simpleCommandWithOneStringParameter", commandMethod.getName());
+        Assertions.assertEquals(
+            "commandWithoutAttributesAndMethodWithOneStringParameter",
+            commandMethod.getName()
+        );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithOneStringParameter", String.class),
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithOneStringParameter",
+                String.class
+            ),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(1, commandMethod.getMinParameterCount());
@@ -46,16 +62,25 @@ class CommandMethodTest {
     }
 
     @Test
-    void testSimpleCommandWithTwoParameter() throws NoSuchMethodException {
+    void testCommandWithoutAttributesAndMethodWithTwoStringParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithTwoStringParameter", String.class, String.class)
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                String.class, String.class
+            )
         );
-        Assertions.assertEquals("simpleCommandWithTwoStringParameter", commandMethod.getName());
+        Assertions.assertEquals(
+            "commandWithoutAttributesAndMethodWithTwoStringParameter",
+            commandMethod.getName()
+        );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithTwoStringParameter", String.class, String.class),
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                String.class, String.class
+            ),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(2, commandMethod.getMinParameterCount());
@@ -66,16 +91,25 @@ class CommandMethodTest {
     }
 
     @Test
-    void testSimpleCommandWithVarargsParameter() throws NoSuchMethodException {
+    void testCommandWithoutAttributesAndMethodWithOneStringVarargsParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithOneStringVarargsParameter", String[].class)
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                String[].class
+            )
         );
-        Assertions.assertEquals("simpleCommandWithOneStringVarargsParameter", commandMethod.getName());
+        Assertions.assertEquals(
+            "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+            commandMethod.getName()
+        );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithOneStringVarargsParameter", String[].class),
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                String[].class
+            ),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
@@ -90,16 +124,25 @@ class CommandMethodTest {
     }
 
     @Test
-    void testSimpleCommandWithArrayParameter() throws NoSuchMethodException {
+    void testCommandWithoutAttributesAndMethodWithOneStringArrayParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod("simpleCommandWithOneStringArrayParameter", String[].class)
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                String[].class
+            )
         );
-        Assertions.assertEquals("simpleCommandWithOneStringArrayParameter", commandMethod.getName());
+        Assertions.assertEquals(
+            "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+            commandMethod.getName()
+        );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod("simpleCommandWithOneStringArrayParameter", String[].class),
+            TestObject.class.getMethod(
+                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                String[].class
+            ),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());

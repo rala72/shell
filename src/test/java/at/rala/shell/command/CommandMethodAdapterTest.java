@@ -15,25 +15,25 @@ class CommandMethodAdapterTest {
     }
 
     @Test
-    void testDocumentationOfSimpleCommand() {
-        Command simpleCommandWithoutParameter = getCommand("simpleCommandWithoutParameter");
-        Assertions.assertTrue(simpleCommandWithoutParameter.getDocumentation().isBlank());
+    void testDocumentationOfCommandWithoutAttributes() {
+        Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
+        Assertions.assertTrue(command.getDocumentation().isBlank());
     }
 
     @Test
-    void testUsageOfSimpleCommand() {
-        Command simpleCommandWithoutParameter = getCommand("simpleCommandWithoutParameter");
-        Assertions.assertTrue(simpleCommandWithoutParameter.getUsage().isBlank());
+    void testUsageOfCommandWithoutAttributes() {
+        Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
+        Assertions.assertTrue(command.getUsage().isBlank());
     }
 
     @Test
-    void testToStringOfSimpleCommand() {
-        Command simpleCommandWithoutParameter = getCommand("simpleCommandWithoutParameter");
+    void testToStringOfWithoutAttributes() {
+        Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
         String toString = "CommandMethodAdapter{object=TestObject, " +
             "commandMethod=CommandMethod{" +
             "command=Command(value=\"\", documentation=\"\"), " +
-            "method=simpleCommandWithoutParameter}}";
-        Assertions.assertEquals(toString, simpleCommandWithoutParameter.toString());
+            "method=commandWithoutAttributesAndMethodWithoutParameter}}";
+        Assertions.assertEquals(toString, command.toString());
     }
 
     private Command getCommand(String name) {

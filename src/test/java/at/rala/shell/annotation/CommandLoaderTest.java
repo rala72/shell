@@ -8,7 +8,7 @@ class CommandLoaderTest {
     void testSimpleCommandMethodLoading() {
         CommandLoader commandLoader = new CommandLoader(new TestObject());
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
-        Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("simpleCommand"));
+        Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithoutAttributes"));
     }
 
     @Test
@@ -21,24 +21,24 @@ class CommandLoaderTest {
     @Test
     void testToString() {
         CommandLoader commandLoader = new CommandLoader(new TestObject());
-        Assertions.assertEquals("simpleCommand", commandLoader.toString());
+        Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
     }
 
     @SuppressWarnings({"unused"})
     private static class TestObject {
         @Command
-        public void simpleCommand() {
+        public void commandWithoutAttributes() {
         }
     }
 
     @SuppressWarnings({"unused"})
     private static class ErrorTestObject {
         @Command("cmd")
-        public void simpleCommand1() {
+        public void commandWithoutAttributes1() {
         }
 
         @Command("cmd")
-        public void simpleCommand2() {
+        public void commandWithoutAttributes2() {
         }
     }
 }

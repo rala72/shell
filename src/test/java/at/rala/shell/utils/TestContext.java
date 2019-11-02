@@ -27,11 +27,7 @@ public class TestContext extends Context {
     }
 
     public TestContext(HistoryOutputStream outputStream, Map<String, Command> commands) {
-        this(
-            outputStream,
-            outputStream,
-            commands
-        );
+        this(outputStream, outputStream, commands);
     }
 
     public TestContext(HistoryOutputStream outputStream, HistoryOutputStream errorStream) {
@@ -47,6 +43,10 @@ public class TestContext extends Context {
         );
         this.outputHistory = outputStream.getHistory();
         this.errorHistory = errorStream.getHistory();
+    }
+
+    public static TestContext getInstanceWithSeparateStreams() {
+        return new TestContext(new HistoryOutputStream(), new HistoryOutputStream());
     }
 
     public BlockingQueue<String> getOutputHistory() {

@@ -2,7 +2,6 @@ package at.rala.shell;
 
 import at.rala.shell.command.ExitCommand;
 import at.rala.shell.utils.TestContext;
-import at.rala.shell.utils.io.HistoryOutputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +54,7 @@ class ContextTest {
 
     @Test
     void testErrorButNotOutput() {
-        TestContext testContext = new TestContext(new HistoryOutputStream(), new HistoryOutputStream());
+        TestContext testContext = TestContext.getInstanceWithSeparateStreams();
 
         testContext.printError("error");
 

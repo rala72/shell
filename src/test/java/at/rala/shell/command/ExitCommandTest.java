@@ -23,12 +23,9 @@ class ExitCommandTest {
 
     @Test
     void testExecute() {
-        try {
-            new ExitCommand().execute(new Input(COMMAND), new TestContext());
-        } catch (StopShellException e) {
-            return;
-        }
-        Assertions.fail();
+        Assertions.assertThrows(StopShellException.class, () ->
+            new ExitCommand().execute(new Input(COMMAND), new TestContext())
+        );
     }
 
     @Test

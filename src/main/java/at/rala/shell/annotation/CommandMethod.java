@@ -35,8 +35,7 @@ public class CommandMethod {
     }
 
     public int getMaxParameterCount() {
-        return 0 == getMethod().getParameterCount() ? 0 :
-            isLastParameterDynamic() ? Integer.MAX_VALUE : getMinParameterCount() + 1;
+        return isLastParameterDynamic() ? Integer.MAX_VALUE : getMinParameterCount() + 1;
     }
 
     @Override

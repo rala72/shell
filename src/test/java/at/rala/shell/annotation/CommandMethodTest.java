@@ -26,9 +26,9 @@ class CommandMethodTest {
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
-        Assertions.assertEquals(0, commandMethod.getMaxParameterCount());
+        Assertions.assertEquals(1, commandMethod.getMaxParameterCount());
         Assertions.assertFalse(commandMethod.isParameterCountValid(-1));
-        Assertions.assertFalse(commandMethod.isParameterCountValid(0));
+        Assertions.assertTrue(commandMethod.isParameterCountValid(0));
         Assertions.assertFalse(commandMethod.isParameterCountValid(1));
     }
 

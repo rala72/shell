@@ -23,4 +23,9 @@ public class TestObject {
     @Command
     public void simpleCommandWithOneStringArrayParameter(String[] s) {
     }
+
+    @Override
+    public String toString() {
+        return "TestObject";
+    }
 }

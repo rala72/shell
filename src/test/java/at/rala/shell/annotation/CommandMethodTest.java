@@ -10,19 +10,15 @@ class CommandMethodTest {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
-            TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithoutParameter"
-            )
+            TestObject.class.getMethod("methodWithoutParameter")
         );
         Assertions.assertEquals(
-            "commandWithoutAttributesAndMethodWithoutParameter",
+            "methodWithoutParameter",
             commandMethod.getName()
         );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
-            TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithoutParameter"
-            ),
+            TestObject.class.getMethod("methodWithoutParameter"),
             commandMethod.getMethod()
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
@@ -38,18 +34,18 @@ class CommandMethodTest {
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithOneStringParameter",
+                "methodWithOneStringParameter",
                 String.class
             )
         );
         Assertions.assertEquals(
-            "commandWithoutAttributesAndMethodWithOneStringParameter",
+            "methodWithOneStringParameter",
             commandMethod.getName()
         );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithOneStringParameter",
+                "methodWithOneStringParameter",
                 String.class
             ),
             commandMethod.getMethod()
@@ -67,18 +63,18 @@ class CommandMethodTest {
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                "methodWithTwoStringParameter",
                 String.class, String.class
             )
         );
         Assertions.assertEquals(
-            "commandWithoutAttributesAndMethodWithTwoStringParameter",
+            "methodWithTwoStringParameter",
             commandMethod.getName()
         );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                "methodWithTwoStringParameter",
                 String.class, String.class
             ),
             commandMethod.getMethod()
@@ -96,18 +92,18 @@ class CommandMethodTest {
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                "methodWithOneStringVarargsParameter",
                 String[].class
             )
         );
         Assertions.assertEquals(
-            "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+            "methodWithOneStringVarargsParameter",
             commandMethod.getName()
         );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                "methodWithOneStringVarargsParameter",
                 String[].class
             ),
             commandMethod.getMethod()
@@ -129,18 +125,18 @@ class CommandMethodTest {
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                "methodWithOneStringArrayParameter",
                 String[].class
             )
         );
         Assertions.assertEquals(
-            "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+            "methodWithOneStringArrayParameter",
             commandMethod.getName()
         );
         Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
         Assertions.assertEquals(
             TestObject.class.getMethod(
-                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                "methodWithOneStringArrayParameter",
                 String[].class
             ),
             commandMethod.getMethod()

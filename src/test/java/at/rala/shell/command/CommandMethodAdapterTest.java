@@ -30,25 +30,19 @@ class CommandMethodAdapterTest {
 
     @Test
     void testDocumentationOfCommandWithoutAttributes() {
-        Command command = getCommand(
-            "commandWithoutAttributesAndMethodWithoutParameter"
-        );
+        Command command = getCommand("methodWithoutParameter");
         Assertions.assertTrue(command.getDocumentation().isBlank());
     }
 
     @Test
     void testUsageOfCommandWithoutAttributes() {
-        Command command = getCommand(
-            "commandWithoutAttributesAndMethodWithoutParameter"
-        );
+        Command command = getCommand("methodWithoutParameter");
         Assertions.assertTrue(command.getUsage().isBlank());
     }
 
     @Test
     void testDocumentationOfCommandWithAttributes() {
-        Assertions.assertNull(getCommand(
-            "commandWithAttributesAndMethodWithoutParameter"
-        ));
+        Assertions.assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
         Assertions.assertFalse(command.getDocumentation().isBlank());
@@ -57,9 +51,7 @@ class CommandMethodAdapterTest {
 
     @Test
     void testUsageOfCommandWithAttributes() {
-        Assertions.assertNull(getCommand(
-            "commandWithAttributesAndMethodWithoutParameter"
-        ));
+        Assertions.assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
         Assertions.assertFalse(command.getUsage().isBlank());
@@ -103,11 +95,11 @@ class CommandMethodAdapterTest {
 
     @Test
     void testToStringOfCommandWithoutAttributes() {
-        Command command = getCommand("commandWithoutAttributesAndMethodWithoutParameter");
+        Command command = getCommand("methodWithoutParameter");
         String toString = "CommandMethodAdapter{object=TestObject, " +
             "commandMethod=CommandMethod{" +
             "command=Command(value=\"\", documentation=\"\"), " +
-            "method=commandWithoutAttributesAndMethodWithoutParameter}}";
+            "method=methodWithoutParameter}}";
         Assertions.assertEquals(toString, command.toString());
     }
 

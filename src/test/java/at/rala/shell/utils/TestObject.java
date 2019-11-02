@@ -5,23 +5,23 @@ import at.rala.shell.annotation.Command;
 @SuppressWarnings("unused")
 public class TestObject {
     @Command
-    public void commandWithoutAttributesAndMethodWithoutParameter() {
+    public void methodWithoutParameter() {
     }
 
     @Command
-    public void commandWithoutAttributesAndMethodWithOneStringParameter(String s) {
+    public void methodWithOneStringParameter(String s) {
     }
 
     @Command
-    public void commandWithoutAttributesAndMethodWithTwoStringParameter(String s1, String s2) {
+    public void methodWithTwoStringParameter(String s1, String s2) {
     }
 
     @Command
-    public void commandWithoutAttributesAndMethodWithOneStringVarargsParameter(String... s) {
+    public void methodWithOneStringVarargsParameter(String... s) {
     }
 
     @Command
-    public void commandWithoutAttributesAndMethodWithOneStringArrayParameter(String[] s) {
+    public void methodWithOneStringArrayParameter(String[] s) {
     }
 
     @Command
@@ -34,7 +34,7 @@ public class TestObject {
     }
 
     @Command(value = "value", documentation = "documentation", usage = "usage")
-    public void commandWithAttributesAndMethodWithoutParameter() {
+    public void commandWithAttributes() {
     }
 
     @Override

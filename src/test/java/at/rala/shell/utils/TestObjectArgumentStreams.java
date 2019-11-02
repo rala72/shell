@@ -13,58 +13,58 @@ public class TestObjectArgumentStreams {
     public static Stream<Arguments> getMethodParameterArguments() {
         return Stream.of(
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithoutParameter"
+                "methodWithoutParameter"
             ), 0),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithoutParameter",
+                "methodWithoutParameter",
                 "dummy"
             ), 0),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringParameter"
+                "methodWithOneStringParameter"
             ), 1),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringParameter",
+                "methodWithOneStringParameter",
                 "dummy"
             ), 1),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringParameter",
+                "methodWithOneStringParameter",
                 "dummy", "dummy"
             ), 1),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithTwoStringParameter"
+                "methodWithTwoStringParameter"
             ), 2),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                "methodWithTwoStringParameter",
                 "dummy"
             ), 2),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                "methodWithTwoStringParameter",
                 "dummy", "dummy"
             ), 2),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithTwoStringParameter",
+                "methodWithTwoStringParameter",
                 "dummy", "dummy", "dummy"
             ), 2),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter"
+                "methodWithOneStringVarargsParameter"
             ), null),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                "methodWithOneStringVarargsParameter",
                 "dummy"
             ), null),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringVarargsParameter",
+                "methodWithOneStringVarargsParameter",
                 "dummy", "dummy"
             ), null),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringArrayParameter"
+                "methodWithOneStringArrayParameter"
             ), null),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                "methodWithOneStringArrayParameter",
                 "dummy"
             ), null),
             Arguments.of(new Input(
-                "commandWithoutAttributesAndMethodWithOneStringArrayParameter",
+                "methodWithOneStringArrayParameter",
                 "dummy", "dummy"
             ), null)
         );

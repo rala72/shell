@@ -7,6 +7,8 @@ import at.rala.shell.utils.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class CommandMethodAdapterTest {
     private TestContext context;
@@ -59,88 +61,16 @@ class CommandMethodAdapterTest {
 
     // endregion
 
-    // region commandWithoutAttributesAndMethodWithoutParameter
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithoutParameterWithoutParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithoutParameter"
-        ));
-        assertOutputsAreEmpty();
+    @ParameterizedTest
+    @MethodSource(
+        "at.rala.shell.utils.TestObjectArgumentStreams#getMethodParameterArguments"
+    )
+    void testCommandWithoutAttributes(Input input, int expectedArguments) {
+        executeCommand(input);
+        if (input.getArguments().size() == expectedArguments) assertOutputsAreEmpty();
+        else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
     }
 
-    @Test
-    void testCommandWithoutAttributesAndMethodWithoutParameterWithParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithoutParameter",
-            "dummy"
-        ));
-        assertErrorOutputContainsExpectedArgumentCount(0);
-    }
-
-    // endregion
-
-    // region commandWithoutAttributesAndMethodWithOneStringParameter
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithoutParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithOneStringParameter"
-        ));
-        assertErrorOutputContainsExpectedArgumentCount(1);
-    }
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithOneParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithOneStringParameter",
-            "dummy"
-        ));
-        assertOutputsAreEmpty();
-    }
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringParameterWithTwoParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithOneStringParameter",
-            "dummy",
-            "dummy"
-        ));
-        assertErrorOutputContainsExpectedArgumentCount(1);
-    }
-
-    // endregion
-
-    // region commandWithoutAttributesAndMethodWithTwoStringParameter
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithTwoStringParameterWithoutParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithTwoStringParameter"
-        ));
-        assertErrorOutputContainsExpectedArgumentCount(2);
-    }
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithTwoStringParameterWithOneParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithTwoStringParameter",
-            "dummy"
-        ));
-        assertErrorOutputContainsExpectedArgumentCount(2);
-    }
-
-    @Test
-    void testCommandWithoutAttributesAndMethodWithTwoStringParameterWithTwoParameter() {
-        executeCommand(new Input(
-            "commandWithoutAttributesAndMethodWithTwoStringParameter",
-            "dummy",
-            "dummy"
-        ));
-        assertOutputsAreEmpty();
-    }
-
-    // endregion
 
     @Test
     void testToStringOfCommandWithoutAttributes() {

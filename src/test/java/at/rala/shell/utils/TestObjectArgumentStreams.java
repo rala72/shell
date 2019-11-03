@@ -41,7 +41,33 @@ public class TestObjectArgumentStreams {
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Byte",
-                "-128", "0", "127"
+                String.valueOf(Byte.MIN_VALUE), "0", String.valueOf(Byte.MAX_VALUE)
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Char",
+                "a", "z", "A", "Z", "\t", "#", "+"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Short",
+                String.valueOf(Short.MIN_VALUE), "0", String.valueOf(Short.MAX_VALUE)
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Int",
+                String.valueOf(Integer.MIN_VALUE), "0", String.valueOf(Integer.MAX_VALUE)
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Long",
+                String.valueOf(Long.MIN_VALUE), "0", String.valueOf(Long.MAX_VALUE)
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Float",
+                String.valueOf(Float.MIN_VALUE), String.valueOf(Float.MIN_NORMAL),
+                "0.0", String.valueOf(Float.MAX_VALUE)
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Double",
+                String.valueOf(Double.MIN_VALUE), String.valueOf(Double.MIN_NORMAL),
+                "0.0", String.valueOf(Double.MAX_VALUE)
             )
         ).flatMap(argumentsStream -> argumentsStream);
     }

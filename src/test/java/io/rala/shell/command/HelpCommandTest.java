@@ -109,7 +109,7 @@ class HelpCommandTest {
 
     @Test
     void testExecuteWithTestObjectWithoutArguments() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderFromTestObjectWithoutAttributes();
+        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithoutAttributes();
         TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
         HelpCommand helpCommand = new HelpCommand();
 
@@ -123,7 +123,7 @@ class HelpCommandTest {
 
     @Test
     void testExecuteWithTestObjectWithArguments() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderFromTestObjectWithAttributes();
+        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithAttributes();
         TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
         HelpCommand helpCommand = new HelpCommand();
 

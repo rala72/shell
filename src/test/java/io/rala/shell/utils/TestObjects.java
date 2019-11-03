@@ -8,19 +8,15 @@ public class TestObjects {
     private TestObjects() {
     }
 
-    public static CommandLoader getCommandLoaderFromTestObjectWithoutAttributes() {
+    public static CommandLoader getCommandLoaderForTestObjectWithoutAttributes() {
         return new CommandLoader(new TestObjectWithoutAttributes());
     }
 
-    public static CommandLoader getCommandLoaderFromTestObjectWithAttributes() {
+    public static CommandLoader getCommandLoaderForTestObjectWithAttributes() {
         return new CommandLoader(new TestObjectWithAttributes());
     }
 
-    public static CommandLoader getCommandLoaderFromCommandNotUniqueErrorTestObject() {
-        return new CommandLoader(new CommandNotUniqueErrorTestObject());
-    }
-
-    public static CommandLoader getCommandLoaderFromIllegalAccessErrorTestObject() {
+    public static CommandLoader getCommandLoaderForIllegalAccessErrorTestObject() {
         return new CommandLoader(new IllegalAccessErrorTestObject());
     }
 
@@ -33,6 +29,18 @@ public class TestObjects {
     public static class TestObjectWithAttributes {
         @Command(value = "cmd", documentation = "documentation", usage = "usage")
         public void commandWithAttributes() {
+        }
+    }
+
+    public static class TestObjectWithTwoArrays {
+        @Command
+        public void commandWithTwoArrays(String[] array1, String... varargs) {
+        }
+    }
+
+    public static class TestObjectWithArrayNotOnEnd {
+        @Command
+        public void commandWithArrayNotOnEnd(String[] array, String s) {
         }
     }
 

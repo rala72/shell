@@ -1,19 +1,20 @@
 package at.rala.shell.annotation;
 
+import at.rala.shell.utils.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class CommandLoaderTest {
     @Test
     void testCommandWithoutAttributesLoading() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjectWithoutAttributes());
+        CommandLoader commandLoader = TestObjects.getCommandLoaderFromTestObjectWithoutAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithoutAttributes"));
     }
 
     @Test
     void testCommandWithAttributesLoading() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjectWithAttributes());
+        CommandLoader commandLoader = TestObjects.getCommandLoaderFromTestObjectWithAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("cmd"));
     }
@@ -21,55 +22,19 @@ class CommandLoaderTest {
     @Test
     void testCommandNotUniqueError() {
         Assertions.assertThrows(IllegalStateException.class,
-            () -> new CommandLoader(new CommandNotUniqueErrorTestObject())
+            () -> new CommandLoader(new TestObjects.CommandNotUniqueErrorTestObject())
         );
     }
 
     @Test
     void testCommandIllegalAccessError() {
-        CommandLoader commandLoader = new CommandLoader(new IllegalAccessErrorTestObject());
+        CommandLoader commandLoader = TestObjects.getCommandLoaderFromIllegalAccessErrorTestObject();
         Assertions.assertTrue(commandLoader.getCommandMethodMap().isEmpty());
     }
 
     @Test
     void testToString() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjectWithoutAttributes());
+        CommandLoader commandLoader = new CommandLoader(new TestObjects.TestObjectWithoutAttributes());
         Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
     }
-
-    // region TestObject
-
-    @SuppressWarnings({"unused"})
-    private static class TestObjectWithoutAttributes {
-        @Command
-        public void commandWithoutAttributes() {
-        }
-    }
-
-    @SuppressWarnings({"unused"})
-    private static class TestObjectWithAttributes {
-        @Command("cmd")
-        public void commandWithAttributes() {
-        }
-    }
-
-    @SuppressWarnings({"unused"})
-    private static class CommandNotUniqueErrorTestObject {
-        @Command("cmd")
-        public void commandWithoutAttributes1() {
-        }
-
-        @Command("cmd")
-        public void commandWithoutAttributes2() {
-        }
-    }
-
-    @SuppressWarnings({"unused"})
-    private static class IllegalAccessErrorTestObject {
-        @Command
-        private void privateMethod() {
-        }
-    }
-
-    // endregion
 }

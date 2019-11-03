@@ -1,7 +1,9 @@
 package at.rala.shell.command;
 
 import at.rala.shell.Input;
+import at.rala.shell.annotation.CommandLoader;
 import at.rala.shell.utils.TestContext;
+import at.rala.shell.utils.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -88,6 +90,34 @@ class HelpCommandTest {
         Assertions.assertEquals(1, outputs.size());
         Assertions.assertFalse(outputs.contains("help \tprints help of all commands or provided ones"));
         Assertions.assertTrue(outputs.contains("exit \tstops shell"));
+    }
+
+    @Test
+    void testExecuteWithTestObjectWithoutArguments() {
+        CommandLoader commandLoader = TestObjects.getCommandLoaderFromTestObjectWithoutAttributes();
+        TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
+        HelpCommand helpCommand = new HelpCommand();
+
+        helpCommand.execute(new Input(COMMAND), testContext);
+
+        BlockingQueue<String> outputs = testContext.getOutputHistory();
+        Assertions.assertFalse(outputs.isEmpty());
+        Assertions.assertEquals(1, outputs.size());
+        Assertions.assertTrue(outputs.contains("commandWithoutAttributes \t<no documentation found>"));
+    }
+
+    @Test
+    void testExecuteWithTestObjectWithArguments() {
+        CommandLoader commandLoader = TestObjects.getCommandLoaderFromTestObjectWithAttributes();
+        TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
+        HelpCommand helpCommand = new HelpCommand();
+
+        helpCommand.execute(new Input(COMMAND), testContext);
+
+        BlockingQueue<String> outputs = testContext.getOutputHistory();
+        Assertions.assertFalse(outputs.isEmpty());
+        Assertions.assertEquals(1, outputs.size());
+        Assertions.assertTrue(outputs.contains("cmd \tdocumentation"));
     }
 
     @Test

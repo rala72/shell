@@ -96,18 +96,16 @@ class CommandMethodAdapterTest {
 
         String argument = input.getOrNull(0);
         Assertions.assertNotNull(argument);
-        if (isPrimitive) {
-            if ("Boolean".equals(name)) {
-                executeCommand(input);
-                Assertions.assertTrue(context.getOutputHistory().contains("false"));
-            } else {
-                Assertions.assertThrows(MethodCallException.class,
-                    () -> executeCommand(input)
-                );
-            }
-        } else {
+        if (name.equals("Boolean") && (isPrimitive || !argument.equals("null"))) {
+            executeCommand(input);
+            Assertions.assertTrue(context.getOutputHistory().contains("false"));
+        } else if (!isPrimitive && argument.equals("null")) {
             executeCommand(input);
             Assertions.assertTrue(context.getOutputHistory().contains(argument));
+        } else {
+            Assertions.assertThrows(MethodCallException.class,
+                () -> executeCommand(input)
+            );
         }
     }
 

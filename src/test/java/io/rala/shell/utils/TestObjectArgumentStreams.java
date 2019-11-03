@@ -90,11 +90,13 @@ public class TestObjectArgumentStreams {
         return Stream.of(
             createMethodWithMappingParameterArgumentsStream(
                 "Boolean",
-                "null"
+                "null", "-1"
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Byte",
-                "null"
+                "null",
+                String.valueOf(Byte.MIN_VALUE - 1),
+                String.valueOf(Byte.MAX_VALUE + 1)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Char",
@@ -102,11 +104,15 @@ public class TestObjectArgumentStreams {
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Short",
-                "null"
+                "null",
+                String.valueOf(Short.MIN_VALUE - 1),
+                String.valueOf(Short.MAX_VALUE + 1)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Int",
-                "null"
+                "null",
+                String.valueOf(Integer.MIN_VALUE - 1L),
+                String.valueOf(Integer.MAX_VALUE + 1L)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Long",

@@ -1,95 +1,88 @@
 package at.rala.shell;
 
 import at.rala.shell.command.Command;
-import at.rala.shell.utils.io.BlockingQueueInputStream;
-import at.rala.shell.utils.io.HistoryOutputStream;
+import at.rala.shell.utils.TestShell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.time.Duration;
 
 class ShellTest {
+    private static final int TIMEOUT = 5;
     private static final Command ECHO_COMMAND = (input, context) ->
         context.printLine(String.join(" ", input.getArguments()));
 
     @Test
     void testSameOutputs() {
-        LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        HistoryOutputStream outputStream = new HistoryOutputStream();
-        Shell shell = new Shell(new BlockingQueueInputStream(queue), outputStream);
+        TestShell testShell = TestShell.getInstanceWithSameOutputs();
+        Shell shell = testShell.getShell();
         shell.printLine("line");
-        Assertions.assertTrue(outputStream.getHistory().contains("line"));
+        Assertions.assertTrue(testShell.getOutputHistory().contains("line"));
         shell.printError("error");
-        Assertions.assertTrue(outputStream.getHistory().contains("error"));
+        Assertions.assertTrue(testShell.getOutputHistory().contains("error"));
     }
 
     @Test
     void testDifferentOutputs() {
-        LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        HistoryOutputStream outputStream = new HistoryOutputStream();
-        HistoryOutputStream errorStream = new HistoryOutputStream();
-        Shell shell = new Shell(
-            new BlockingQueueInputStream(queue),
-            outputStream,
-            errorStream
-        );
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
         shell.printLine("line");
-        Assertions.assertTrue(outputStream.getHistory().contains("line"));
-        Assertions.assertFalse(errorStream.getHistory().contains("line"));
+        Assertions.assertTrue(testShell.getOutputHistory().contains("line"));
+        Assertions.assertFalse(testShell.getErrorHistory().contains("line"));
         shell.printError("error");
-        Assertions.assertFalse(outputStream.getHistory().contains("error"));
-        Assertions.assertTrue(errorStream.getHistory().contains("error"));
+        Assertions.assertFalse(testShell.getOutputHistory().contains("error"));
+        Assertions.assertTrue(testShell.getErrorHistory().contains("error"));
     }
 
     @Test
-    void testInput() throws InterruptedException {
-        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        HistoryOutputStream outputStream = new HistoryOutputStream();
-        HistoryOutputStream errorStream = new HistoryOutputStream();
-        Shell shell = new Shell(
-            new BlockingQueueInputStream(queue),
-            outputStream,
-            errorStream
-        );
+    void testInput() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
         shell.register("echo", ECHO_COMMAND);
 
         Thread thread = new Thread(shell);
         thread.start();
-        queue.put("echo echo\n");
-        String take = outputStream.getHistory().take();
-        Assertions.assertNotNull(take);
-        Assertions.assertEquals("> echo", take);
-        Assertions.assertTrue(errorStream.getHistory().isEmpty());
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("echo echo");
+            String take = testShell.getOutputHistory().take();
+            Assertions.assertNotNull(take);
+            Assertions.assertEquals("> echo", take);
+            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+        });
         thread.interrupt();
     }
 
     @Test
-    void testPrompt() throws InterruptedException {
-        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        HistoryOutputStream outputStream = new HistoryOutputStream();
-        HistoryOutputStream errorStream = new HistoryOutputStream();
-        Shell shell = new Shell(
-            new BlockingQueueInputStream(queue),
-            outputStream,
-            errorStream
-        );
+    void testPrompt() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
         shell.register("echo", ECHO_COMMAND);
-        String prompt = Shell.DEFAULT_PROMPT;
 
         Thread thread = new Thread(shell);
         thread.start();
-        queue.put("echo echo");
-        String take = outputStream.getHistory().take();
-        Assertions.assertNotNull(take);
-        Assertions.assertTrue(take.contains(prompt));
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("echo echo");
+            String take = testShell.getOutputHistory().take();
+            Assertions.assertNotNull(take);
+            Assertions.assertTrue(take.startsWith(Shell.DEFAULT_PROMPT));
+            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+        });
 
-        prompt = "prompt> ";
-        shell.setPrompt(prompt);
-        queue.put("echo echo");
-        take = outputStream.getHistory().take();
-        Assertions.assertNotNull(take);
-        Assertions.assertTrue(take.contains(prompt));
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            shell.setPrompt("prompt> ");
+            testShell.putLine("echo echo");
+            String take = testShell.getOutputHistory().take();
+            Assertions.assertNotNull(take);
+            Assertions.assertTrue(take.startsWith(Shell.DEFAULT_PROMPT));
+            Assertions.assertFalse(take.startsWith("prompt> "));
+            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+
+            testShell.putLine("echo echo");
+            take = testShell.getOutputHistory().take();
+            Assertions.assertNotNull(take);
+            Assertions.assertTrue(take.startsWith("prompt> "));
+            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+        });
         thread.interrupt();
     }
 

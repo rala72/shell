@@ -108,6 +108,38 @@ class ShellTest {
     }
 
     @Test
+    void testRegisterExitDefault() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(DefaultCommand.EXIT);
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT),
+            () -> testShell.putLine("exit")
+        );
+        Thread.sleep(100);
+        Assertions.assertFalse(thread.isAlive());
+        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+    }
+
+    @Test
+    void testRegisterHelpDefault() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(DefaultCommand.HELP);
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("help");
+            String take = testShell.getOutputHistory().take();
+            Assertions.assertEquals("> help \tprints help of all commands or provided ones", take);
+        });
+        thread.interrupt();
+    }
+
+    @Test
     void testExceptionCommandWithoutMessage() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

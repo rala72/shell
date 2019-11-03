@@ -33,7 +33,7 @@ public class TestObjectArgumentStreams {
         ).flatMap(argumentsStream -> argumentsStream);
     }
 
-    public static Stream<Arguments> getMethodMappingParameterArguments() {
+    public static Stream<Arguments> getMethodValidMappingParameterArguments() {
         return Stream.of(
             createMethodWithMappingParameterArgumentsStream(
                 "Boolean",
@@ -86,6 +86,43 @@ public class TestObjectArgumentStreams {
         ).flatMap(argumentsStream -> argumentsStream);
     }
 
+    public static Stream<Arguments> getMethodInvalidValidMappingParameterArguments() {
+        return Stream.of(
+            createMethodWithMappingParameterArgumentsStream(
+                "Boolean",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Byte",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Char",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Short",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Int",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Long",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Float",
+                "null"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Double",
+                "null"
+            )
+        ).flatMap(argumentsStream -> argumentsStream);
+    }
+
     private static Stream<Arguments> createMethodWithStringParameterArgumentsStream(
         String name, String param, int from, int to, Integer expected
     ) {
@@ -105,7 +142,10 @@ public class TestObjectArgumentStreams {
         for (String type : types) {
             String command = String.format("methodWithOne%s%sParameter", name, type);
             for (String param : params)
-                list.add(Arguments.of(new Input(command, param)));
+                list.add(Arguments.of(
+                    name, type.equals("Primitive"),
+                    new Input(command, param))
+                );
         }
         return list.stream();
     }

@@ -57,10 +57,10 @@ public class CommandMethodAdapter implements Command {
                 objects[i] = value;
             }
             commandMethod.getMethod().invoke(object, objects);
+        } catch (IllegalArgumentException | InvocationTargetException e) {
+            throw new MethodCallException(e);
         } catch (IllegalAccessException e) {
             throw new MethodCallException("illegal access");
-        } catch (InvocationTargetException e) {
-            throw new MethodCallException(e);
         }
     }
 

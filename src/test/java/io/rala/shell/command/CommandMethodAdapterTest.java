@@ -63,7 +63,7 @@ class CommandMethodAdapterTest {
     // endregion
 
     @ParameterizedTest
-    @MethodSource("getTestCommandWithoutAttributesStringArguments")
+    @MethodSource("getStringArguments")
     void testCommandWithoutAttributes(Input input, Integer expectedArguments) {
         executeCommand(input);
         if (expectedArguments == null || input.getArguments().size() == expectedArguments)
@@ -72,12 +72,43 @@ class CommandMethodAdapterTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getTestCommandWithoutAttributesMappingArguments")
-    void testCommandWithParameterMapping(Input input) {
+    @MethodSource("getValidMappingArguments")
+    void testCommandWithValidParameterMapping(String name, boolean isPrimitive, Input input) {
+        String command = input.getCommand();
+        Assertions.assertTrue(command.contains(name));
+        Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
         Assertions.assertEquals(1, input.getArguments().size(), "config error");
+
         executeCommand(input);
+
         String argument = input.getOrNull(0);
+        Assertions.assertNotNull(argument);
         Assertions.assertTrue(context.getOutputHistory().contains(argument));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getInvalidMappingArguments")
+    void testCommandWithInvalidParameterMapping(String name, boolean isPrimitive, Input input) {
+        String command = input.getCommand();
+        Assertions.assertTrue(command.contains(name));
+        Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
+        Assertions.assertEquals(1, input.getArguments().size(), "config error");
+
+        String argument = input.getOrNull(0);
+        Assertions.assertNotNull(argument);
+        if (isPrimitive) {
+            if ("Boolean".equals(name)) {
+                executeCommand(input);
+                Assertions.assertTrue(context.getOutputHistory().contains("false"));
+            } else {
+                Assertions.assertThrows(MethodCallException.class,
+                    () -> executeCommand(input)
+                );
+            }
+        } else {
+            executeCommand(input);
+            Assertions.assertTrue(context.getOutputHistory().contains(argument));
+        }
     }
 
     // region execute exception
@@ -145,12 +176,16 @@ class CommandMethodAdapterTest {
     // endregion
     // region arguments stream
 
-    private static Stream<Arguments> getTestCommandWithoutAttributesStringArguments() {
+    private static Stream<Arguments> getStringArguments() {
         return TestObjectArgumentStreams.getMethodStringParameterArguments();
     }
 
-    private static Stream<Arguments> getTestCommandWithoutAttributesMappingArguments() {
-        return TestObjectArgumentStreams.getMethodMappingParameterArguments();
+    private static Stream<Arguments> getValidMappingArguments() {
+        return TestObjectArgumentStreams.getMethodValidMappingParameterArguments();
+    }
+
+    private static Stream<Arguments> getInvalidMappingArguments() {
+        return TestObjectArgumentStreams.getMethodInvalidValidMappingParameterArguments();
     }
 
     // endregion

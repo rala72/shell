@@ -178,10 +178,16 @@ class ShellTest {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.HELP);
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> shell.register(DefaultCommand.HELP),
-            "command already present"
-        );
+        try {
+            shell.register(DefaultCommand.HELP);
+        } catch (IllegalStateException e) {
+            Assertions.assertEquals(
+                "command already present",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test

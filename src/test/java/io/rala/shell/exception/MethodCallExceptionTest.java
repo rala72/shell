@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 class MethodCallExceptionTest {
     @Test
     void testMessage() {
-        Assertions.assertThrows(MethodCallException.class, () -> {
+        try {
             throw new MethodCallException("message");
-        }, "message");
+        } catch (MethodCallException e) {
+            Assertions.assertEquals("message", e.getMessage());
+        }
     }
 
     @Test

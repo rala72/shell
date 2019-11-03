@@ -21,23 +21,44 @@ class CommandLoaderTest {
 
     @Test
     void testCommandWithTwoArrayParameterException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new CommandLoader(new TestObjects.TestObjectWithTwoArrays()),
-            "commandWithTwoArrays: may only have one array parameter");
+        try {
+            new CommandLoader(new TestObjects.TestObjectWithTwoArrays());
+        } catch (IllegalArgumentException e) {
+            Assertions.assertEquals(
+                "commandWithTwoArrays: may only have one array parameter",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test
     void testCommandWithOneArrayParameterNotOnEndException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new CommandLoader(new TestObjects.TestObjectWithArrayNotOnEnd()),
-            "commandWithArrayNotOnEnd: may only have one array parameter");
+        try {
+            new CommandLoader(new TestObjects.TestObjectWithArrayNotOnEnd());
+        } catch (IllegalArgumentException e) {
+            Assertions.assertEquals(
+                "commandWithArrayNotOnEnd: only last parameter may be an array or vararg",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test
     void testCommandNotUniqueException() {
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> new CommandLoader(new TestObjects.CommandNotUniqueErrorTestObject())
-        );
+        try {
+            new CommandLoader(new TestObjects.CommandNotUniqueErrorTestObject());
+        } catch (IllegalStateException e) {
+            Assertions.assertEquals(
+                "cmd is defined more than once",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test

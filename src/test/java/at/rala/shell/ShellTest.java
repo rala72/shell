@@ -140,6 +140,17 @@ class ShellTest {
     }
 
     @Test
+    void testRegisterAlreadyPresentCommand() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(DefaultCommand.HELP);
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> shell.register(DefaultCommand.HELP),
+            "command already present"
+        );
+    }
+
+    @Test
     void testExceptionCommandWithoutMessage() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

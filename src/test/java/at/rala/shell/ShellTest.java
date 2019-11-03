@@ -92,6 +92,40 @@ class ShellTest {
     }
 
     @Test
+    void testCommandNotFound() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("close");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertEquals("command not found: close", take);
+        });
+        thread.interrupt();
+    }
+
+    @Test
+    void testFallbackCommand() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.setFallback((input, context) -> context.printLine("fallback"));
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            Assertions.assertFalse(shell.isStopOnInvalidCommandEnabled());
+            testShell.putLine("close");
+            String output = testShell.getOutputHistory().take();
+            Assertions.assertEquals("> fallback", output);
+            String error = testShell.getErrorHistory().peek();
+            Assertions.assertNotEquals("command not found: close", error);
+        });
+        thread.interrupt();
+    }
+
+    @Test
     void testExit() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

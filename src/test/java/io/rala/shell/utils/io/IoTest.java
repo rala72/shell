@@ -15,14 +15,8 @@ class IoTest {
     @Test
     void testNewLines() throws InterruptedException {
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        BlockingQueueInputStream blockingQueueInputStream = new BlockingQueueInputStream(queue);
         HistoryOutputStream historyOutputStream = new HistoryOutputStream();
-        new Thread(() -> {
-            try {
-                blockingQueueInputStream.transferTo(historyOutputStream);
-            } catch (IOException ignored) {
-            }
-        }).start();
+        transferInputToOutput(queue, historyOutputStream);
 
         BlockingQueue<String> commands = new LinkedBlockingQueue<>();
         commands.add("test1\n");
@@ -30,25 +24,15 @@ class IoTest {
         commands.add("test3\n");
         queue.addAll(commands);
 
-        BlockingQueue<String> history = new LinkedBlockingQueue<>();
-        BlockingQueue<String> filterLineBreaks = filterLineBreaks(commands);
-        for (int i = 0; i < countPhrase(commands, "\n"); i++)
-            history.add(historyOutputStream.getHistory().take());
-        blockingQueueInputStream.close();
-        assertQueuesAreEqual(filterLineBreaks, history);
+        Queue<String> history = saveOutputHistory(historyOutputStream, commands);
+        assertQueuesAreEqual(filterLineBreaks(commands), history);
     }
 
     @Test
     void testJoiningWithNewLineOnLastElement() throws InterruptedException {
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        BlockingQueueInputStream blockingQueueInputStream = new BlockingQueueInputStream(queue);
         HistoryOutputStream historyOutputStream = new HistoryOutputStream();
-        new Thread(() -> {
-            try {
-                blockingQueueInputStream.transferTo(historyOutputStream);
-            } catch (IOException ignored) {
-            }
-        }).start();
+        transferInputToOutput(queue, historyOutputStream);
 
         BlockingQueue<String> commands = new LinkedBlockingQueue<>();
         commands.add("test1");
@@ -56,28 +40,15 @@ class IoTest {
         commands.add("test3\n");
         queue.addAll(commands);
 
-        BlockingQueue<String> history = new LinkedBlockingQueue<>();
-        BlockingQueue<String> filterLineBreaks = filterLineBreaks(commands);
-        for (int i = 0; i < countPhrase(commands, "\n"); i++)
-            history.add(historyOutputStream.getHistory().take());
-        blockingQueueInputStream.close();
-        Assertions.assertEquals(
-            String.join("", filterLineBreaks),
-            String.join("", history)
-        );
+        Queue<String> history = saveOutputHistory(historyOutputStream, commands);
+        assertQueuesAreJoinedEqual(filterLineBreaks(commands), history);
     }
 
     @Test
     void testJoiningWithExtraNewLine() throws InterruptedException {
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        BlockingQueueInputStream blockingQueueInputStream = new BlockingQueueInputStream(queue);
         HistoryOutputStream historyOutputStream = new HistoryOutputStream();
-        new Thread(() -> {
-            try {
-                blockingQueueInputStream.transferTo(historyOutputStream);
-            } catch (IOException ignored) {
-            }
-        }).start();
+        transferInputToOutput(queue, historyOutputStream);
 
         BlockingQueue<String> commands = new LinkedBlockingQueue<>();
         commands.add("test1");
@@ -86,16 +57,43 @@ class IoTest {
         commands.add("\n");
         queue.addAll(commands);
 
-        BlockingQueue<String> history = new LinkedBlockingQueue<>();
-        BlockingQueue<String> filterLineBreaks = filterLineBreaks(commands);
-        for (int i = 0; i < countPhrase(commands, "\n"); i++)
-            history.add(historyOutputStream.getHistory().take());
-        blockingQueueInputStream.close();
-        Assertions.assertEquals(
-            String.join("", filterLineBreaks),
-            String.join("", history)
-        );
+        Queue<String> history = saveOutputHistory(historyOutputStream, commands);
+        assertQueuesAreJoinedEqual(filterLineBreaks(commands), history);
     }
+
+    // region queues handling
+
+    private static void transferInputToOutput(
+        BlockingQueue<String> input, HistoryOutputStream output
+    ) {
+        BlockingQueueInputStream blockingQueueInputStream = new BlockingQueueInputStream(input);
+        new Thread(() -> {
+            try {
+                blockingQueueInputStream.transferTo(output);
+            } catch (IOException ignored) {
+                blockingQueueInputStream.close();
+            }
+        }).start();
+    }
+
+    private static Queue<String> saveOutputHistory(
+        HistoryOutputStream historyOutputStream, Queue<String> input
+    ) throws InterruptedException {
+        BlockingQueue<String> history = new LinkedBlockingQueue<>();
+        for (int i = 0; i < countPhrase(input, "\n"); i++)
+            history.add(historyOutputStream.getHistory().take());
+        return history;
+    }
+
+    private static BlockingQueue<String> filterLineBreaks(Queue<String> queue) {
+        return queue.stream()
+            .map(s -> s.replace("\n", ""))
+            .collect(Collectors.toCollection(LinkedBlockingQueue::new));
+    }
+
+    // endregion
+
+    // region countPhrase
 
     private static int countPhrase(Collection<String> strings, String phrase) {
         return countPhrase(String.join("", strings), phrase);
@@ -105,13 +103,20 @@ class IoTest {
         return string.length() - string.replaceAll(phrase, "").length();
     }
 
-    private static BlockingQueue<String> filterLineBreaks(Queue<String> queue) {
-        return queue.stream()
-            .map(s -> s.replace("\n", ""))
-            .collect(Collectors.toCollection(LinkedBlockingQueue::new));
-    }
+    // endregion
+
+    // region assert queues
 
     private static void assertQueuesAreEqual(Queue<String> queue1, Queue<String> queue2) {
         Assertions.assertEquals(String.join("", queue1), String.join("", queue2));
     }
+
+    private static void assertQueuesAreJoinedEqual(Queue<String> queue1, Queue<String> queue2) {
+        Assertions.assertEquals(
+            String.join("", queue1),
+            String.join("", queue2)
+        );
+    }
+
+    // endregion
 }

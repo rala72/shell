@@ -40,7 +40,7 @@ public class Shell implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (Thread.currentThread().isAlive()) {
                 prompt();
                 String line = input.readLine();
                 if (line == null) return;

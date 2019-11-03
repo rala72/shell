@@ -13,6 +13,7 @@ public class BlockingQueueInputStream extends InputStream {
     private final BlockingQueue<String> queue;
     private StringReader stringReader;
     private int missing;
+    private boolean closeRequested = false;
 
     public BlockingQueueInputStream(BlockingQueue<String> queue) {
         this.queue = queue;
@@ -32,6 +33,7 @@ public class BlockingQueueInputStream extends InputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        if (closeRequested) return -1;
         // https://stackoverflow.com/a/36286373/2715720
         if (stringReader == null)
             if (readNextEntryFailed())
@@ -42,6 +44,11 @@ public class BlockingQueueInputStream extends InputStream {
         System.arraycopy(convertCharArrayToByteArray(chars), 0, b, 0, chars.length);
         if (missing <= 0) stringReader = null;
         return read;
+    }
+
+    @Override
+    public void close() {
+        closeRequested = true;
     }
 
     @Override

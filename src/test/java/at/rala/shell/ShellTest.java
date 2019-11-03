@@ -1,6 +1,7 @@
 package at.rala.shell;
 
 import at.rala.shell.command.Command;
+import at.rala.shell.exception.StopShellException;
 import at.rala.shell.utils.TestShell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,9 @@ class ShellTest {
     private static final int TIMEOUT = 5;
     private static final Command ECHO_COMMAND = (input, context) ->
         context.printLine(String.join(" ", input.getArguments()));
+    private static final Command EXIT_COMMAND = (input, context) -> {
+        throw new StopShellException();
+    };
 
     @Test
     void testSameOutputs() {
@@ -84,6 +88,22 @@ class ShellTest {
             Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
         });
         thread.interrupt();
+    }
+
+    @Test
+    void testExit() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register("exit", EXIT_COMMAND);
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT),
+            () -> testShell.putLine("exit")
+        );
+        Thread.sleep(100);
+        Assertions.assertFalse(thread.isAlive());
+        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test

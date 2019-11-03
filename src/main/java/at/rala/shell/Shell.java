@@ -6,6 +6,7 @@ import at.rala.shell.exception.MethodCallException;
 import at.rala.shell.exception.StopShellException;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -106,7 +107,15 @@ public class Shell implements Runnable {
             if (command != null) command.execute(input, context);
             else fallback.execute(input, context);
         } catch (MethodCallException e) {
-            e.printStackTrace();
+            String message = e.getMessage();
+            if (e.getCause() instanceof InvocationTargetException) {
+                InvocationTargetException cause = (InvocationTargetException) e.getCause();
+                Throwable targetException = cause.getTargetException();
+                message = targetException.getClass().getSimpleName();
+                if (targetException.getMessage() != null)
+                    message += ": " + targetException.getMessage();
+            }
+            printError("error during execution: " + message);
             return false;
         }
         return true;

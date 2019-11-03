@@ -2,6 +2,7 @@ package at.rala.shell;
 
 import at.rala.shell.command.Command;
 import at.rala.shell.exception.StopShellException;
+import at.rala.shell.utils.TestObject;
 import at.rala.shell.utils.TestShell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -104,6 +105,25 @@ class ShellTest {
         Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+    }
+
+    @Test
+    void testErrorCommand() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(new TestObject());
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("exceptionCommand");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertTrue(take.contains("error during execution"));
+            Assertions.assertTrue(take.contains("RuntimeException"));
+        });
+        Thread.sleep(100);
+        Assertions.assertTrue(thread.isAlive());
+        thread.interrupt();
     }
 
     @Test

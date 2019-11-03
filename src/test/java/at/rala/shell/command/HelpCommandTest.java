@@ -14,6 +14,8 @@ class HelpCommandTest {
     private static final String COMMAND = "help";
     private static final String DOCUMENTATION = "prints help of all commands or provided ones";
     private static final String USAGE = "help [command [command ...]]";
+    private static final Command EMPTY_COMMAND = (input, context) -> {
+    };
 
     @Test
     void testDocumentation() {
@@ -47,6 +49,19 @@ class HelpCommandTest {
         Assertions.assertFalse(outputs.isEmpty());
         Assertions.assertEquals(1, outputs.size());
         Assertions.assertTrue(outputs.contains("error: command cmd not found"));
+    }
+
+    @Test
+    void testExecuteWithCommandWithoutDocumentation() {
+        HelpCommand helpCommand = new HelpCommand();
+        TestContext testContext = new TestContext(Map.of("cmd", EMPTY_COMMAND));
+
+        helpCommand.execute(new Input(COMMAND), testContext);
+
+        BlockingQueue<String> outputs = testContext.getOutputHistory();
+        Assertions.assertFalse(outputs.isEmpty());
+        Assertions.assertEquals(1, outputs.size());
+        Assertions.assertTrue(outputs.contains("cmd \t<no documentation found>"));
     }
 
     @Test

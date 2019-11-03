@@ -2,6 +2,7 @@ package io.rala.shell;
 
 import io.rala.shell.annotation.CommandLoader;
 import io.rala.shell.command.Command;
+import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.exception.StopShellException;
 
@@ -80,7 +81,7 @@ public class Shell implements Runnable {
 
     public void register(String name, Command command) {
         if (commands.containsKey(name))
-            throw new IllegalStateException("command already present");
+            throw new CommandAlreadyPresentException(name);
         commands.put(name, command);
     }
 

@@ -1,5 +1,6 @@
 package io.rala.shell.annotation;
 
+import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.utils.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -51,11 +52,8 @@ class CommandLoaderTest {
     void testCommandNotUniqueException() {
         try {
             new CommandLoader(new TestObjects.CommandNotUniqueErrorTestObject());
-        } catch (IllegalStateException e) {
-            Assertions.assertEquals(
-                "cmd is defined more than once",
-                e.getMessage()
-            );
+        } catch (CommandAlreadyPresentException e) {
+            Assertions.assertEquals("cmd", e.getMessage());
             return;
         }
         Assertions.fail();

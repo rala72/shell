@@ -1,6 +1,7 @@
 package io.rala.shell;
 
 import io.rala.shell.command.Command;
+import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.StopShellException;
 import io.rala.shell.utils.TestObject;
 import io.rala.shell.utils.TestShell;
@@ -180,11 +181,8 @@ class ShellTest {
         shell.register(DefaultCommand.HELP);
         try {
             shell.register(DefaultCommand.HELP);
-        } catch (IllegalStateException e) {
-            Assertions.assertEquals(
-                "command already present",
-                e.getMessage()
-            );
+        } catch (CommandAlreadyPresentException e) {
+            Assertions.assertEquals("help", e.getMessage());
             return;
         }
         Assertions.fail();

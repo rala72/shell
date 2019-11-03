@@ -10,7 +10,7 @@ public class TestObjectArgumentStreams {
     private TestObjectArgumentStreams() {
     }
 
-    public static Stream<Arguments> getMethodParameterArguments() {
+    public static Stream<Arguments> getMethodStringParameterArguments() {
         return Stream.of(
             Arguments.of(new Input(
                 "methodWithoutParameter"
@@ -67,6 +67,41 @@ public class TestObjectArgumentStreams {
                 "methodWithOneStringArrayParameter",
                 "dummy", "dummy"
             ), null)
+        );
+    }
+
+    public static Stream<Arguments> getMethodMappingParameterArguments() {
+        return Stream.of(
+            Arguments.of(new Input(
+                "methodWithOneBooleanPrimitiveParameter", "false"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneBooleanPrimitiveParameter", "true"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneBooleanObjectParameter", "false"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneBooleanObjectParameter", "true"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneBytePrimitiveParameter", "-128"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneBytePrimitiveParameter", "0"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneBytePrimitiveParameter", "127"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneByteObjectParameter", "-128"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneByteObjectParameter", "0"
+            )),
+            Arguments.of(new Input(
+                "methodWithOneByteObjectParameter", "127"
+            ))
         );
     }
 }

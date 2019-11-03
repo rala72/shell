@@ -22,8 +22,10 @@ class CommandMethodAdapterTest {
 
     @BeforeEach
     void setUp() {
-        CommandLoader commandLoader = new CommandLoader(new TestObject());
+        TestObject object = new TestObject();
+        CommandLoader commandLoader = new CommandLoader(object);
         context = TestContext.getInstanceWithDifferentStreams(commandLoader.getCommandMethodMap());
+        object.setContext(context);
     }
 
     // region documentation & usage
@@ -61,12 +63,21 @@ class CommandMethodAdapterTest {
     // endregion
 
     @ParameterizedTest
-    @MethodSource("getTestCommandWithoutAttributesArguments")
+    @MethodSource("getTestCommandWithoutAttributesStringArguments")
     void testCommandWithoutAttributes(Input input, Integer expectedArguments) {
         executeCommand(input);
         if (expectedArguments == null || input.getArguments().size() == expectedArguments)
             assertOutputsAreEmpty();
         else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestCommandWithoutAttributesMappingArguments")
+    void testCommandWithParameterMapping(Input input) {
+        Assertions.assertEquals(1, input.getArguments().size(), "config error");
+        executeCommand(input);
+        String argument = input.getOrNull(0);
+        Assertions.assertTrue(context.getOutputHistory().contains(argument));
     }
 
     // region execute exception
@@ -134,8 +145,12 @@ class CommandMethodAdapterTest {
     // endregion
     // region arguments stream
 
-    private static Stream<Arguments> getTestCommandWithoutAttributesArguments() {
-        return TestObjectArgumentStreams.getMethodParameterArguments();
+    private static Stream<Arguments> getTestCommandWithoutAttributesStringArguments() {
+        return TestObjectArgumentStreams.getMethodStringParameterArguments();
+    }
+
+    private static Stream<Arguments> getTestCommandWithoutAttributesMappingArguments() {
+        return TestObjectArgumentStreams.getMethodMappingParameterArguments();
     }
 
     // endregion

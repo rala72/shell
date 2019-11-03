@@ -127,6 +127,51 @@ class ShellTest {
     }
 
     @Test
+    void testExceptionHandlerWithoutException() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(new TestObject());
+        shell.setExceptionHandler((exception, context) ->
+            context.printError("errorHandler")
+        );
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("exceptionCommandWithoutMessage");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertEquals("errorHandler", take);
+        });
+        Thread.sleep(100);
+        Assertions.assertTrue(thread.isAlive());
+        thread.interrupt();
+    }
+
+    @Test
+    void testExceptionHandlerThrowingException() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(new TestObject());
+        shell.setExceptionHandler((exception, context) -> {
+            throw new RuntimeException();
+        });
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("exceptionCommandWithoutMessage");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertEquals(
+                "error in exception handler: java.lang.RuntimeException",
+                take
+            );
+        });
+        Thread.sleep(100);
+        Assertions.assertTrue(thread.isAlive());
+        thread.interrupt();
+    }
+
+    @Test
     void testExit() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

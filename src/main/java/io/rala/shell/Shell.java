@@ -3,6 +3,7 @@ package io.rala.shell;
 import io.rala.shell.annotation.CommandLoader;
 import io.rala.shell.command.Command;
 import io.rala.shell.exception.CommandAlreadyPresentException;
+import io.rala.shell.exception.ExceptionHandler;
 import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.exception.StopShellException;
 
@@ -19,6 +20,7 @@ public class Shell implements Runnable {
     private final Context context;
     private final Map<String, Command> commands = new TreeMap<>();
     private Command fallback;
+    private ExceptionHandler exceptionHandler;
     private String prompt = DEFAULT_PROMPT;
     private boolean isStopOnInvalidCommandEnabled = false;
 
@@ -56,6 +58,10 @@ public class Shell implements Runnable {
 
     public void setFallback(Command fallback) {
         this.fallback = fallback;
+    }
+
+    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
     }
 
     public void setPrompt(String prompt) {
@@ -108,15 +114,23 @@ public class Shell implements Runnable {
             if (command != null) command.execute(input, context);
             else fallback.execute(input, context);
         } catch (MethodCallException e) {
-            String message = e.getMessage();
-            if (e.getCause() instanceof InvocationTargetException) {
-                InvocationTargetException cause = (InvocationTargetException) e.getCause();
-                Throwable targetException = cause.getTargetException();
-                message = targetException.getClass().getSimpleName();
-                if (targetException.getMessage() != null)
-                    message += ": " + targetException.getMessage();
+            if (exceptionHandler != null) {
+                try {
+                    exceptionHandler.handleException(e, context);
+                } catch (Exception eh) {
+                    printError("error in exception handler: " + eh);
+                }
+            } else {
+                String message = e.getMessage();
+                if (e.getCause() instanceof InvocationTargetException) {
+                    InvocationTargetException cause = (InvocationTargetException) e.getCause();
+                    Throwable targetException = cause.getTargetException();
+                    message = targetException.getClass().getSimpleName();
+                    if (targetException.getMessage() != null)
+                        message += ": " + targetException.getMessage();
+                }
+                printError("error during execution: " + message);
             }
-            printError("error during execution: " + message);
             return false;
         }
         return true;

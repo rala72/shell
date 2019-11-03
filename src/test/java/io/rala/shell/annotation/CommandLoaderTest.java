@@ -1,6 +1,7 @@
 package io.rala.shell.annotation;
 
 import io.rala.shell.exception.CommandAlreadyPresentException;
+import io.rala.shell.exception.IllegalParameterException;
 import io.rala.shell.utils.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class CommandLoaderTest {
     void testCommandWithTwoArrayParameterException() {
         try {
             new CommandLoader(new TestObjects.TestObjectWithTwoArrays());
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoArrays: may only have one array parameter",
                 e.getMessage()
@@ -38,7 +39,7 @@ class CommandLoaderTest {
     void testCommandWithOneArrayParameterNotOnEndException() {
         try {
             new CommandLoader(new TestObjects.TestObjectWithArrayNotOnEnd());
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithArrayNotOnEnd: only last parameter may be an array or vararg",
                 e.getMessage()

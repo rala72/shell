@@ -2,6 +2,7 @@ package io.rala.shell.annotation;
 
 import io.rala.shell.command.CommandMethodAdapter;
 import io.rala.shell.exception.CommandAlreadyPresentException;
+import io.rala.shell.exception.IllegalParameterException;
 
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
@@ -42,9 +43,9 @@ public class CommandLoader {
             .filter(Class::isArray)
             .count();
         if (1 < arrayParameterCount)
-            throw new IllegalArgumentException(commandMethod.getName() + ": may only have one array parameter");
+            throw IllegalParameterException.createNewOnlyOneArrayInstance(commandMethod.getName());
         if (arrayParameterCount == 1 && !commandMethod.isLastParameterDynamic())
-            throw new IllegalArgumentException(commandMethod.getName() + ": only last parameter may be an array or vararg");
+            throw IllegalParameterException.createNewOnlyLastArrayOrVararg(commandMethod.getName());
         if (getCommandMethodMap().containsKey(commandMethod.getName()))
             throw new CommandAlreadyPresentException(commandMethod.getName());
     }

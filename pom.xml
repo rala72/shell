@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.at.rala</groupId>
+    <groupId>io.rala</groupId>
     <artifactId>shell</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -29,14 +29,14 @@
 
     <developers>
         <developer>
-            <name>at.rala.rala</name>
-            <email>code@at.rala.rala.io</email>
+            <name>rala</name>
+            <email>code@rala.io</email>
         </developer>
     </developers>
 
     <!--<scm>
-        <connection>git://github.com/rala72/subnet.git</connection>
-        <url>http://github.com/rala72/subnet</url>
+        <connection>git://github.com/rala72/shell.git</connection>
+        <url>http://github.com/rala72/shell</url>
     </scm>-->
 
     <dependencies>

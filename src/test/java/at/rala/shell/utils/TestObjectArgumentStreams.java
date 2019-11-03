@@ -15,19 +15,19 @@ public class TestObjectArgumentStreams {
 
     public static Stream<Arguments> getMethodStringParameterArguments() {
         return Stream.of(
-            getMethodWithStringParameterArguments(
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithoutParameter", "none", 0, 2, 0
             ),
-            getMethodWithStringParameterArguments(
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithOneStringParameter", "one", 0, 3, 1
             ),
-            getMethodWithStringParameterArguments(
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithTwoStringParameter", "two", 1, 4, 2
             ),
-            getMethodWithStringParameterArguments(
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithOneStringVarargsParameter", "vararg", 0, 4, null
             ),
-            getMethodWithStringParameterArguments(
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithOneStringArrayParameter", "array", 0, 4, null
             )
         ).flatMap(argumentsStream -> argumentsStream);
@@ -35,40 +35,18 @@ public class TestObjectArgumentStreams {
 
     public static Stream<Arguments> getMethodMappingParameterArguments() {
         return Stream.of(
-            Arguments.of(new Input(
-                "methodWithOneBooleanPrimitiveParameter", "false"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneBooleanPrimitiveParameter", "true"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneBooleanObjectParameter", "false"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneBooleanObjectParameter", "true"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneBytePrimitiveParameter", "-128"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneBytePrimitiveParameter", "0"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneBytePrimitiveParameter", "127"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneByteObjectParameter", "-128"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneByteObjectParameter", "0"
-            )),
-            Arguments.of(new Input(
-                "methodWithOneByteObjectParameter", "127"
-            ))
-        );
+            createMethodWithMappingParameterArgumentsStream(
+                "Boolean",
+                "false", "true"
+            ),
+            createMethodWithMappingParameterArgumentsStream(
+                "Byte",
+                "-128", "0", "127"
+            )
+        ).flatMap(argumentsStream -> argumentsStream);
     }
 
-    private static Stream<Arguments> getMethodWithStringParameterArguments(
+    private static Stream<Arguments> createMethodWithStringParameterArgumentsStream(
         String name, String param, int from, int to, Integer expected
     ) {
         List<Arguments> list = new ArrayList<>();
@@ -76,6 +54,19 @@ public class TestObjectArgumentStreams {
             for (int i = from; i < to; i++)
                 list.add(Arguments.of(new Input(name, Collections.nCopies(i, param)), expected));
         if (list.isEmpty()) list.add(Arguments.of(new Input(name), expected));
+        return list.stream();
+    }
+
+    private static Stream<Arguments> createMethodWithMappingParameterArgumentsStream(
+        String name, String... params
+    ) {
+        List<Arguments> list = new ArrayList<>();
+        String[] types = new String[]{"Primitive", "Object"};
+        for (String type : types) {
+            String command = String.format("methodWithOne%s%sParameter", name, type);
+            for (String param : params)
+                list.add(Arguments.of(new Input(command, param)));
+        }
         return list.stream();
     }
 }

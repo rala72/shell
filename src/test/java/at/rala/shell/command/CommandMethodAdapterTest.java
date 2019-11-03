@@ -85,7 +85,7 @@ class CommandMethodAdapterTest {
     @Test
     void testExceptionCommandWithoutAttributes() {
         Assertions.assertThrows(MethodCallException.class,
-            () -> executeCommand(new Input("exceptionCommand"))
+            () -> executeCommand(new Input("exceptionCommandWithoutMessage"))
         );
     }
 

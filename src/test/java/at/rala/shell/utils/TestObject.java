@@ -121,8 +121,13 @@ public class TestObject {
     // region exception
 
     @Command
-    public void exceptionCommand() {
+    public void exceptionCommandWithoutMessage() {
         throw new RuntimeException();
+    }
+
+    @Command
+    public void exceptionCommandWithMessage() {
+        throw new RuntimeException("message");
     }
 
     @Command

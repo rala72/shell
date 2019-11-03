@@ -108,7 +108,7 @@ class ShellTest {
     }
 
     @Test
-    void testErrorCommand() throws InterruptedException {
+    void testExceptionCommandWithoutMessage() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -116,10 +116,31 @@ class ShellTest {
         Thread thread = new Thread(shell);
         thread.start();
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
-            testShell.putLine("exceptionCommand");
+            testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertTrue(take.contains("error during execution"));
-            Assertions.assertTrue(take.contains("RuntimeException"));
+            Assertions.assertEquals(
+                "error during execution: RuntimeException", take
+            );
+        });
+        Thread.sleep(100);
+        Assertions.assertTrue(thread.isAlive());
+        thread.interrupt();
+    }
+
+    @Test
+    void testExceptionCommandWithMessage() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(new TestObject());
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("exceptionCommandWithMessage");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertEquals(
+                "error during execution: RuntimeException: message", take
+            );
         });
         Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());

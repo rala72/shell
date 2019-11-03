@@ -3,6 +3,9 @@ package at.rala.shell.utils;
 import at.rala.shell.Input;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
@@ -12,62 +15,22 @@ public class TestObjectArgumentStreams {
 
     public static Stream<Arguments> getMethodStringParameterArguments() {
         return Stream.of(
-            Arguments.of(new Input(
-                "methodWithoutParameter"
-            ), 0),
-            Arguments.of(new Input(
-                "methodWithoutParameter",
-                "dummy"
-            ), 0),
-            Arguments.of(new Input(
-                "methodWithOneStringParameter"
-            ), 1),
-            Arguments.of(new Input(
-                "methodWithOneStringParameter",
-                "dummy"
-            ), 1),
-            Arguments.of(new Input(
-                "methodWithOneStringParameter",
-                "dummy", "dummy"
-            ), 1),
-            Arguments.of(new Input(
-                "methodWithTwoStringParameter"
-            ), 2),
-            Arguments.of(new Input(
-                "methodWithTwoStringParameter",
-                "dummy"
-            ), 2),
-            Arguments.of(new Input(
-                "methodWithTwoStringParameter",
-                "dummy", "dummy"
-            ), 2),
-            Arguments.of(new Input(
-                "methodWithTwoStringParameter",
-                "dummy", "dummy", "dummy"
-            ), 2),
-            Arguments.of(new Input(
-                "methodWithOneStringVarargsParameter"
-            ), null),
-            Arguments.of(new Input(
-                "methodWithOneStringVarargsParameter",
-                "dummy"
-            ), null),
-            Arguments.of(new Input(
-                "methodWithOneStringVarargsParameter",
-                "dummy", "dummy"
-            ), null),
-            Arguments.of(new Input(
-                "methodWithOneStringArrayParameter"
-            ), null),
-            Arguments.of(new Input(
-                "methodWithOneStringArrayParameter",
-                "dummy"
-            ), null),
-            Arguments.of(new Input(
-                "methodWithOneStringArrayParameter",
-                "dummy", "dummy"
-            ), null)
-        );
+            getMethodWithStringParameterArguments(
+                "methodWithoutParameter", "none", 0, 2, 0
+            ),
+            getMethodWithStringParameterArguments(
+                "methodWithOneStringParameter", "one", 0, 3, 1
+            ),
+            getMethodWithStringParameterArguments(
+                "methodWithTwoStringParameter", "two", 1, 4, 2
+            ),
+            getMethodWithStringParameterArguments(
+                "methodWithOneStringVarargsParameter", "vararg", 0, 4, null
+            ),
+            getMethodWithStringParameterArguments(
+                "methodWithOneStringArrayParameter", "array", 0, 4, null
+            )
+        ).flatMap(argumentsStream -> argumentsStream);
     }
 
     public static Stream<Arguments> getMethodMappingParameterArguments() {
@@ -103,5 +66,16 @@ public class TestObjectArgumentStreams {
                 "methodWithOneByteObjectParameter", "127"
             ))
         );
+    }
+
+    private static Stream<Arguments> getMethodWithStringParameterArguments(
+        String name, String param, int from, int to, Integer expected
+    ) {
+        List<Arguments> list = new ArrayList<>();
+        if (param != null)
+            for (int i = from; i < to; i++)
+                list.add(Arguments.of(new Input(name, Collections.nCopies(i, param)), expected));
+        if (list.isEmpty()) list.add(Arguments.of(new Input(name), expected));
+        return list.stream();
     }
 }

@@ -107,6 +107,33 @@ class ShellTest {
     }
 
     @Test
+    void testStopOnInvalidCommand() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            Assertions.assertFalse(shell.isStopOnInvalidCommandEnabled());
+            testShell.putLine("close");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertEquals("command not found: close", take);
+        });
+        Thread.sleep(100);
+        Assertions.assertTrue(thread.isAlive());
+        shell.setStopOnInvalidCommandEnabled(true);
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            Assertions.assertTrue(shell.isStopOnInvalidCommandEnabled());
+            testShell.putLine("close");
+            String take = testShell.getErrorHistory().take();
+            Assertions.assertEquals("command not found: close", take);
+        });
+        Thread.sleep(100);
+        Assertions.assertFalse(thread.isAlive());
+        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+    }
+
+    @Test
     void testToString() {
         Assertions.assertEquals("Shell", new Shell().toString());
     }

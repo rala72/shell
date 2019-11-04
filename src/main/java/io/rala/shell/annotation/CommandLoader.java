@@ -4,6 +4,7 @@ import io.rala.shell.command.CommandMethodAdapter;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
 
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ public class CommandLoader {
     private final Map<String, io.rala.shell.command.Command> commandMethodMap = new HashMap<>();
 
     public CommandLoader(Object object) {
+        if (!Modifier.isPublic(object.getClass().getModifiers()))
+            throw new IllegalArgumentException("object has to be public");
         List.of(object.getClass().getMethods())
             .stream()
             .filter(method -> method.isAnnotationPresent(Command.class))

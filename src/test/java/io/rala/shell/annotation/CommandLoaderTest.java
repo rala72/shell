@@ -8,6 +8,17 @@ import org.junit.jupiter.api.Test;
 
 class CommandLoaderTest {
     @Test
+    void privateObjectLoadingThrowsIllegalParameter() {
+        try {
+            new CommandLoader(new PrivateTestObject());
+        } catch (IllegalArgumentException e) {
+            Assertions.assertEquals("object has to be public", e.getMessage());
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
     void commandWithoutAttributesLoading() {
         CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithoutAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
@@ -70,5 +81,8 @@ class CommandLoaderTest {
     void toStringOfObjectWithoutAttributes() {
         CommandLoader commandLoader = new CommandLoader(new TestObjects.TestObjectWithoutAttributes());
         Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
+    }
+
+    private static class PrivateTestObject {
     }
 }

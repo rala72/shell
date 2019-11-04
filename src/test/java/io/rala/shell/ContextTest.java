@@ -22,9 +22,22 @@ class ContextTest {
 
     @Test
     void constructorWithSameOutputs() {
-        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(System.out));
-        Context context = new Context(printWriter, Collections.emptyMap());
+        Context context = new Context(
+            getSystemOutPrintWriter(),
+            Collections.emptyMap()
+        );
         Assertions.assertEquals(context.getOutput(), context.getError());
+    }
+
+    @Test
+    void constructorWithDifferentOutputs() {
+        PrintWriter outPrintWriter = getSystemOutPrintWriter();
+        Context context = new Context(
+            getSystemOutPrintWriter(),
+            getSystemErrorPrintWriter(),
+            Collections.emptyMap()
+        );
+        Assertions.assertNotEquals(context.getOutput(), context.getError());
     }
 
     @Test

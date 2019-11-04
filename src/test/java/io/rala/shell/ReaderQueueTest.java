@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 class ReaderQueueTest {
@@ -99,8 +100,9 @@ class ReaderQueueTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             inputStream.requestIoException();
-            queue.put("\n");
+            waitUntil(readerQueue::hasException);
             Thread.sleep(100);
+            Assertions.assertFalse(thread.isAlive());
             Assertions.assertNotNull(readerQueue.getIOException());
             Assertions.assertNull(readerQueue.getInterruptedException());
         });
@@ -119,9 +121,13 @@ class ReaderQueueTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             queue.put("\n");
+            waitUntil(() -> queue.isEmpty());
             queue.put("\n");
+            waitUntil(() -> queue.isEmpty());
             thread.interrupt();
+            waitUntil(readerQueue::hasException);
             Thread.sleep(100);
+            Assertions.assertFalse(thread.isAlive());
             Assertions.assertNull(readerQueue.getIOException());
             Assertions.assertNotNull(readerQueue.getInterruptedException());
         });
@@ -129,5 +135,14 @@ class ReaderQueueTest {
         Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+    }
+
+    private void waitUntil(Callable<Boolean> callable) {
+        try {
+            //noinspection StatementWithEmptyBody
+            while (!callable.call()) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

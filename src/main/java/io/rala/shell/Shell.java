@@ -51,7 +51,7 @@ public class Shell implements Runnable {
             while (Thread.currentThread().isAlive()) {
                 printPrompt();
                 String line = readerQueue.take();
-                if (line == null) return;
+                if (line == null) break;
                 if (line.isBlank()) continue;
                 boolean success = handleInput(Input.parse(line));
                 if (isStopOnInvalidCommandEnabled() && !success) break;

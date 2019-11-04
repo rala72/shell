@@ -21,8 +21,22 @@ public class BlockingQueueInputStream extends InputStream {
     }
 
     @Override
+    public int available() {
+        if (ioExceptionRequested) {
+            // StreamDecoder#ready catches IOExceptions
+            // so it is necessary to make sure a read method is throwing it
+            // throwIoExceptionIfRequested();
+            return 1;
+        }
+        int available = calcAvailable();
+        return available != 0 ? available :
+            stringReader == null && readNextEntryFailed(false) ?
+                0 : calcAvailable();
+    }
+
+    @Override
     public int read() throws IOException {
-        if (ioExceptionRequested) throw new IOException("manual requested exception");
+        throwIoExceptionIfRequested();
         // this method should not be used
         int read = stringReader != null ? stringReader.read() : -1;
         if (read == -1) {
@@ -35,7 +49,7 @@ public class BlockingQueueInputStream extends InputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        if (ioExceptionRequested) throw new IOException("manual requested exception");
+        throwIoExceptionIfRequested();
         if (closeRequested) return -1;
         // https://stackoverflow.com/a/36286373/2715720
         if (stringReader == null)
@@ -63,8 +77,21 @@ public class BlockingQueueInputStream extends InputStream {
         return String.join(", ", queue);
     }
 
+    private void throwIoExceptionIfRequested() throws IOException {
+        if (ioExceptionRequested) throw new IOException("manual requested exception");
+    }
+
+    private int calcAvailable() {
+        return missing + queue.stream().mapToInt(String::length).sum();
+    }
+
     private boolean readNextEntryFailed() {
+        return readNextEntryFailed(true);
+    }
+
+    private boolean readNextEntryFailed(boolean blocking) {
         try {
+            if (!blocking && queue.isEmpty()) return false;
             String next = queue.take();
             stringReader = new StringReader(next);
             missing = next.length();

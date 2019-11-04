@@ -25,6 +25,9 @@ public class ReaderQueue implements Runnable {
     public void run() {
         try {
             while (Thread.currentThread().isAlive()) {
+                if (Thread.currentThread().isInterrupted())
+                    throw new InterruptedException();
+                if (!bufferedReader.ready()) continue;
                 String line = bufferedReader.readLine();
                 if (line == null) break;
                 queue.put(line.trim());
@@ -46,6 +49,10 @@ public class ReaderQueue implements Runnable {
 
     public final String peek() {
         return queue.peek();
+    }
+
+    protected boolean hasException() {
+        return getIOException() != null || getInterruptedException() != null;
     }
 
     protected IOException getIOException() {

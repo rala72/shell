@@ -81,8 +81,18 @@ public class Shell implements Runnable {
         commands.putAll(new CommandLoader(object).getCommandMethodMap());
     }
 
-    public void register(DefaultCommand defaultCommand) {
-        register(defaultCommand.getName(), defaultCommand.getCommand());
+    public void register(DefaultCommand command) {
+        register(command.getName(), command.getCommand());
+    }
+
+    public void register(DefaultCommand command, DefaultCommand... furtherCommands) {
+        if (command != null) register(command);
+        register(furtherCommands);
+    }
+
+    public void register(DefaultCommand[] commands) {
+        for (DefaultCommand command : commands)
+            register(command);
     }
 
     public void register(String name, Command command) {

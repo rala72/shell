@@ -220,6 +220,38 @@ class ShellTest {
     }
 
     @Test
+    void testRegisterMultipleDefaults() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(DefaultCommand.HELP, DefaultCommand.EXIT);
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("help");
+            for (int i = 0; i < 2; i++)
+                Assertions.assertFalse(testShell.getOutputHistory().take().isEmpty());
+        });
+        thread.interrupt();
+    }
+
+    @Test
+    void testRegisterAllDefaults() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(DefaultCommand.values());
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("help");
+            for (int i = 0; i < DefaultCommand.values().length; i++)
+                Assertions.assertFalse(testShell.getOutputHistory().take().isEmpty());
+        });
+        thread.interrupt();
+    }
+
+    @Test
     void testRegisterAlreadyPresentCommand() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

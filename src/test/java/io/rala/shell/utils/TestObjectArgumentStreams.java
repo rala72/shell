@@ -29,6 +29,9 @@ public class TestObjectArgumentStreams {
             ),
             createMethodWithStringParameterArgumentsStream(
                 "methodWithOneStringArrayParameter", "array", 0, 4, null
+            ),
+            createMethodWithStringParameterArgumentsStream(
+                "methodWithOneStringListParameter", "list", 0, 4, null
             )
         ).flatMap(argumentsStream -> argumentsStream);
     }

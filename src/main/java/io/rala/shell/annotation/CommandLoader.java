@@ -41,13 +41,12 @@ public class CommandLoader {
 
     private void validateCommandMethod(CommandMethod commandMethod) {
         Parameter[] parameters = commandMethod.getMethod().getParameters();
-        long arrayParameterCount = Stream.of(parameters)
-            .map(Parameter::getType)
-            .filter(Class::isArray)
+        long dynamicParameterCount = Stream.of(parameters)
+            .filter(CommandMethod::isParameterDynamic)
             .count();
-        if (1 < arrayParameterCount)
+        if (1 < dynamicParameterCount)
             throw IllegalParameterException.createNewOnlyOneArrayInstance(commandMethod.getName());
-        if (arrayParameterCount == 1 && !commandMethod.isLastParameterDynamic())
+        if (dynamicParameterCount == 1 && !commandMethod.isLastParameterDynamic())
             throw IllegalParameterException.createNewOnlyLastArrayOrVararg(commandMethod.getName());
         if (getCommandMethodMap().containsKey(commandMethod.getName()))
             throw new CommandAlreadyPresentException(commandMethod.getName());

@@ -4,6 +4,8 @@ import io.rala.shell.DefaultCommand;
 import io.rala.shell.Shell;
 import io.rala.shell.annotation.Command;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class ManualTest implements Runnable {
     private final Shell shell;
@@ -20,7 +22,7 @@ public class ManualTest implements Runnable {
     }
 
     @Command(documentation = "prints arguments written afterwards", usage = "echo [text [text...]]")
-    public void echo(String... line) {
+    public void echo(List<String> line) {
         shell.printLine(String.join(" ", line));
     }
 

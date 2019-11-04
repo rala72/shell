@@ -4,6 +4,8 @@ import io.rala.shell.utils.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 class CommandMethodTest {
     @Test
     void commandWithoutAttributesAndMethodWithoutParameter() throws NoSuchMethodException {
@@ -126,6 +128,33 @@ class CommandMethodTest {
             TestObject.class.getMethod(
                 "methodWithOneStringArrayParameter",
                 String[].class
+            ),
+            commandMethod.getMethod()
+        );
+        Assertions.assertEquals(0, commandMethod.getMinParameterCount());
+        Assertions.assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+        assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
+    }
+
+    @Test
+    void commandWithoutAttributesAndMethodWithOneStringListParameter() throws NoSuchMethodException {
+        CommandAnnotation commandAnnotation = new CommandAnnotation();
+        CommandMethod commandMethod = new CommandMethod(
+            commandAnnotation,
+            TestObject.class.getMethod(
+                "methodWithOneStringListParameter",
+                List.class
+            )
+        );
+        Assertions.assertEquals(
+            "methodWithOneStringListParameter",
+            commandMethod.getName()
+        );
+        Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
+        Assertions.assertEquals(
+            TestObject.class.getMethod(
+                "methodWithOneStringListParameter",
+                List.class
             ),
             commandMethod.getMethod()
         );

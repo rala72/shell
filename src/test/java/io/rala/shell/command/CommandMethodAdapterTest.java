@@ -109,6 +109,11 @@ class CommandMethodAdapterTest {
         }
     }
 
+    @Test
+    void commandWithListParameter() {
+
+    }
+
     // region execute exception
 
     @Test

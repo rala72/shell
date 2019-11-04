@@ -5,9 +5,9 @@ import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandMethod;
 import io.rala.shell.exception.MethodCallException;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class CommandMethodAdapter implements Command {
     private final Object object;
@@ -42,13 +42,17 @@ public class CommandMethodAdapter implements Command {
                 Object value;
                 Parameter parameter = parameters[i];
                 if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
-                    Class<?> componentType = parameter.getType().getComponentType();
-                    value = input.getArguments()
+                    Class<?> componentType =
+                        CommandMethod.isParameterArray(parameter) ?
+                            parameter.getType().getComponentType() :
+                            getFirstGenericClass(commandMethod.getMethod());
+                    Object[] array = input.getArguments()
                         .subList(i, input.getArguments().size())
                         .stream()
                         .map(s -> mapParameter(componentType, s))
                         .map(componentType::cast)
                         .toArray(n -> (Object[]) Array.newInstance(componentType, n));
+                    value = CommandMethod.isParameterArray(parameter) ? array : List.of(array);
                 } else {
                     String argument = input.get(i)
                         .orElseThrow(() -> new MethodCallException("argument missing"));
@@ -103,5 +107,15 @@ public class CommandMethodAdapter implements Command {
             return Double.parseDouble(value);
         }
         return value;
+    }
+
+    private static Class<?> getFirstGenericClass(Method method) {
+        // http://tutorials.jenkov.com/java-reflection/generics.html#parametertypes
+        return Stream.of(method.getGenericParameterTypes())
+            .filter(type -> type instanceof ParameterizedType)
+            .map(type -> (ParameterizedType) type)
+            .map(ParameterizedType::getActualTypeArguments)
+            .map(types -> 0 < types.length ? (Class) types[0] : String.class)
+            .findFirst().orElse(String.class);
     }
 }

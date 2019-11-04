@@ -2,6 +2,8 @@ package io.rala.shell.utils;
 
 import io.rala.shell.annotation.Command;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class TestObject {
     private TestContext context;
@@ -30,6 +32,10 @@ public class TestObject {
 
     @Command
     public void methodWithOneStringArrayParameter(String[] s) {
+    }
+
+    @Command
+    public void methodWithOneStringListParameter(List<String> s) {
     }
 
     // endregion

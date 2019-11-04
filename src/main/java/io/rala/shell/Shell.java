@@ -44,7 +44,7 @@ public class Shell implements Runnable {
 
     @Override
     public void run() {
-        Thread thread = null;
+        Thread thread = new Thread();
         try {
             thread = new Thread(readerQueue);
             thread.start();
@@ -57,8 +57,8 @@ public class Shell implements Runnable {
                 if (isStopOnInvalidCommandEnabled() && !success) break;
             }
         } catch (StopShellException ignored) {
-            if (thread != null) thread.interrupt();
         }
+        thread.interrupt();
     }
 
     public void setFallback(Command fallback) {

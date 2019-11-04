@@ -1,6 +1,6 @@
 package io.rala.shell.exception;
 
-@SuppressWarnings({"unused", "WeakerAccess", "FieldCanBeLocal"})
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class IllegalParameterException extends RuntimeException {
     private static final String SUFFIX_ONLY_ONE_ARRAY =
         ": may only have one array parameter";

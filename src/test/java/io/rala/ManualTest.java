@@ -4,6 +4,7 @@ import io.rala.shell.DefaultCommand;
 import io.rala.shell.Shell;
 import io.rala.shell.annotation.Command;
 
+@SuppressWarnings("unused")
 public class ManualTest implements Runnable {
     private final Shell shell;
 

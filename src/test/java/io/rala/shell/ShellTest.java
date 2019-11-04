@@ -172,6 +172,21 @@ class ShellTest {
     }
 
     @Test
+    void testThreadInterruptClosesThread() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+
+        Thread thread = new Thread(shell);
+        thread.start();
+
+        thread.interrupt();
+
+        Thread.sleep(100);
+        Assertions.assertFalse(thread.isAlive());
+        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+    }
+
+    @Test
     void testExit() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

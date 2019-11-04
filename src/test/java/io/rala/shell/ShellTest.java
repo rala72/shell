@@ -48,6 +48,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
@@ -66,6 +67,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
@@ -99,6 +101,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("close");
             String take = testShell.getErrorHistory().take();
@@ -115,6 +118,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             Assertions.assertFalse(shell.isStopOnInvalidCommandEnabled());
             testShell.putLine("close");
@@ -137,6 +141,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
@@ -158,6 +163,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
@@ -178,6 +184,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
 
         thread.interrupt();
 
@@ -194,6 +201,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT),
             () -> testShell.putLine("exit")
         );
@@ -210,6 +218,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT),
             () -> testShell.putLine("exit")
         );
@@ -226,6 +235,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("help");
             String take = testShell.getOutputHistory().take();
@@ -242,6 +252,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("help");
             for (int i = 0; i < 2; i++)
@@ -258,6 +269,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("help");
             for (int i = 0; i < DefaultCommand.values().length; i++)
@@ -288,6 +300,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
@@ -308,6 +321,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithMessage");
             String take = testShell.getErrorHistory().take();
@@ -327,6 +341,7 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
+        Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             Assertions.assertFalse(shell.isStopOnInvalidCommandEnabled());
             testShell.putLine("close");

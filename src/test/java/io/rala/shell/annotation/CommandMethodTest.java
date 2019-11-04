@@ -23,9 +23,7 @@ class CommandMethodTest {
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
         Assertions.assertEquals(1, commandMethod.getMaxParameterCount());
-        Assertions.assertFalse(commandMethod.isParameterCountValid(-1));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(0));
-        Assertions.assertFalse(commandMethod.isParameterCountValid(1));
+        assertParameterCount(commandMethod, -1, 2, 0, 1);
     }
 
     @Test
@@ -52,9 +50,7 @@ class CommandMethodTest {
         );
         Assertions.assertEquals(1, commandMethod.getMinParameterCount());
         Assertions.assertEquals(2, commandMethod.getMaxParameterCount());
-        Assertions.assertFalse(commandMethod.isParameterCountValid(0));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(1));
-        Assertions.assertFalse(commandMethod.isParameterCountValid(2));
+        assertParameterCount(commandMethod, 0, 3, 1, 2);
     }
 
     @Test
@@ -81,9 +77,7 @@ class CommandMethodTest {
         );
         Assertions.assertEquals(2, commandMethod.getMinParameterCount());
         Assertions.assertEquals(3, commandMethod.getMaxParameterCount());
-        Assertions.assertFalse(commandMethod.isParameterCountValid(1));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(2));
-        Assertions.assertFalse(commandMethod.isParameterCountValid(3));
+        assertParameterCount(commandMethod, 0, 4, 2, 3);
     }
 
     @Test
@@ -110,13 +104,7 @@ class CommandMethodTest {
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
         Assertions.assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
-        Assertions.assertFalse(commandMethod.isParameterCountValid(-1));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(0));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(1));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(2));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(3));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(Integer.MAX_VALUE - 1));
-        Assertions.assertFalse(commandMethod.isParameterCountValid(Integer.MAX_VALUE));
+        assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
     @Test
@@ -143,13 +131,7 @@ class CommandMethodTest {
         );
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
         Assertions.assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
-        Assertions.assertFalse(commandMethod.isParameterCountValid(-1));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(0));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(1));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(2));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(3));
-        Assertions.assertTrue(commandMethod.isParameterCountValid(Integer.MAX_VALUE - 1));
-        Assertions.assertFalse(commandMethod.isParameterCountValid(Integer.MAX_VALUE));
+        assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
     @Test
@@ -157,5 +139,14 @@ class CommandMethodTest {
         CommandMethod commandMethod = new CommandMethod(new CommandAnnotation(), TestObject.class.getMethod("toString"));
         String toString = "CommandMethod{command=Command(value=\"\", documentation=\"\"), method=toString}";
         Assertions.assertEquals(toString, commandMethod.toString());
+    }
+
+    private void assertParameterCount(CommandMethod commandMethod, int from, int to, int requestedMin, int requestedMax) {
+        for (int i = from; i < to; i++) {
+            Assertions.assertEquals(
+                requestedMin <= i && i < requestedMax,
+                commandMethod.isParameterCountValid(i),
+                String.valueOf(i));
+        }
     }
 }

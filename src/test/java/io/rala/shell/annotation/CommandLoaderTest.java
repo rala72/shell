@@ -38,7 +38,21 @@ class CommandLoaderTest {
             new CommandLoader(new TestObjects.TestObjectWithTwoArrays());
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
-                "commandWithTwoArrays: may only have one array parameter",
+                "commandWithTwoArrays: may only have one dynamic parameter",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
+    void commandWithTwoListParameterException() {
+        try {
+            new CommandLoader(new TestObjects.TestObjectWithTwoLists());
+        } catch (IllegalParameterException e) {
+            Assertions.assertEquals(
+                "commandWithTwoLists: may only have one dynamic parameter",
                 e.getMessage()
             );
             return;
@@ -52,7 +66,7 @@ class CommandLoaderTest {
             new CommandLoader(new TestObjects.TestObjectWithArrayNotOnEnd());
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
-                "commandWithArrayNotOnEnd: only last parameter may be an array or vararg",
+                "commandWithArrayNotOnEnd: only last parameter may be dynamic",
                 e.getMessage()
             );
             return;

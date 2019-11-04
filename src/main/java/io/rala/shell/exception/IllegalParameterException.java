@@ -2,20 +2,20 @@ package io.rala.shell.exception;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class IllegalParameterException extends RuntimeException {
-    private static final String SUFFIX_ONLY_ONE_ARRAY =
-        ": may only have one array parameter";
-    private static final String SUFFIX_ONLY_LAST_ARRAY_OR_VARARG =
-        ": only last parameter may be an array or vararg";
+    private static final String SUFFIX_ONLY_ONE_DYNAMIC =
+        ": may only have one dynamic parameter";
+    private static final String SUFFIX_ONLY_LAST_DYNAMIC =
+        ": only last parameter may be dynamic";
 
     protected IllegalParameterException(String message) {
         super(message);
     }
 
-    public static IllegalParameterException createNewOnlyOneArrayInstance(String method) {
-        return new IllegalParameterException(method + SUFFIX_ONLY_ONE_ARRAY);
+    public static IllegalParameterException createNewOnlyOneDynamicInstance(String method) {
+        return new IllegalParameterException(method + SUFFIX_ONLY_ONE_DYNAMIC);
     }
 
-    public static IllegalParameterException createNewOnlyLastArrayOrVararg(String method) {
-        return new IllegalParameterException(method + SUFFIX_ONLY_LAST_ARRAY_OR_VARARG);
+    public static IllegalParameterException createNewOnlyLastDynamicInstance(String method) {
+        return new IllegalParameterException(method + SUFFIX_ONLY_LAST_DYNAMIC);
     }
 }

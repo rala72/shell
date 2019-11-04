@@ -7,10 +7,10 @@ class IllegalParameterExceptionTest {
     @Test
     void newOnlyOneArrayInstance() {
         try {
-            throw IllegalParameterException.createNewOnlyOneArrayInstance("method");
+            throw IllegalParameterException.createNewOnlyOneDynamicInstance("method");
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
-                "method: may only have one array parameter",
+                "method: may only have one dynamic parameter",
                 e.getMessage()
             );
         }
@@ -19,10 +19,10 @@ class IllegalParameterExceptionTest {
     @Test
     void newOnlyLastArrayOrVararg() {
         try {
-            throw IllegalParameterException.createNewOnlyLastArrayOrVararg("method");
+            throw IllegalParameterException.createNewOnlyLastDynamicInstance("method");
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
-                "method: only last parameter may be an array or vararg",
+                "method: only last parameter may be dynamic",
                 e.getMessage()
             );
         }

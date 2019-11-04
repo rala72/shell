@@ -3,6 +3,8 @@ package io.rala.shell.utils;
 import io.rala.shell.annotation.Command;
 import io.rala.shell.annotation.CommandLoader;
 
+import java.util.List;
+
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class TestObjects {
     private TestObjects() {
@@ -35,6 +37,12 @@ public class TestObjects {
     public static class TestObjectWithTwoArrays {
         @Command
         public void commandWithTwoArrays(String[] array1, String... varargs) {
+        }
+    }
+
+    public static class TestObjectWithTwoLists {
+        @Command
+        public void commandWithTwoLists(List<String> list1, List<String> list2) {
         }
     }
 

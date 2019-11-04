@@ -45,7 +45,7 @@ public class Shell implements Runnable {
     public void run() {
         try {
             while (Thread.currentThread().isAlive()) {
-                prompt();
+                printPrompt();
                 String line = input.readLine();
                 if (line == null) return;
                 if (line.isBlank()) continue;
@@ -146,7 +146,7 @@ public class Shell implements Runnable {
         return true;
     }
 
-    private void prompt() {
+    private void printPrompt() {
         if (prompt.isEmpty()) return;
         context.getOutput().print(prompt);
         context.getOutput().flush();

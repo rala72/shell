@@ -6,6 +6,7 @@ import io.rala.shell.exception.StopShellException;
 import io.rala.shell.utils.TestObject;
 import io.rala.shell.utils.TestShell;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -175,6 +176,26 @@ class ShellTest {
         Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());
         thread.interrupt();
+    }
+
+    @Test
+    @Disabled(
+        "because close input stream does not throw any exception: " +
+            "https://stackoverflow.com/a/7456207/2715720"
+    )
+    void testInputClose() throws InterruptedException {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTrue(thread.isAlive());
+
+        testShell.closeInputStream();
+
+        Thread.sleep(100);
+        Assertions.assertFalse(thread.isAlive());
+        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test

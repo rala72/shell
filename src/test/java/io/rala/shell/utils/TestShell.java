@@ -10,22 +10,29 @@ import java.util.concurrent.LinkedBlockingQueue;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class TestShell {
     private final Shell shell;
+    private final BlockingQueueInputStream inputStream;
     private final BlockingQueue<String> queue;
     private final BlockingQueue<String> outputHistory;
     private final BlockingQueue<String> errorHistory;
 
     private TestShell(HistoryOutputStream outputStream) {
         queue = new LinkedBlockingQueue<>();
-        shell = new Shell(new BlockingQueueInputStream(queue), outputStream);
+        inputStream = new BlockingQueueInputStream(queue);
+        shell = new Shell(inputStream, outputStream);
         outputHistory = outputStream.getHistory();
         errorHistory = outputHistory;
     }
 
     private TestShell(HistoryOutputStream outputStream, HistoryOutputStream errorStream) {
         queue = new LinkedBlockingQueue<>();
-        shell = new Shell(new BlockingQueueInputStream(queue), outputStream, errorStream);
+        inputStream = new BlockingQueueInputStream(queue);
+        shell = new Shell(inputStream, outputStream, errorStream);
         outputHistory = outputStream.getHistory();
         errorHistory = errorStream.getHistory();
+    }
+
+    public void closeInputStream() {
+        inputStream.close();
     }
 
     public void put(String s) throws InterruptedException {

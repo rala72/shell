@@ -16,7 +16,7 @@ import java.util.TreeMap;
 public class Shell implements Runnable {
     public static final String DEFAULT_PROMPT = "> ";
 
-    private final BufferedReader input;
+    private final ReaderQueue readerQueue;
     private final Context context;
     private final Map<String, Command> commands = new TreeMap<>();
     private Command fallback;
@@ -33,7 +33,8 @@ public class Shell implements Runnable {
     }
 
     public Shell(InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
-        this.input = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        this.readerQueue = new ReaderQueue(reader);
         this.context = new Context(
             new PrintWriter(outputStream, true),
             new PrintWriter(errorStream, true),
@@ -43,16 +44,20 @@ public class Shell implements Runnable {
 
     @Override
     public void run() {
+        Thread thread = null;
         try {
+            thread = new Thread(readerQueue);
+            thread.start();
             while (Thread.currentThread().isAlive()) {
                 printPrompt();
-                String line = input.readLine();
+                String line = readerQueue.take();
                 if (line == null) return;
                 if (line.isBlank()) continue;
                 boolean success = handleInput(Input.parse(line));
                 if (isStopOnInvalidCommandEnabled() && !success) break;
             }
-        } catch (StopShellException | IOException ignored) {
+        } catch (StopShellException ignored) {
+            if (thread != null) thread.interrupt();
         }
     }
 

@@ -13,6 +13,7 @@ public class BlockingQueueInputStream extends InputStream {
     private final BlockingQueue<String> queue;
     private StringReader stringReader;
     private int missing;
+    private boolean ioExceptionRequested = false;
     private boolean closeRequested = false;
 
     public BlockingQueueInputStream(BlockingQueue<String> queue) {
@@ -21,6 +22,7 @@ public class BlockingQueueInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
+        if (ioExceptionRequested) throw new IOException("manual requested exception");
         // this method should not be used
         int read = stringReader != null ? stringReader.read() : -1;
         if (read == -1) {
@@ -33,6 +35,7 @@ public class BlockingQueueInputStream extends InputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        if (ioExceptionRequested) throw new IOException("manual requested exception");
         if (closeRequested) return -1;
         // https://stackoverflow.com/a/36286373/2715720
         if (stringReader == null)
@@ -49,6 +52,10 @@ public class BlockingQueueInputStream extends InputStream {
     @Override
     public void close() {
         closeRequested = true;
+    }
+
+    public void requestIoException() {
+        ioExceptionRequested = true;
     }
 
     @Override

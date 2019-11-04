@@ -66,7 +66,8 @@ class ReaderQueueTest {
         Assertions.assertTrue(thread.isAlive());
 
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
-            queue.put("entry\n");
+            queue.put("entry");
+            queue.put("\n");
             String peek = readerQueue.peek();
             Assertions.assertNull(peek);
             String take = readerQueue.take();

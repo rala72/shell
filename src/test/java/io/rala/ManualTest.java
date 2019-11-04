@@ -11,8 +11,7 @@ public class ManualTest implements Runnable {
     private ManualTest() {
         shell = new Shell();
         shell.register(this);
-        shell.register(DefaultCommand.HELP);
-        shell.register(DefaultCommand.EXIT);
+        shell.register(DefaultCommand.values());
     }
 
     @Override

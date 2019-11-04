@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class CommandMethodTest {
     @Test
-    void testCommandWithoutAttributesAndMethodWithoutParameter() throws NoSuchMethodException {
+    void commandWithoutAttributesAndMethodWithoutParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
@@ -29,7 +29,7 @@ class CommandMethodTest {
     }
 
     @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringParameter() throws NoSuchMethodException {
+    void commandWithoutAttributesAndMethodWithOneStringParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
@@ -58,7 +58,7 @@ class CommandMethodTest {
     }
 
     @Test
-    void testCommandWithoutAttributesAndMethodWithTwoStringParameter() throws NoSuchMethodException {
+    void commandWithoutAttributesAndMethodWithTwoStringParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
@@ -87,7 +87,7 @@ class CommandMethodTest {
     }
 
     @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringVarargsParameter() throws NoSuchMethodException {
+    void commandWithoutAttributesAndMethodWithOneStringVarargsParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
@@ -120,7 +120,7 @@ class CommandMethodTest {
     }
 
     @Test
-    void testCommandWithoutAttributesAndMethodWithOneStringArrayParameter() throws NoSuchMethodException {
+    void commandWithoutAttributesAndMethodWithOneStringArrayParameter() throws NoSuchMethodException {
         CommandAnnotation commandAnnotation = new CommandAnnotation();
         CommandMethod commandMethod = new CommandMethod(
             commandAnnotation,
@@ -153,7 +153,7 @@ class CommandMethodTest {
     }
 
     @Test
-    void testToString() throws NoSuchMethodException {
+    void toStringOfEmptyCommandAndToStringMethod() throws NoSuchMethodException {
         CommandMethod commandMethod = new CommandMethod(new CommandAnnotation(), TestObject.class.getMethod("toString"));
         String toString = "CommandMethod{command=Command(value=\"\", documentation=\"\"), method=toString}";
         Assertions.assertEquals(toString, commandMethod.toString());

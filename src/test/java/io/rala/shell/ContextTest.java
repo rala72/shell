@@ -15,20 +15,20 @@ import java.util.concurrent.BlockingQueue;
 @SuppressWarnings("unused")
 class ContextTest {
     @Test
-    void testEmptyCommands() {
+    void emptyCommands() {
         Context context = new Context(getSystemOutPrintWriter(), Collections.emptyMap());
         Assertions.assertTrue(context.getCommands().isEmpty());
     }
 
     @Test
-    void testConstructorWithSameOutputs() {
+    void constructorWithSameOutputs() {
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(System.out));
         Context context = new Context(printWriter, Collections.emptyMap());
         Assertions.assertEquals(context.getOutput(), context.getError());
     }
 
     @Test
-    void testCommandsWithExit() {
+    void commandsWithExit() {
         Context context = new Context(getSystemOutPrintWriter(), Map.of("help", new ExitCommand()));
         Assertions.assertFalse(context.getCommands().isEmpty());
         Assertions.assertTrue(context.getCommands().containsKey("help"));
@@ -36,7 +36,7 @@ class ContextTest {
     }
 
     @Test
-    void testOutputAndError() {
+    void outputAndError() {
         TestContext testContext = new TestContext();
 
         testContext.printLine("line");
@@ -53,7 +53,7 @@ class ContextTest {
     }
 
     @Test
-    void testErrorButNotOutput() {
+    void errorButNotOutput() {
         TestContext testContext = TestContext.getInstanceWithDifferentStreams();
 
         testContext.printError("error");
@@ -70,7 +70,7 @@ class ContextTest {
     }
 
     @Test
-    void testToString() {
+    void toStringOfEmptyContext() {
         String toString = "Context{output==error=false, commands={}}";
         Assertions.assertEquals(toString, new TestContext().toString());
     }

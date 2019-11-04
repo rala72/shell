@@ -12,24 +12,24 @@ class ExitCommandTest {
     private static final String USAGE = "exit";
 
     @Test
-    void testDocumentation() {
+    void documentation() {
         Assertions.assertEquals(DOCUMENTATION, new ExitCommand().getDocumentation());
     }
 
     @Test
-    void testUsage() {
+    void usage() {
         Assertions.assertEquals(USAGE, new ExitCommand().getUsage());
     }
 
     @Test
-    void testExecuteWithoutParameters() {
+    void executeWithoutParameters() {
         Assertions.assertThrows(StopShellException.class, () ->
             new ExitCommand().execute(new Input(COMMAND), new TestContext())
         );
     }
 
     @Test
-    void testExecuteWithParameters() {
+    void executeWithParameters() {
         TestContext testContext = TestContext.getInstanceWithDifferentStreams();
         new ExitCommand().execute(new Input(COMMAND, "cmd"), testContext);
         Assertions.assertTrue(testContext.getOutputHistory().isEmpty());
@@ -38,7 +38,7 @@ class ExitCommandTest {
     }
 
     @Test
-    void testToString() {
+    void toStringOfCommand() {
         Assertions.assertEquals("ExitCommand", new ExitCommand().toString());
     }
 }

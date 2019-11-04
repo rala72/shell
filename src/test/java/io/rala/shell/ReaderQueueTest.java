@@ -25,7 +25,7 @@ class ReaderQueueTest {
     }
 
     @Test
-    void testTake() {
+    void take() {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -40,7 +40,7 @@ class ReaderQueueTest {
     }
 
     @Test
-    void testTakeNullOnInterrupt() {
+    void takeNullOnInterrupt() {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -59,7 +59,7 @@ class ReaderQueueTest {
     }
 
     @Test
-    void testPeek() {
+    void peek() {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -77,7 +77,7 @@ class ReaderQueueTest {
     }
 
     @Test
-    void testClosing() throws InterruptedException {
+    void closing() throws InterruptedException {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -91,7 +91,7 @@ class ReaderQueueTest {
     }
 
     @Test
-    void testClosingOnIOException() throws InterruptedException {
+    void closingOnIOException() throws InterruptedException {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -111,7 +111,7 @@ class ReaderQueueTest {
     }
 
     @Test
-    void testClosingOnInterrupt() throws InterruptedException {
+    void closingOnInterrupt() throws InterruptedException {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader, 1);
         Thread thread = new Thread(readerQueue);
         thread.start();

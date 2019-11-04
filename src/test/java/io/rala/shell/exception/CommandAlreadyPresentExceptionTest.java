@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class CommandAlreadyPresentExceptionTest {
     @Test
-    void testMessage() {
+    void message() {
         try {
             throw new CommandAlreadyPresentException("cmd");
         } catch (CommandAlreadyPresentException e) {

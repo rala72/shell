@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class MethodCallExceptionTest {
     @Test
-    void testMessage() {
+    void message() {
         try {
             throw new MethodCallException("message");
         } catch (MethodCallException e) {
@@ -14,7 +14,7 @@ class MethodCallExceptionTest {
     }
 
     @Test
-    void testThrowable() {
+    void throwable() {
         try {
             throw new MethodCallException(new IllegalArgumentException());
         } catch (MethodCallException e) {

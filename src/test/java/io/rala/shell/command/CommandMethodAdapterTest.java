@@ -31,19 +31,19 @@ class CommandMethodAdapterTest {
     // region documentation & usage
 
     @Test
-    void testDocumentationOfCommandWithoutAttributes() {
+    void documentationOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
         Assertions.assertTrue(command.getDocumentation().isBlank());
     }
 
     @Test
-    void testUsageOfCommandWithoutAttributes() {
+    void usageOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
         Assertions.assertTrue(command.getUsage().isBlank());
     }
 
     @Test
-    void testDocumentationOfCommandWithAttributes() {
+    void documentationOfCommandWithAttributes() {
         Assertions.assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
@@ -52,7 +52,7 @@ class CommandMethodAdapterTest {
     }
 
     @Test
-    void testUsageOfCommandWithAttributes() {
+    void usageOfCommandWithAttributes() {
         Assertions.assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
@@ -64,7 +64,7 @@ class CommandMethodAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getStringArguments")
-    void testCommandWithoutAttributes(Input input, Integer expectedArguments) {
+    void commandWithoutAttributes(Input input, Integer expectedArguments) {
         executeCommand(input);
         if (expectedArguments == null || input.getArguments().size() == expectedArguments)
             assertOutputsAreEmpty();
@@ -73,7 +73,7 @@ class CommandMethodAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getValidMappingArguments")
-    void testCommandWithValidParameterMapping(String name, boolean isPrimitive, Input input) {
+    void commandWithValidParameterMapping(String name, boolean isPrimitive, Input input) {
         String command = input.getCommand();
         Assertions.assertTrue(command.contains(name));
         Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
@@ -88,7 +88,7 @@ class CommandMethodAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getInvalidMappingArguments")
-    void testCommandWithInvalidParameterMapping(String name, boolean isPrimitive, Input input) {
+    void commandWithInvalidParameterMapping(String name, boolean isPrimitive, Input input) {
         String command = input.getCommand();
         Assertions.assertTrue(command.contains(name));
         Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
@@ -112,14 +112,14 @@ class CommandMethodAdapterTest {
     // region execute exception
 
     @Test
-    void testExceptionCommandWithoutAttributes() {
+    void exceptionCommandWithoutAttributes() {
         Assertions.assertThrows(MethodCallException.class,
             () -> executeCommand(new Input("exceptionCommandWithoutMessage"))
         );
     }
 
     @Test
-    void testIllegalAccessCommandWithoutAttributes() throws NoSuchMethodException {
+    void illegalAccessCommandWithoutAttributes() throws NoSuchMethodException {
         CommandMethodAdapter illegalAccessCommand = new CommandMethodAdapter(
             new TestObject(),
             new CommandMethod(new CommandAnnotation(),
@@ -134,7 +134,7 @@ class CommandMethodAdapterTest {
     // endregion
 
     @Test
-    void testToStringOfCommandWithoutAttributes() {
+    void toStringOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
         String toString = "CommandMethodAdapter{object=TestObject, " +
             "commandMethod=CommandMethod{" +

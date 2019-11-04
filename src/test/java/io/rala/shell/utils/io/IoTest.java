@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("SameParameterValue")
 class IoTest {
     @Test
-    void testNewLines() throws InterruptedException {
+    void newLines() throws InterruptedException {
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
         HistoryOutputStream historyOutputStream = new HistoryOutputStream();
         transferInputToOutput(queue, historyOutputStream);
@@ -29,7 +29,7 @@ class IoTest {
     }
 
     @Test
-    void testJoiningWithNewLineOnLastElement() throws InterruptedException {
+    void joiningWithNewLineOnLastElement() throws InterruptedException {
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
         HistoryOutputStream historyOutputStream = new HistoryOutputStream();
         transferInputToOutput(queue, historyOutputStream);
@@ -45,7 +45,7 @@ class IoTest {
     }
 
     @Test
-    void testJoiningWithExtraNewLine() throws InterruptedException {
+    void joiningWithExtraNewLine() throws InterruptedException {
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
         HistoryOutputStream historyOutputStream = new HistoryOutputStream();
         transferInputToOutput(queue, historyOutputStream);

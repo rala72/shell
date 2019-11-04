@@ -20,7 +20,7 @@ class ShellTest {
     };
 
     @Test
-    void testSameOutputs() {
+    void sameOutputs() {
         TestShell testShell = TestShell.getInstanceWithSameOutputs();
         Shell shell = testShell.getShell();
         shell.printLine("line");
@@ -30,7 +30,7 @@ class ShellTest {
     }
 
     @Test
-    void testDifferentOutputs() {
+    void differentOutputs() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.printLine("line");
@@ -42,7 +42,7 @@ class ShellTest {
     }
 
     @Test
-    void testInput() {
+    void input() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register("echo", ECHO_COMMAND);
@@ -61,7 +61,7 @@ class ShellTest {
     }
 
     @Test
-    void testPrompt() {
+    void prompt() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register("echo", ECHO_COMMAND);
@@ -96,7 +96,7 @@ class ShellTest {
     }
 
     @Test
-    void testCommandNotFound() {
+    void commandNotFound() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -112,7 +112,7 @@ class ShellTest {
     }
 
     @Test
-    void testFallbackCommand() {
+    void fallbackCommand() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.setFallback((input, context) -> context.printLine("fallback"));
@@ -132,7 +132,7 @@ class ShellTest {
     }
 
     @Test
-    void testExceptionHandlerWithoutException() throws InterruptedException {
+    void exceptionHandlerWithoutException() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -154,7 +154,7 @@ class ShellTest {
     }
 
     @Test
-    void testExceptionHandlerThrowingException() throws InterruptedException {
+    void exceptionHandlerThrowingException() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -183,7 +183,7 @@ class ShellTest {
         "because close input stream does not throw any exception: " +
             "https://stackoverflow.com/a/7456207/2715720"
     )
-    void testInputClose() throws InterruptedException {
+    void inputClose() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -199,7 +199,7 @@ class ShellTest {
     }
 
     @Test
-    void testThreadInterruptClosesThread() throws InterruptedException {
+    void threadInterruptClosesThread() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -215,7 +215,7 @@ class ShellTest {
     }
 
     @Test
-    void testExit() throws InterruptedException {
+    void exit() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register("exit", EXIT_COMMAND);
@@ -232,7 +232,7 @@ class ShellTest {
     }
 
     @Test
-    void testRegisterExitDefault() throws InterruptedException {
+    void registerExitDefault() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.EXIT);
@@ -249,7 +249,7 @@ class ShellTest {
     }
 
     @Test
-    void testRegisterHelpDefault() {
+    void registerHelpDefault() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.HELP);
@@ -266,7 +266,7 @@ class ShellTest {
     }
 
     @Test
-    void testRegisterMultipleDefaults() {
+    void registerMultipleDefaults() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.HELP, DefaultCommand.EXIT);
@@ -283,7 +283,7 @@ class ShellTest {
     }
 
     @Test
-    void testRegisterAllDefaults() {
+    void registerAllDefaults() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.values());
@@ -300,7 +300,7 @@ class ShellTest {
     }
 
     @Test
-    void testRegisterAlreadyPresentCommand() {
+    void registerAlreadyPresentCommand() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.HELP);
@@ -314,7 +314,7 @@ class ShellTest {
     }
 
     @Test
-    void testExceptionCommandWithoutMessage() throws InterruptedException {
+    void exceptionCommandWithoutMessage() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -335,7 +335,7 @@ class ShellTest {
     }
 
     @Test
-    void testExceptionCommandWithMessage() throws InterruptedException {
+    void exceptionCommandWithMessage() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -356,7 +356,7 @@ class ShellTest {
     }
 
     @Test
-    void testStopOnInvalidCommand() throws InterruptedException {
+    void stopOnInvalidCommand() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -384,7 +384,7 @@ class ShellTest {
     }
 
     @Test
-    void testToString() {
+    void toStringOfShellWithEmptyConstructor() {
         Assertions.assertEquals("Shell", new Shell().toString());
     }
 }

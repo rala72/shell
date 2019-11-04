@@ -8,7 +8,7 @@ import java.util.Optional;
 
 class InputTest {
     @Test
-    void testConstructorWithoutArguments() {
+    void constructorWithoutArguments() {
         Input input = new Input("cmd");
         Assertions.assertEquals("cmd", input.getCommand());
         Assertions.assertFalse(input.hasArguments());
@@ -16,7 +16,7 @@ class InputTest {
     }
 
     @Test
-    void testConstructorWithVarargsArguments() {
+    void constructorWithVarargsArguments() {
         Input input = new Input("cmd", "arg1", "arg2");
         Assertions.assertEquals("cmd", input.getCommand());
         Assertions.assertTrue(input.hasArguments());
@@ -25,7 +25,7 @@ class InputTest {
     }
 
     @Test
-    void testConstructorWithListArguments() {
+    void constructorWithListArguments() {
         Input input = new Input("cmd", List.of("arg1", "arg2"));
         Assertions.assertEquals("cmd", input.getCommand());
         Assertions.assertTrue(input.hasArguments());
@@ -34,7 +34,7 @@ class InputTest {
     }
 
     @Test
-    void testGetWithoutArguments() {
+    void getWithoutArguments() {
         Input input = new Input("cmd");
         Assertions.assertEquals("cmd", input.getCommand());
         Assertions.assertFalse(input.hasArguments());
@@ -48,7 +48,7 @@ class InputTest {
     }
 
     @Test
-    void testGetWithArguments() {
+    void getWithArguments() {
         Input input = new Input("cmd", "arg");
         Assertions.assertEquals("cmd", input.getCommand());
         Assertions.assertTrue(input.hasArguments());
@@ -62,7 +62,7 @@ class InputTest {
     }
 
     @Test
-    void testParseWithoutFilter() {
+    void parseWithoutFilter() {
         Input input = Input.parse("this is a very  fancy line");
         Assertions.assertEquals("this", input.getCommand());
         Assertions.assertTrue(input.hasArguments());
@@ -71,7 +71,7 @@ class InputTest {
     }
 
     @Test
-    void testParseWithFilter() {
+    void parseWithFilter() {
         Input input = Input.parse("this is a very  fancy line", true);
         Assertions.assertEquals("this", input.getCommand());
         Assertions.assertTrue(input.hasArguments());
@@ -80,7 +80,7 @@ class InputTest {
     }
 
     @Test
-    void testToString() {
+    void toStringOfCmdCommandWithoutArguments() {
         String toString = "Input{command='cmd', arguments=[]}";
         Assertions.assertEquals(toString, new Input("cmd").toString());
     }

@@ -8,21 +8,21 @@ import org.junit.jupiter.api.Test;
 
 class CommandLoaderTest {
     @Test
-    void testCommandWithoutAttributesLoading() {
+    void commandWithoutAttributesLoading() {
         CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithoutAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithoutAttributes"));
     }
 
     @Test
-    void testCommandWithAttributesLoading() {
+    void commandWithAttributesLoading() {
         CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("cmd"));
     }
 
     @Test
-    void testCommandWithTwoArrayParameterException() {
+    void commandWithTwoArrayParameterException() {
         try {
             new CommandLoader(new TestObjects.TestObjectWithTwoArrays());
         } catch (IllegalParameterException e) {
@@ -36,7 +36,7 @@ class CommandLoaderTest {
     }
 
     @Test
-    void testCommandWithOneArrayParameterNotOnEndException() {
+    void commandWithOneArrayParameterNotOnEndException() {
         try {
             new CommandLoader(new TestObjects.TestObjectWithArrayNotOnEnd());
         } catch (IllegalParameterException e) {
@@ -50,7 +50,7 @@ class CommandLoaderTest {
     }
 
     @Test
-    void testCommandNotUniqueException() {
+    void commandNotUniqueException() {
         try {
             new CommandLoader(new TestObjects.CommandNotUniqueErrorTestObject());
         } catch (CommandAlreadyPresentException e) {
@@ -61,13 +61,13 @@ class CommandLoaderTest {
     }
 
     @Test
-    void testCommandIllegalAccessException() {
+    void commandIllegalAccessException() {
         CommandLoader commandLoader = TestObjects.getCommandLoaderForIllegalAccessErrorTestObject();
         Assertions.assertTrue(commandLoader.getCommandMethodMap().isEmpty());
     }
 
     @Test
-    void testToString() {
+    void toStringOfObjectWithoutAttributes() {
         CommandLoader commandLoader = new CommandLoader(new TestObjects.TestObjectWithoutAttributes());
         Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
     }

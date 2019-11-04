@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class CommandTest {
     @Test
-    void testDefaultCommand() {
+    void defaultCommand() {
         EmptyCommand emptyCommand = new EmptyCommand();
         Assertions.assertNull(emptyCommand.getDocumentation());
         Assertions.assertNull(emptyCommand.getUsage());

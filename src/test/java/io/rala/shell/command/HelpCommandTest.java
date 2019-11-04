@@ -18,17 +18,17 @@ class HelpCommandTest {
     };
 
     @Test
-    void testDocumentation() {
+    void documentation() {
         Assertions.assertEquals(DOCUMENTATION, new HelpCommand().getDocumentation());
     }
 
     @Test
-    void testUsage() {
+    void usage() {
         Assertions.assertEquals(USAGE, new HelpCommand().getUsage());
     }
 
     @Test
-    void testExecuteWithoutArguments() {
+    void executeWithoutArguments() {
         TestContext testContext = new TestContext();
 
         new HelpCommand().execute(new Input(COMMAND), testContext);
@@ -40,7 +40,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithInvalidArguments() {
+    void executeWithInvalidArguments() {
         TestContext testContext = new TestContext();
 
         new HelpCommand().execute(new Input(COMMAND, "cmd"), testContext);
@@ -52,7 +52,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithCommandWithoutDocumentation() {
+    void executeWithCommandWithoutDocumentation() {
         HelpCommand helpCommand = new HelpCommand();
         TestContext testContext = new TestContext(Map.of("cmd", EMPTY_COMMAND));
 
@@ -65,7 +65,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithHelp() {
+    void executeWithHelp() {
         HelpCommand helpCommand = new HelpCommand();
         TestContext testContext = new TestContext(Map.of("help", helpCommand));
 
@@ -78,7 +78,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithExitAndHelp() {
+    void executeWithExitAndHelp() {
         HelpCommand helpCommand = new HelpCommand();
         Map<String, Command> commandMap = Map.of("help", helpCommand, "exit", new ExitCommand());
         TestContext testContext = new TestContext(commandMap);
@@ -93,7 +93,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithExitAndHelpAndExitAsArgument() {
+    void executeWithExitAndHelpAndExitAsArgument() {
         HelpCommand helpCommand = new HelpCommand();
         Map<String, Command> commandMap = Map.of("help", helpCommand, "exit", new ExitCommand());
         TestContext testContext = new TestContext(commandMap);
@@ -108,7 +108,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithTestObjectWithoutArguments() {
+    void executeWithTestObjectWithoutArguments() {
         CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithoutAttributes();
         TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
         HelpCommand helpCommand = new HelpCommand();
@@ -122,7 +122,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testExecuteWithTestObjectWithArguments() {
+    void executeWithTestObjectWithArguments() {
         CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithAttributes();
         TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
         HelpCommand helpCommand = new HelpCommand();
@@ -136,7 +136,7 @@ class HelpCommandTest {
     }
 
     @Test
-    void testToString() {
+    void toStringOfCommand() {
         Assertions.assertEquals("HelpCommand", new HelpCommand().toString());
     }
 }

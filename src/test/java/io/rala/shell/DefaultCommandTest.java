@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class DefaultCommandTest {
     @Test
-    void testExit() {
+    void exit() {
         DefaultCommand exit = DefaultCommand.EXIT;
         Assertions.assertEquals("exit", exit.getName());
         Assertions.assertEquals(exit.getName(), exit.toString());
@@ -15,7 +15,7 @@ class DefaultCommandTest {
     }
 
     @Test
-    void testHelp() {
+    void help() {
         DefaultCommand help = DefaultCommand.HELP;
         Assertions.assertEquals("help", help.getName());
         Assertions.assertEquals(help.getName(), help.toString());

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class IllegalParameterExceptionTest {
     @Test
-    void testNewOnlyOneArrayInstance() {
+    void newOnlyOneArrayInstance() {
         try {
             throw IllegalParameterException.createNewOnlyOneArrayInstance("method");
         } catch (IllegalParameterException e) {
@@ -17,7 +17,7 @@ class IllegalParameterExceptionTest {
     }
 
     @Test
-    void testNewOnlyLastArrayOrVararg() {
+    void newOnlyLastArrayOrVararg() {
         try {
             throw IllegalParameterException.createNewOnlyLastArrayOrVararg("method");
         } catch (IllegalParameterException e) {

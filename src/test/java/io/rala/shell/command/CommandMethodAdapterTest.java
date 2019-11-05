@@ -15,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Stream;
 
 class CommandMethodAdapterTest {
@@ -109,18 +110,30 @@ class CommandMethodAdapterTest {
         }
     }
 
-    @Test
-    void commandWithListParameter() {
-
-    }
-
     // region execute exception
 
     @Test
+    void commandWithListParameterAndNull() {
+        try {
+            executeCommand(new Input("methodWithOneStringListParameter", "null"));
+        } catch (MethodCallException e) {
+            Assertions.assertEquals("java.lang.NullPointerException", e.getMessage());
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
     void exceptionCommandWithoutAttributes() {
-        Assertions.assertThrows(MethodCallException.class,
-            () -> executeCommand(new Input("exceptionCommandWithoutMessage"))
-        );
+        try {
+            executeCommand(new Input("exceptionCommandWithoutMessage"));
+        } catch (MethodCallException e) {
+            Assertions.assertTrue(e.getCause() instanceof InvocationTargetException);
+            InvocationTargetException cause = (InvocationTargetException) e.getCause();
+            Assertions.assertNull(cause.getMessage());
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test

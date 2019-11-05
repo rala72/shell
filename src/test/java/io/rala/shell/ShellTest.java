@@ -4,6 +4,7 @@ import io.rala.shell.command.Command;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.StopShellException;
 import io.rala.shell.utils.TestObject;
+import io.rala.shell.utils.TestObjects;
 import io.rala.shell.utils.TestShell;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -300,7 +301,7 @@ class ShellTest {
     }
 
     @Test
-    void registerAlreadyPresentCommand() {
+    void registerDefaultCommandWhichIsAlreadyRegisteredByDefaultCommand() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.HELP);
@@ -308,6 +309,34 @@ class ShellTest {
             shell.register(DefaultCommand.HELP);
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("help", e.getMessage());
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
+    void registerObjectCommandWhichIsAlreadyRegisteredByManualCommand() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register("cmd", ECHO_COMMAND);
+        try {
+            shell.register(new TestObjects.TestObjectWithAttributes());
+        } catch (CommandAlreadyPresentException e) {
+            Assertions.assertEquals("cmd", e.getMessage());
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
+    void registerManualCommandWhichIsAlreadyRegisteredByObjectCommand() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(new TestObjects.TestObjectWithAttributes());
+        try {
+            shell.register("cmd", ECHO_COMMAND);
+        } catch (CommandAlreadyPresentException e) {
+            Assertions.assertEquals("cmd", e.getMessage());
             return;
         }
         Assertions.fail();

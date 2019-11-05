@@ -83,7 +83,8 @@ public class Shell implements Runnable {
     }
 
     public void register(Object object) {
-        commands.putAll(new CommandLoader(object).getCommandMethodMap());
+        new CommandLoader(object).getCommandMethodMap()
+            .forEach(this::register);
     }
 
     public void register(DefaultCommand command) {

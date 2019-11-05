@@ -40,6 +40,8 @@ public class CommandLoader {
     }
 
     private void validateCommandMethod(CommandMethod commandMethod) {
+        if (getCommandMethodMap().containsKey(commandMethod.getName()))
+            throw new CommandAlreadyPresentException(commandMethod.getName());
         Parameter[] parameters = commandMethod.getMethod().getParameters();
         long dynamicParameterCount = Stream.of(parameters)
             .filter(CommandMethod::isParameterDynamic)
@@ -48,7 +50,5 @@ public class CommandLoader {
             throw IllegalParameterException.createNewOnlyOneDynamicInstance(commandMethod.getName());
         if (dynamicParameterCount == 1 && !commandMethod.isLastParameterDynamic())
             throw IllegalParameterException.createNewOnlyLastDynamicInstance(commandMethod.getName());
-        if (getCommandMethodMap().containsKey(commandMethod.getName()))
-            throw new CommandAlreadyPresentException(commandMethod.getName());
     }
 }

@@ -1,5 +1,7 @@
 package io.rala.shell.annotation;
 
+import io.rala.shell.Input;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -45,8 +47,13 @@ public class CommandMethod {
         return isParameterDynamic(lastParameter);
     }
 
+    public static boolean isParameterInput(Parameter parameter) {
+        return parameter.getType().isAssignableFrom(Input.class);
+    }
+
     public static boolean isParameterDynamic(Parameter parameter) {
-        return isParameterArray(parameter) || isParameterList(parameter);
+        return isParameterInput(parameter) ||
+            isParameterArray(parameter) || isParameterList(parameter);
     }
 
     public static boolean isParameterArray(Parameter parameter) {

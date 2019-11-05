@@ -16,6 +16,9 @@ public class TestObjectArgumentStreams {
     public static Stream<Arguments> getMethodStringParameterArguments() {
         return Stream.of(
             createMethodWithStringParameterArgumentsStream(
+                "methodWithOneInputParameter", "input", 0, 4, null
+            ),
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithoutParameter", "none", 0, 2, 0
             ),
             createMethodWithStringParameterArgumentsStream(

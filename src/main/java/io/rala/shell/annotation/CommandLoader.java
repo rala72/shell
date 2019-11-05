@@ -43,6 +43,11 @@ public class CommandLoader {
         if (getCommandMethodMap().containsKey(commandMethod.getName()))
             throw new CommandAlreadyPresentException(commandMethod.getName());
         Parameter[] parameters = commandMethod.getMethod().getParameters();
+        long inputCount = Stream.of(parameters)
+            .filter(CommandMethod::isParameterInput)
+            .count();
+        if (0 < inputCount && parameters.length != 1)
+            throw IllegalParameterException.createNewIfInputNoOther(commandMethod.getName());
         long dynamicParameterCount = Stream.of(parameters)
             .filter(CommandMethod::isParameterDynamic)
             .count();

@@ -1,5 +1,6 @@
 package io.rala.shell.utils;
 
+import io.rala.shell.Input;
 import io.rala.shell.annotation.Command;
 
 import java.util.List;
@@ -10,6 +11,10 @@ public class TestObject {
 
     public void setContext(TestContext context) {
         this.context = context;
+    }
+
+    @Command
+    public void methodWithOneInputParameter(Input input) {
     }
 
     // region string

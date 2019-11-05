@@ -41,7 +41,9 @@ public class CommandMethodAdapter implements Command {
             for (int i = 0; i < parameters.length; i++) {
                 Object value;
                 Parameter parameter = parameters[i];
-                if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
+                if (CommandMethod.isParameterInput(parameter)) {
+                    value = input;
+                } else if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
                     Class<?> componentType =
                         CommandMethod.isParameterArray(parameter) ?
                             parameter.getType().getComponentType() :

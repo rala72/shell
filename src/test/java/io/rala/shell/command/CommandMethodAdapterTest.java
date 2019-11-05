@@ -181,7 +181,7 @@ class CommandMethodAdapterTest {
 
     private void executeCommand(Input input) {
         Command command = getCommand(input.getCommand());
-        Assertions.assertNotNull(command);
+        Assertions.assertNotNull(command, "command not found: " + input.getCommand());
         command.execute(input, context);
     }
 

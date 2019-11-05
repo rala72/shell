@@ -1,5 +1,6 @@
 package io.rala.shell.utils;
 
+import io.rala.shell.Input;
 import io.rala.shell.annotation.Command;
 import io.rala.shell.annotation.CommandLoader;
 
@@ -18,6 +19,10 @@ public class TestObjects {
         return new CommandLoader(new TestObjectWithAttributes());
     }
 
+    public static CommandLoader getCommandLoaderForTestObjectWithOneInput() {
+        return new CommandLoader(new TestObjectWithOneInput());
+    }
+
     public static CommandLoader getCommandLoaderForIllegalAccessErrorTestObject() {
         return new CommandLoader(new IllegalAccessErrorTestObject());
     }
@@ -31,6 +36,18 @@ public class TestObjects {
     public static class TestObjectWithAttributes {
         @Command(value = "cmd", documentation = "documentation", usage = "usage")
         public void commandWithAttributes() {
+        }
+    }
+
+    public static class TestObjectWithOneInput {
+        @Command
+        public void commandWithOneInput(Input input) {
+        }
+    }
+
+    public static class TestObjectWithTwoInputs {
+        @Command
+        public void commandWithTwoInputs(Input input1, Input input2) {
         }
     }
 

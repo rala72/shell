@@ -33,6 +33,27 @@ class CommandLoaderTest {
     }
 
     @Test
+    void commandWithOneInputParameterException() {
+        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithOneInput();
+        Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
+        Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithOneInput"));
+    }
+
+    @Test
+    void commandWithTwoInputParameterException() {
+        try {
+            new CommandLoader(new TestObjects.TestObjectWithTwoInputs());
+        } catch (IllegalParameterException e) {
+            Assertions.assertEquals(
+                "commandWithTwoInputs: if input present, no other parameter allowed",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
     void commandWithTwoArrayParameterException() {
         try {
             new CommandLoader(new TestObjects.TestObjectWithTwoArrays());

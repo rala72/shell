@@ -28,6 +28,7 @@ public class BlockingQueueInputStream extends InputStream {
             // throwIoExceptionIfRequested();
             return 1;
         }
+        if (closeRequested) return 0;
         int available = calcAvailable();
         return available != 0 ? available :
             stringReader == null && readNextEntryFailed(false) ?
@@ -64,8 +65,9 @@ public class BlockingQueueInputStream extends InputStream {
     }
 
     @Override
-    public void close() throws IOException {
-        throwIoExceptionIfRequested();
+    public void close() {
+        // throwIoExceptionIfRequested();
+        requestIoException();
         closeRequested = true;
     }
 

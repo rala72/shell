@@ -70,11 +70,8 @@ class IoTest {
         new Thread(() -> {
             try {
                 blockingQueueInputStream.transferTo(output);
-            } catch (IOException ignored1) {
-                try {
-                    blockingQueueInputStream.close();
-                } catch (IOException ignored2) {
-                }
+            } catch (IOException ignored) {
+                blockingQueueInputStream.close();
             }
         }).start();
     }

@@ -9,8 +9,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static io.rala.shell.utils.WaitUtils.waitUntil;
 
 class ReaderQueueTest {
     private static final int TIMEOUT = 5;
@@ -135,14 +136,5 @@ class ReaderQueueTest {
         Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
-    }
-
-    private void waitUntil(Callable<Boolean> callable) {
-        try {
-            //noinspection StatementWithEmptyBody
-            while (!callable.call()) ;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

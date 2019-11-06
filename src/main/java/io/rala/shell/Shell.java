@@ -48,11 +48,16 @@ public class Shell implements Runnable {
         try {
             thread = new Thread(readerQueue);
             thread.start();
-            while (Thread.currentThread().isAlive()) {
+            out:
+            while (isRunning()) {
                 printPrompt();
-                String line = readerQueue.take();
-                if (line == null) break;
-                if (line.isBlank()) continue;
+                String line = readerQueue.peek();
+                while (line == null || line.isBlank()) {
+                    if (!isRunning() || !isThreadRunning(thread)) break out;
+                    line = readerQueue.peek();
+                }
+                if (!isRunning() || !isThreadRunning(thread)) break;
+                line = readerQueue.take();
                 boolean success = handleInput(Input.parse(line));
                 if (isStopOnInvalidCommandEnabled() && !success) break;
             }
@@ -156,5 +161,13 @@ public class Shell implements Runnable {
         if (prompt.isEmpty()) return;
         context.getOutput().print(prompt);
         context.getOutput().flush();
+    }
+
+    private boolean isRunning() {
+        return isThreadRunning(Thread.currentThread());
+    }
+
+    private static boolean isThreadRunning(Thread thread) {
+        return thread.isAlive() && !thread.isInterrupted();
     }
 }

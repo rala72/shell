@@ -7,11 +7,11 @@ import io.rala.shell.utils.TestObject;
 import io.rala.shell.utils.TestObjects;
 import io.rala.shell.utils.TestShell;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.time.Duration;
+
+import static io.rala.shell.utils.WaitUtils.waitUntil;
 
 class ShellTest {
     private static final int TIMEOUT = 5;
@@ -181,11 +181,7 @@ class ShellTest {
     }
 
     @Test
-    @Disabled(
-        "because close input stream does not throw any exception: " +
-            "https://stackoverflow.com/a/7456207/2715720"
-    )
-    void inputCloseClosesThread() throws InterruptedException {
+    void inputCloseClosesThread() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -193,19 +189,17 @@ class ShellTest {
         thread.start();
         Assertions.assertTrue(thread.isAlive());
 
-        try {
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.closeInputStream();
-        } catch (IOException e) {
-            Assertions.fail(e);
-        }
+            waitUntil(() -> !thread.isAlive());
+        });
 
-        Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
-    void threadInterruptClosesThread() throws InterruptedException {
+    void threadInterruptClosesThread() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -213,15 +207,17 @@ class ShellTest {
         thread.start();
         Assertions.assertTrue(thread.isAlive());
 
-        thread.interrupt();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            thread.interrupt();
+            waitUntil(() -> !thread.isAlive());
+        });
 
-        Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
-    void exit() throws InterruptedException {
+    void exit() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register("exit", EXIT_COMMAND);
@@ -229,10 +225,10 @@ class ShellTest {
         Thread thread = new Thread(shell);
         thread.start();
         Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT),
-            () -> testShell.putLine("exit")
-        );
-        Thread.sleep(100);
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("exit");
+            waitUntil(() -> !thread.isAlive());
+        });
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }

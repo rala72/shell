@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static io.rala.shell.utils.WaitUtils.waitUntil;
+import static io.rala.shell.utils.WaitUtils.waitUntilNot;
 
 class ShellTest {
     private static final int TIMEOUT = 5;
@@ -134,7 +134,7 @@ class ShellTest {
     }
 
     @Test
-    void exceptionHandlerWithoutException() throws InterruptedException {
+    void exceptionHandlerWithoutException() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -150,13 +150,12 @@ class ShellTest {
             String take = testShell.getErrorHistory().take();
             Assertions.assertEquals("errorHandler", take);
         });
-        Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
     @Test
-    void exceptionHandlerThrowingException() throws InterruptedException {
+    void exceptionHandlerThrowingException() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -175,7 +174,6 @@ class ShellTest {
                 take
             );
         });
-        Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());
         thread.interrupt();
     }
@@ -191,7 +189,7 @@ class ShellTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.closeInputStream();
-            waitUntil(() -> !thread.isAlive());
+            waitUntilNot(thread::isAlive);
         });
 
         Assertions.assertFalse(thread.isAlive());
@@ -209,7 +207,7 @@ class ShellTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             thread.interrupt();
-            waitUntil(() -> !thread.isAlive());
+            waitUntilNot(thread::isAlive);
         });
 
         Assertions.assertFalse(thread.isAlive());
@@ -227,14 +225,14 @@ class ShellTest {
         Assertions.assertTrue(thread.isAlive());
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exit");
-            waitUntil(() -> !thread.isAlive());
+            waitUntilNot(thread::isAlive);
         });
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
-    void registerExitDefault() throws InterruptedException {
+    void registerExitDefault() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(DefaultCommand.EXIT);
@@ -242,10 +240,11 @@ class ShellTest {
         Thread thread = new Thread(shell);
         thread.start();
         Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT),
-            () -> testShell.putLine("exit")
-        );
-        Thread.sleep(100);
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("exit");
+            waitUntilNot(thread::isAlive);
+        });
+
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
@@ -344,7 +343,7 @@ class ShellTest {
     }
 
     @Test
-    void exceptionCommandWithoutMessage() throws InterruptedException {
+    void exceptionCommandWithoutMessage() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -359,13 +358,12 @@ class ShellTest {
                 "error during execution: RuntimeException", take
             );
         });
-        Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
     @Test
-    void exceptionCommandWithMessage() throws InterruptedException {
+    void exceptionCommandWithMessage() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.register(new TestObject());
@@ -380,13 +378,12 @@ class ShellTest {
                 "error during execution: RuntimeException: message", take
             );
         });
-        Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
     @Test
-    void stopOnInvalidCommand() throws InterruptedException {
+    void stopOnInvalidCommand() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -399,7 +396,6 @@ class ShellTest {
             String take = testShell.getErrorHistory().take();
             Assertions.assertEquals("command not found: close", take);
         });
-        Thread.sleep(100);
         Assertions.assertTrue(thread.isAlive());
         shell.setStopOnInvalidCommandEnabled(true);
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
@@ -407,8 +403,8 @@ class ShellTest {
             testShell.putLine("close");
             String take = testShell.getErrorHistory().take();
             Assertions.assertEquals("command not found: close", take);
+            waitUntilNot(thread::isAlive);
         });
-        Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }

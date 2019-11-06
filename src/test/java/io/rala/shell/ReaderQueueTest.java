@@ -12,6 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static io.rala.shell.utils.WaitUtils.waitUntil;
+import static io.rala.shell.utils.WaitUtils.waitUntilNot;
 
 class ReaderQueueTest {
     private static final int TIMEOUT = 5;
@@ -79,21 +80,23 @@ class ReaderQueueTest {
     }
 
     @Test
-    void closing() throws InterruptedException {
+    void closing() {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
         Assertions.assertTrue(thread.isAlive());
 
-        thread.interrupt();
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            thread.interrupt();
+            waitUntilNot(thread::isAlive);
+        });
 
-        Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
-    void closingOnIOException() throws InterruptedException {
+    void closingOnIOException() {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -102,19 +105,18 @@ class ReaderQueueTest {
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             inputStream.requestIoException();
             waitUntil(readerQueue::hasException);
-            Thread.sleep(100);
+            waitUntilNot(thread::isAlive);
             Assertions.assertFalse(thread.isAlive());
             Assertions.assertNotNull(readerQueue.getIOException());
             Assertions.assertNull(readerQueue.getInterruptedException());
         });
 
-        Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
-    void closingOnInterrupt() throws InterruptedException {
+    void closingOnInterrupt() {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader, 1);
         Thread thread = new Thread(readerQueue);
         thread.start();
@@ -127,13 +129,12 @@ class ReaderQueueTest {
             waitUntil(() -> queue.isEmpty());
             thread.interrupt();
             waitUntil(readerQueue::hasException);
-            Thread.sleep(100);
+            waitUntilNot(thread::isAlive);
             Assertions.assertFalse(thread.isAlive());
             Assertions.assertNull(readerQueue.getIOException());
             Assertions.assertNotNull(readerQueue.getInterruptedException());
         });
 
-        Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());
         Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
     }

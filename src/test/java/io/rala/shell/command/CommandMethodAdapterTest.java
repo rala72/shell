@@ -84,7 +84,7 @@ class CommandMethodAdapterTest {
 
         String argument = input.getOrNull(0);
         Assertions.assertNotNull(argument);
-        Assertions.assertTrue(context.getOutputHistory().contains(argument));
+        assertArgumentPresentInOutput(argument);
     }
 
     @ParameterizedTest
@@ -99,10 +99,10 @@ class CommandMethodAdapterTest {
         Assertions.assertNotNull(argument);
         if (name.equals("Boolean") && (isPrimitive || !argument.equals("null"))) {
             executeCommand(input);
-            Assertions.assertTrue(context.getOutputHistory().contains("false"));
+            assertArgumentPresentInOutput("false");
         } else if (!isPrimitive && argument.equals("null")) {
             executeCommand(input);
-            Assertions.assertTrue(context.getOutputHistory().contains(argument));
+            assertArgumentPresentInOutput(argument);
         } else {
             Assertions.assertThrows(MethodCallException.class,
                 () -> executeCommand(input)
@@ -174,6 +174,13 @@ class CommandMethodAdapterTest {
         Assertions.assertTrue(context.getErrorHistory().contains(
             "error: expected argument count: " + count
         ));
+    }
+
+    private void assertArgumentPresentInOutput(String argument) {
+        Assertions.assertTrue(
+            context.getOutputHistory().contains(argument),
+            String.format("'%s' not present", argument)
+        );
     }
 
     // endregion

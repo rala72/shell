@@ -2,7 +2,8 @@ package io.rala.shell.annotation;
 
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
-import io.rala.shell.utils.TestObjects;
+import io.rala.shell.utils.CommandLoaderFactory;
+import io.rala.shell.utils.object.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,21 +21,21 @@ class CommandLoaderTest {
 
     @Test
     void commandWithoutAttributesLoading() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithoutAttributes();
+        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithoutAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithoutAttributes"));
     }
 
     @Test
     void commandWithAttributesLoading() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithAttributes();
+        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithAttributes();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("cmd"));
     }
 
     @Test
     void commandWithOneInputParameterException() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithOneInput();
+        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithOneInput();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
         Assertions.assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithOneInput"));
     }
@@ -42,7 +43,7 @@ class CommandLoaderTest {
     @Test
     void commandWithTwoInputParameterException() {
         try {
-            new CommandLoader(new TestObjects.TestObjectWithTwoInputs());
+            new CommandLoader(new TestObjectWithTwoInputs());
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoInputs: if input present, no other parameter allowed",
@@ -56,7 +57,7 @@ class CommandLoaderTest {
     @Test
     void commandWithTwoArrayParameterException() {
         try {
-            new CommandLoader(new TestObjects.TestObjectWithTwoArrays());
+            new CommandLoader(new TestObjectWithTwoArrays());
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoArrays: may only have one dynamic parameter",
@@ -70,7 +71,7 @@ class CommandLoaderTest {
     @Test
     void commandWithTwoListParameterException() {
         try {
-            new CommandLoader(new TestObjects.TestObjectWithTwoLists());
+            new CommandLoader(new TestObjectWithTwoLists());
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoLists: may only have one dynamic parameter",
@@ -84,7 +85,7 @@ class CommandLoaderTest {
     @Test
     void commandWithOneArrayParameterNotOnEndException() {
         try {
-            new CommandLoader(new TestObjects.TestObjectWithArrayNotOnEnd());
+            new CommandLoader(new TestObjectWithArrayNotOnEnd());
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithArrayNotOnEnd: only last parameter may be dynamic",
@@ -98,7 +99,7 @@ class CommandLoaderTest {
     @Test
     void commandNotUniqueException() {
         try {
-            new CommandLoader(new TestObjects.CommandNotUniqueErrorTestObject());
+            new CommandLoader(new CommandNotUniqueErrorTestObject());
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("cmd", e.getMessage());
             return;
@@ -108,13 +109,13 @@ class CommandLoaderTest {
 
     @Test
     void commandIllegalAccessException() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderForIllegalAccessErrorTestObject();
+        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForIllegalAccessErrorTestObject();
         Assertions.assertTrue(commandLoader.getCommandMethodMap().isEmpty());
     }
 
     @Test
     void toStringOfObjectWithoutAttributes() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjects.TestObjectWithoutAttributes());
+        CommandLoader commandLoader = new CommandLoader(new TestObjectWithoutAttributes());
         Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
     }
 

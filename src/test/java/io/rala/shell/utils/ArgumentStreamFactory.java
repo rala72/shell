@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
-public class TestObjectArgumentStreams {
-    private TestObjectArgumentStreams() {
+public class ArgumentStreamFactory {
+    private ArgumentStreamFactory() {
     }
 
     public static Stream<Arguments> getMethodStringParameterArguments() {

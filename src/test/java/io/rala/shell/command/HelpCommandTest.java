@@ -2,8 +2,8 @@ package io.rala.shell.command;
 
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandLoader;
+import io.rala.shell.utils.CommandLoaderFactory;
 import io.rala.shell.utils.TestContext;
-import io.rala.shell.utils.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -109,7 +109,7 @@ class HelpCommandTest {
 
     @Test
     void executeWithTestObjectWithoutArguments() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithoutAttributes();
+        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithoutAttributes();
         TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
         HelpCommand helpCommand = new HelpCommand();
 
@@ -123,7 +123,7 @@ class HelpCommandTest {
 
     @Test
     void executeWithTestObjectWithArguments() {
-        CommandLoader commandLoader = TestObjects.getCommandLoaderForTestObjectWithAttributes();
+        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithAttributes();
         TestContext testContext = new TestContext(commandLoader.getCommandMethodMap());
         HelpCommand helpCommand = new HelpCommand();
 

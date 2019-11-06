@@ -4,12 +4,18 @@ import io.rala.shell.Input;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class ArgumentStreamFactory {
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String SPECIAL_LETTERS = "äöüß";
+
     private ArgumentStreamFactory() {
     }
 
@@ -51,7 +57,13 @@ public class ArgumentStreamFactory {
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Char",
-                "a", "z", "A", "Z", "\t", "#", "+"
+                Stream.of(
+                    ALPHABET.toLowerCase().split(""),
+                    ALPHABET.toUpperCase().split(""),
+                    SPECIAL_LETTERS.toLowerCase().split(""),
+                    SPECIAL_LETTERS.toUpperCase().split(""),
+                    new String[]{"\t", "\\", "\"", "#", "+", "*", "?"}
+                ).flatMap(Arrays::stream).toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Short",

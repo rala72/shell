@@ -41,6 +41,13 @@ public class HistoryOutputStream extends OutputStream {
     }
 
     @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        char[] chars = new String(b, off, len).toCharArray();
+        for (char c : chars)
+            write(c);
+    }
+
+    @Override
     public String toString() {
         return String.join(", ", getHistory());
     }

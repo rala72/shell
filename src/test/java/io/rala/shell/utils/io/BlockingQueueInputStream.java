@@ -64,7 +64,8 @@ public class BlockingQueueInputStream extends InputStream {
     }
 
     @Override
-    public void close() {
+    public void close() throws IOException {
+        throwIoExceptionIfRequested();
         closeRequested = true;
     }
 

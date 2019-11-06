@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.Duration;
 
 class ShellTest {
@@ -184,7 +185,7 @@ class ShellTest {
         "because close input stream does not throw any exception: " +
             "https://stackoverflow.com/a/7456207/2715720"
     )
-    void inputClose() throws InterruptedException {
+    void inputCloseClosesThread() throws InterruptedException {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
 
@@ -192,7 +193,11 @@ class ShellTest {
         thread.start();
         Assertions.assertTrue(thread.isAlive());
 
-        testShell.closeInputStream();
+        try {
+            testShell.closeInputStream();
+        } catch (IOException e) {
+            Assertions.fail(e);
+        }
 
         Thread.sleep(100);
         Assertions.assertFalse(thread.isAlive());

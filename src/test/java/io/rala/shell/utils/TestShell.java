@@ -4,6 +4,7 @@ import io.rala.shell.Shell;
 import io.rala.shell.utils.io.BlockingQueueInputStream;
 import io.rala.shell.utils.io.HistoryOutputStream;
 
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -31,7 +32,7 @@ public class TestShell {
         errorHistory = errorStream.getHistory();
     }
 
-    public void closeInputStream() {
+    public void closeInputStream() throws IOException {
         inputStream.close();
     }
 

@@ -3,9 +3,13 @@ package io.rala.shell.command;
 import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandMethod;
+import io.rala.shell.annotation.CommandParameter;
 import io.rala.shell.exception.MethodCallException;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -36,16 +40,16 @@ public class CommandMethodAdapter implements Command {
             return;
         }
         try {
-            Parameter[] parameters = commandMethod.getMethod().getParameters();
+            CommandParameter[] parameters = commandMethod.getParameters();
             Object[] objects = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
                 Object value;
-                Parameter parameter = parameters[i];
-                if (CommandMethod.isParameterInput(parameter)) {
+                CommandParameter parameter = parameters[i];
+                if (parameter.isInput()) {
                     value = input;
                 } else if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
                     Class<?> componentType =
-                        CommandMethod.isParameterArray(parameter) ?
+                        parameter.isArray() ?
                             parameter.getType().getComponentType() :
                             getFirstGenericClass(commandMethod.getMethod());
                     Object[] array = input.getArguments()
@@ -54,7 +58,7 @@ public class CommandMethodAdapter implements Command {
                         .map(s -> mapParameter(componentType, s))
                         .map(componentType::cast)
                         .toArray(n -> (Object[]) Array.newInstance(componentType, n));
-                    value = CommandMethod.isParameterArray(parameter) ? array : List.of(array);
+                    value = parameter.isArray() ? array : List.of(array);
                 } else {
                     String argument = input.get(i)
                         .orElseThrow(() -> new MethodCallException("argument missing"));

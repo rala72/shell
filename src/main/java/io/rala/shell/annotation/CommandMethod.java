@@ -1,10 +1,8 @@
 package io.rala.shell.annotation;
 
-import io.rala.shell.Input;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.List;
+import java.util.Arrays;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class CommandMethod {
@@ -44,24 +42,13 @@ public class CommandMethod {
     public boolean isLastParameterDynamic() {
         if (getMethod().getParameterCount() == 0) return false;
         Parameter lastParameter = getMethod().getParameters()[getMethod().getParameters().length - 1];
-        return isParameterDynamic(lastParameter);
+        return new CommandParameter(lastParameter).isDynamic();
     }
 
-    public static boolean isParameterInput(Parameter parameter) {
-        return parameter.getType().isAssignableFrom(Input.class);
-    }
-
-    public static boolean isParameterDynamic(Parameter parameter) {
-        return isParameterInput(parameter) ||
-            isParameterArray(parameter) || isParameterList(parameter);
-    }
-
-    public static boolean isParameterArray(Parameter parameter) {
-        return parameter.isVarArgs() || parameter.getType().isArray();
-    }
-
-    public static boolean isParameterList(Parameter parameter) {
-        return parameter.getType().isAssignableFrom(List.class);
+    public CommandParameter[] getParameters() {
+        return Arrays.stream(getMethod().getParameters())
+            .map(CommandParameter::new)
+            .toArray(CommandParameter[]::new);
     }
 
     @Override

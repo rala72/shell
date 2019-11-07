@@ -5,7 +5,6 @@ import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
 
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +41,14 @@ public class CommandLoader {
     private void validateCommandMethod(CommandMethod commandMethod) {
         if (getCommandMethodMap().containsKey(commandMethod.getName()))
             throw new CommandAlreadyPresentException(commandMethod.getName());
-        Parameter[] parameters = commandMethod.getMethod().getParameters();
+        CommandParameter[] parameters = commandMethod.getParameters();
         long inputCount = Stream.of(parameters)
-            .filter(CommandMethod::isParameterInput)
+            .filter(CommandParameter::isInput)
             .count();
         if (0 < inputCount && parameters.length != 1)
             throw IllegalParameterException.createNewIfInputNoOther(commandMethod.getName());
         long dynamicParameterCount = Stream.of(parameters)
-            .filter(CommandMethod::isParameterDynamic)
+            .filter(CommandParameter::isDynamic)
             .count();
         if (1 < dynamicParameterCount)
             throw IllegalParameterException.createNewOnlyOneDynamicInstance(commandMethod.getName());

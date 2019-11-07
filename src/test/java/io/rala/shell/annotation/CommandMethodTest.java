@@ -1,5 +1,6 @@
 package io.rala.shell.annotation;
 
+import io.rala.shell.Input;
 import io.rala.shell.utils.object.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,33 @@ class CommandMethodTest {
         Assertions.assertEquals(0, commandMethod.getMinParameterCount());
         Assertions.assertEquals(1, commandMethod.getMaxParameterCount());
         assertParameterCount(commandMethod, -1, 2, 0, 1);
+    }
+
+    @Test
+    void commandWithoutAttributesAndMethodWithOneInputParameter() throws NoSuchMethodException {
+        CommandAnnotation commandAnnotation = new CommandAnnotation();
+        CommandMethod commandMethod = new CommandMethod(
+            commandAnnotation,
+            TestObject.class.getMethod(
+                "methodWithOneInputParameter",
+                Input.class
+            )
+        );
+        Assertions.assertEquals(
+            "methodWithOneInputParameter",
+            commandMethod.getName()
+        );
+        Assertions.assertEquals(commandAnnotation, commandMethod.getCommand());
+        Assertions.assertEquals(
+            TestObject.class.getMethod(
+                "methodWithOneInputParameter",
+                Input.class
+            ),
+            commandMethod.getMethod()
+        );
+        Assertions.assertEquals(0, commandMethod.getMinParameterCount());
+        Assertions.assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+        assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
     @Test

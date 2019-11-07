@@ -1,4 +1,4 @@
-package io.rala.shell.utils.io;
+package io.rala.shell.testUtils.io;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

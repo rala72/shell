@@ -1,6 +1,6 @@
 package io.rala.shell;
 
-import io.rala.shell.utils.io.BlockingQueueInputStream;
+import io.rala.shell.testUtils.io.BlockingQueueInputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,8 @@ import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static io.rala.shell.utils.WaitUtils.waitUntil;
-import static io.rala.shell.utils.WaitUtils.waitUntilNot;
+import static io.rala.shell.testUtils.WaitUtils.waitUntil;
+import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
 
 class ReaderQueueTest {
     private static final int TIMEOUT = 5;

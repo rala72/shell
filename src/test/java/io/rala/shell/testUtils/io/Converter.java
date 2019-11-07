@@ -1,4 +1,4 @@
-package io.rala.shell.utils.io;
+package io.rala.shell.testUtils.io;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

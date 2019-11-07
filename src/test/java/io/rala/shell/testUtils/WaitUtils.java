@@ -1,4 +1,4 @@
-package io.rala.shell.utils;
+package io.rala.shell.testUtils;
 
 import java.util.concurrent.Callable;
 

@@ -3,15 +3,15 @@ package io.rala.shell;
 import io.rala.shell.command.Command;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.StopShellException;
-import io.rala.shell.utils.TestShell;
-import io.rala.shell.utils.object.TestObject;
-import io.rala.shell.utils.object.TestObjectWithAttributes;
+import io.rala.shell.testUtils.TestShell;
+import io.rala.shell.testUtils.object.TestObject;
+import io.rala.shell.testUtils.object.TestObjectWithAttributes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static io.rala.shell.utils.WaitUtils.waitUntilNot;
+import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
 
 class ShellTest {
     private static final int TIMEOUT = 5;

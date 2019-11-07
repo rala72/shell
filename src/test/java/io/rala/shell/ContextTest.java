@@ -1,7 +1,7 @@
 package io.rala.shell;
 
 import io.rala.shell.command.ExitCommand;
-import io.rala.shell.utils.TestContext;
+import io.rala.shell.testUtils.TestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

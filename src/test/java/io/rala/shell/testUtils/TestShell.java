@@ -1,8 +1,8 @@
-package io.rala.shell.utils;
+package io.rala.shell.testUtils;
 
 import io.rala.shell.Shell;
-import io.rala.shell.utils.io.BlockingQueueInputStream;
-import io.rala.shell.utils.io.HistoryOutputStream;
+import io.rala.shell.testUtils.io.BlockingQueueInputStream;
+import io.rala.shell.testUtils.io.HistoryOutputStream;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

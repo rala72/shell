@@ -1,8 +1,8 @@
-package io.rala.shell.utils.object;
+package io.rala.shell.testUtils.object;
 
 import io.rala.shell.Input;
 import io.rala.shell.annotation.Command;
-import io.rala.shell.utils.TestContext;
+import io.rala.shell.testUtils.TestContext;
 
 import java.util.List;
 

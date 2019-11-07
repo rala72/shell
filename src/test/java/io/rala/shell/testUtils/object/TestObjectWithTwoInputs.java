@@ -1,4 +1,4 @@
-package io.rala.shell.utils.object;
+package io.rala.shell.testUtils.object;
 
 import io.rala.shell.Input;
 import io.rala.shell.annotation.Command;

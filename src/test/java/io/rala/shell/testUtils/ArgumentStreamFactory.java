@@ -1,4 +1,4 @@
-package io.rala.shell.utils;
+package io.rala.shell.testUtils;
 
 import io.rala.shell.Input;
 import org.junit.jupiter.params.provider.Arguments;

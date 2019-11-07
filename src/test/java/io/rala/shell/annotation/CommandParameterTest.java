@@ -1,7 +1,7 @@
 package io.rala.shell.annotation;
 
 import io.rala.shell.Input;
-import io.rala.shell.utils.object.TestObject;
+import io.rala.shell.testUtils.object.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

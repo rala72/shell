@@ -1,4 +1,4 @@
-package io.rala.shell.utils.io;
+package io.rala.shell.testUtils.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static io.rala.shell.utils.io.Converter.convertIntegerCollectionToString;
+import static io.rala.shell.testUtils.io.Converter.convertIntegerCollectionToString;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class HistoryOutputStream extends OutputStream {

@@ -1,8 +1,8 @@
-package io.rala.shell.utils;
+package io.rala.shell.testUtils;
 
 import io.rala.shell.Context;
 import io.rala.shell.command.Command;
-import io.rala.shell.utils.io.HistoryOutputStream;
+import io.rala.shell.testUtils.io.HistoryOutputStream;
 
 import java.io.PrintWriter;
 import java.util.Collections;

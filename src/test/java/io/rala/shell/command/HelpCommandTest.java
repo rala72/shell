@@ -2,8 +2,8 @@ package io.rala.shell.command;
 
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandLoader;
-import io.rala.shell.utils.CommandLoaderFactory;
-import io.rala.shell.utils.TestContext;
+import io.rala.shell.testUtils.CommandLoaderFactory;
+import io.rala.shell.testUtils.TestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

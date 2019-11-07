@@ -2,7 +2,7 @@ package io.rala.shell.command;
 
 import io.rala.shell.Input;
 import io.rala.shell.exception.StopShellException;
-import io.rala.shell.utils.TestContext;
+import io.rala.shell.testUtils.TestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

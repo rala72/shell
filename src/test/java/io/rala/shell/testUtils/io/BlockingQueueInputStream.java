@@ -1,12 +1,12 @@
-package io.rala.shell.utils.io;
+package io.rala.shell.testUtils.io;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.concurrent.BlockingQueue;
 
-import static io.rala.shell.utils.io.Converter.convertByteArrayToCharArray;
-import static io.rala.shell.utils.io.Converter.convertCharArrayToByteArray;
+import static io.rala.shell.testUtils.io.Converter.convertByteArrayToCharArray;
+import static io.rala.shell.testUtils.io.Converter.convertCharArrayToByteArray;
 
 @SuppressWarnings("unused")
 public class BlockingQueueInputStream extends InputStream {

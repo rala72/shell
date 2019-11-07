@@ -144,8 +144,7 @@ public class Shell implements Runnable {
             } else {
                 String message = e.getMessage();
                 if (e.getCause() instanceof InvocationTargetException) {
-                    InvocationTargetException cause = (InvocationTargetException) e.getCause();
-                    Throwable targetException = cause.getTargetException();
+                    Throwable targetException = e.getCause().getCause();
                     message = targetException.getClass().getSimpleName();
                     if (targetException.getMessage() != null)
                         message += ": " + targetException.getMessage();

@@ -14,7 +14,7 @@ import java.time.Duration;
 import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
 
 class ShellTest {
-    private static final int TIMEOUT = 5;
+    private static final int TIMEOUT = 1;
     private static final Command ECHO_COMMAND = (input, context) ->
         context.printLine(String.join(" ", input.getArguments()));
     private static final Command EXIT_COMMAND = (input, context) -> {

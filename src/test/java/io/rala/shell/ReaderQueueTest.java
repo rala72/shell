@@ -15,7 +15,7 @@ import static io.rala.shell.testUtils.WaitUtils.waitUntil;
 import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
 
 class ReaderQueueTest {
-    private static final int TIMEOUT = 5;
+    private static final int TIMEOUT = 1;
     private BlockingQueue<String> queue;
     private BlockingQueueInputStream inputStream;
     private BufferedReader bufferedReader;

@@ -3,19 +3,14 @@ package io.rala.shell.testUtils;
 import io.rala.shell.Input;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class ArgumentStreamFactory {
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String SPECIAL_LETTERS = "äöüß";
-
     private ArgumentStreamFactory() {
     }
 
@@ -49,57 +44,35 @@ public class ArgumentStreamFactory {
         return Stream.of(
             createMethodWithMappingParameterArgumentsStream(
                 "Boolean",
-                "false", "true"
+                ParameterFactory.validBooleanStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Byte",
-                String.valueOf(Byte.MIN_VALUE), "0", String.valueOf(Byte.MAX_VALUE)
+                ParameterFactory.validByteStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Char",
-                Stream.of(
-                    ALPHABET.toLowerCase().split(""),
-                    ALPHABET.toUpperCase().split(""),
-                    SPECIAL_LETTERS.toLowerCase().split(""),
-                    SPECIAL_LETTERS.toUpperCase().split(""),
-                    new String[]{"\t", "\\", "\"", "#", "+", "*", "?"}
-                ).flatMap(Arrays::stream).toArray(String[]::new)
+                ParameterFactory.validCharStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Short",
-                String.valueOf(Short.MIN_VALUE), "0", String.valueOf(Short.MAX_VALUE)
+                ParameterFactory.validShortStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Int",
-                String.valueOf(Integer.MIN_VALUE), "0", String.valueOf(Integer.MAX_VALUE)
+                ParameterFactory.validIntegerStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Long",
-                String.valueOf(Long.MIN_VALUE), "0", String.valueOf(Long.MAX_VALUE)
+                ParameterFactory.validLongStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Float",
-                String.valueOf(Float.NEGATIVE_INFINITY),
-                String.valueOf(-Float.MIN_VALUE),
-                String.valueOf(Float.MIN_VALUE),
-                String.valueOf(-Float.MIN_NORMAL),
-                String.valueOf(Float.MIN_NORMAL),
-                "0.0",
-                String.valueOf(-Float.MAX_VALUE),
-                String.valueOf(Float.MAX_VALUE),
-                String.valueOf(Float.POSITIVE_INFINITY),
-                String.valueOf(Float.NaN)
+                ParameterFactory.validFloatStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Double",
-                String.valueOf(Double.NEGATIVE_INFINITY),
-                String.valueOf(-Double.MIN_VALUE),
-                String.valueOf(Double.MIN_VALUE),
-                String.valueOf(-Double.MIN_NORMAL),
-                String.valueOf(Double.MIN_NORMAL),
-                "0.0", String.valueOf(Double.MAX_VALUE),
-                String.valueOf(Double.POSITIVE_INFINITY),
-                String.valueOf(Double.NaN)
+                ParameterFactory.validDoubleStream().toArray(String[]::new)
             )
         ).flatMap(argumentsStream -> argumentsStream);
     }
@@ -108,41 +81,35 @@ public class ArgumentStreamFactory {
         return Stream.of(
             createMethodWithMappingParameterArgumentsStream(
                 "Boolean",
-                "null", "-1"
+                ParameterFactory.invalidBooleanStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Byte",
-                "null",
-                String.valueOf(Byte.MIN_VALUE - 1),
-                String.valueOf(Byte.MAX_VALUE + 1)
+                ParameterFactory.invalidByteStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Char",
-                "null"
+                ParameterFactory.invalidCharStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Short",
-                "null",
-                String.valueOf(Short.MIN_VALUE - 1),
-                String.valueOf(Short.MAX_VALUE + 1)
+                ParameterFactory.invalidShortStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Int",
-                "null",
-                String.valueOf(Integer.MIN_VALUE - 1L),
-                String.valueOf(Integer.MAX_VALUE + 1L)
+                ParameterFactory.invalidIntegerStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Long",
-                "null"
+                ParameterFactory.invalidLongStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Float",
-                "null"
+                ParameterFactory.invalidFloatStream().toArray(String[]::new)
             ),
             createMethodWithMappingParameterArgumentsStream(
                 "Double",
-                "null"
+                ParameterFactory.invalidDoubleStream().toArray(String[]::new)
             )
         ).flatMap(argumentsStream -> argumentsStream);
     }

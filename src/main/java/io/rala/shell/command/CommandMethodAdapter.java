@@ -5,6 +5,7 @@ import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandMethod;
 import io.rala.shell.annotation.CommandParameter;
 import io.rala.shell.exception.MethodCallException;
+import io.rala.shell.utils.StringMapper;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -55,14 +56,14 @@ public class CommandMethodAdapter implements Command {
                     Object[] array = input.getArguments()
                         .subList(i, input.getArguments().size())
                         .stream()
-                        .map(s -> mapParameter(componentType, s))
+                        .map(s -> new StringMapper(s).map(componentType))
                         .map(componentType::cast)
                         .toArray(n -> (Object[]) Array.newInstance(componentType, n));
                     value = parameter.isArray() ? array : List.of(array);
                 } else {
                     String argument = input.get(i)
                         .orElseThrow(() -> new MethodCallException("argument missing"));
-                    value = mapParameter(parameter.getType(), argument);
+                    value = new StringMapper(argument).map(parameter.getType());
                 }
                 objects[i] = value;
             }
@@ -84,35 +85,6 @@ public class CommandMethodAdapter implements Command {
 
     CommandMethod getCommandMethod() {
         return commandMethod;
-    }
-
-    private static Object mapParameter(Class<?> type, String value) {
-        if (!type.isPrimitive() && value.equals("null")) return null;
-        if (boolean.class.isAssignableFrom(type) || Boolean.class.isAssignableFrom(type)) {
-            return Boolean.parseBoolean(value);
-        }
-        if (byte.class.isAssignableFrom(type) || Byte.class.isAssignableFrom(type)) {
-            return Byte.parseByte(value);
-        }
-        if (char.class.isAssignableFrom(type) || Character.class.isAssignableFrom(type)) {
-            return value.length() == 1 ? value.charAt(0) : null;
-        }
-        if (short.class.isAssignableFrom(type) || Short.class.isAssignableFrom(type)) {
-            return Short.parseShort(value);
-        }
-        if (int.class.isAssignableFrom(type) || Integer.class.isAssignableFrom(type)) {
-            return Integer.parseInt(value);
-        }
-        if (long.class.isAssignableFrom(type) || Long.class.isAssignableFrom(type)) {
-            return Long.parseLong(value);
-        }
-        if (float.class.isAssignableFrom(type) || Float.class.isAssignableFrom(type)) {
-            return Float.parseFloat(value);
-        }
-        if (double.class.isAssignableFrom(type) || Double.class.isAssignableFrom(type)) {
-            return Double.parseDouble(value);
-        }
-        return value;
     }
 
     private static Class<?> getFirstGenericClass(Method method) {

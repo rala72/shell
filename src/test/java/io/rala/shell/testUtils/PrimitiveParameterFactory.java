@@ -3,14 +3,74 @@ package io.rala.shell.testUtils;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-class ParameterFactory {
+@SuppressWarnings({"unused", "WeakerAccess"})
+class PrimitiveParameterFactory {
     @SuppressWarnings("SpellCheckingInspection")
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     @SuppressWarnings("SpellCheckingInspection")
     private static final String SPECIAL_LETTERS = "äöüß";
 
-    private ParameterFactory() {
+    enum TYPE {
+        BOOLEAN, BYTE, CHARACTER,
+        SHORT, INTEGER, LONG,
+        FLOAT, DOUBLE;
+
+        String getClassName() {
+            return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+        }
     }
+
+    private PrimitiveParameterFactory() {
+    }
+
+    // region streamOf
+
+    public static Stream<String> validStreamOf(TYPE type) {
+        return streamOf(type, true);
+    }
+
+    public static Stream<String> invalidStreamOf(TYPE type) {
+        return streamOf(type, false);
+    }
+
+    public static Stream<String> streamOf(TYPE type, boolean valid) {
+        switch (type) {
+            case BOOLEAN:
+                return valid ? validBooleanStream() : invalidBooleanStream();
+            case BYTE:
+                return valid ? validByteStream() : invalidByteStream();
+            case CHARACTER:
+                return valid ? validCharacterStream() : invalidCharacterStream();
+            case SHORT:
+                return valid ? validShortStream() : invalidShortStream();
+            case INTEGER:
+                return valid ? validIntegerStream() : invalidIntegerStream();
+            case LONG:
+                return valid ? validLongStream() : invalidLongStream();
+            case FLOAT:
+                return valid ? validFloatStream() : invalidFloatStream();
+            case DOUBLE:
+                return valid ? validDoubleStream() : invalidDoubleStream();
+        }
+        return Stream.empty();
+    }
+
+    // endregion
+    // region streamHolderOf
+
+    public static StreamHolder validStreamHolderOf(TYPE type) {
+        return streamHolderOf(type, true);
+    }
+
+    public static StreamHolder invalidStreamHolderOf(TYPE type) {
+        return streamHolderOf(type, false);
+    }
+
+    public static StreamHolder streamHolderOf(TYPE type, boolean valid) {
+        return StreamHolder.of(type, valid);
+    }
+
+    // endregion
 
     // region valid
 
@@ -26,7 +86,7 @@ class ParameterFactory {
         );
     }
 
-    static Stream<String> validCharStream() {
+    static Stream<String> validCharacterStream() {
         return Stream.of(
             ALPHABET.toLowerCase().split(""),
             ALPHABET.toUpperCase().split(""),
@@ -99,7 +159,7 @@ class ParameterFactory {
         );
     }
 
-    static Stream<String> invalidCharStream() {
+    static Stream<String> invalidCharacterStream() {
         return Stream.of(
             "null"
         );
@@ -140,4 +200,35 @@ class ParameterFactory {
     }
 
     // endregion
+
+    static class StreamHolder {
+        private final TYPE type;
+        private final Stream<String> stream;
+
+        private StreamHolder(TYPE type, Stream<String> stream) {
+            this.type = type;
+            this.stream = stream;
+        }
+
+        static StreamHolder of(TYPE type, boolean valid) {
+            return new StreamHolder(type, streamOf(type, valid));
+        }
+
+        public TYPE getType() {
+            return type;
+        }
+
+        public String getClassName() {
+            return getType().getClassName();
+        }
+
+        public Stream<String> getStream() {
+            return stream;
+        }
+
+        @Override
+        public String toString() {
+            return type.toString();
+        }
+    }
 }

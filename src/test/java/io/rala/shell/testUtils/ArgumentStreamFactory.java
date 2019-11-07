@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -12,6 +13,24 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public class ArgumentStreamFactory {
     private ArgumentStreamFactory() {
+    }
+
+    public static Stream<Arguments> getValidMappingParameterArguments() {
+        return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
+            .map(PrimitiveParameterFactory::validStreamHolderOf)
+            .map(streamHolder -> createMappingParameterArgumentsStream(
+                streamHolder.getClassName(),
+                streamHolder.getStream().toArray(String[]::new)
+            )).flatMap(argumentsStream -> argumentsStream);
+    }
+
+    public static Stream<Arguments> getInvalidMappingParameterArguments() {
+        return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
+            .map(PrimitiveParameterFactory::invalidStreamHolderOf)
+            .map(streamHolder -> createMappingParameterArgumentsStream(
+                streamHolder.getClassName(),
+                streamHolder.getStream().toArray(String[]::new)
+            )).flatMap(argumentsStream -> argumentsStream);
     }
 
     public static Stream<Arguments> getMethodStringParameterArguments() {
@@ -41,77 +60,48 @@ public class ArgumentStreamFactory {
     }
 
     public static Stream<Arguments> getMethodValidMappingParameterArguments() {
-        return Stream.of(
-            createMethodWithMappingParameterArgumentsStream(
-                "Boolean",
-                ParameterFactory.validBooleanStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Byte",
-                ParameterFactory.validByteStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Char",
-                ParameterFactory.validCharStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Short",
-                ParameterFactory.validShortStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Int",
-                ParameterFactory.validIntegerStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Long",
-                ParameterFactory.validLongStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Float",
-                ParameterFactory.validFloatStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Double",
-                ParameterFactory.validDoubleStream().toArray(String[]::new)
-            )
-        ).flatMap(argumentsStream -> argumentsStream);
+        return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
+            .map(PrimitiveParameterFactory::validStreamHolderOf)
+            .map(streamHolder -> createMethodWithMappingParameterArgumentsStream(
+                streamHolder.getClassName(),
+                streamHolder.getStream().toArray(String[]::new)
+            )).flatMap(argumentsStream -> argumentsStream);
     }
 
     public static Stream<Arguments> getMethodInvalidValidMappingParameterArguments() {
-        return Stream.of(
-            createMethodWithMappingParameterArgumentsStream(
-                "Boolean",
-                ParameterFactory.invalidBooleanStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Byte",
-                ParameterFactory.invalidByteStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Char",
-                ParameterFactory.invalidCharStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Short",
-                ParameterFactory.invalidShortStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Int",
-                ParameterFactory.invalidIntegerStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Long",
-                ParameterFactory.invalidLongStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Float",
-                ParameterFactory.invalidFloatStream().toArray(String[]::new)
-            ),
-            createMethodWithMappingParameterArgumentsStream(
-                "Double",
-                ParameterFactory.invalidDoubleStream().toArray(String[]::new)
-            )
-        ).flatMap(argumentsStream -> argumentsStream);
+        return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
+            .map(PrimitiveParameterFactory::invalidStreamHolderOf)
+            .map(streamHolder -> createMethodWithMappingParameterArgumentsStream(
+                streamHolder.getClassName(),
+                streamHolder.getStream().toArray(String[]::new)
+            )).flatMap(argumentsStream -> argumentsStream);
+    }
+
+    private static Stream<Arguments> createMappingParameterArgumentsStream(
+        String name, String... strings
+    ) {
+        Class<?> type;
+        try {
+            type = Class.forName(String.format("java.lang.%s", name));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return Stream.empty();
+        }
+        List<Arguments> list = new ArrayList<>();
+        for (String param : strings) {
+            list.add(Arguments.of(
+                type, param
+            ));
+            Class<?> primitiveClass;
+            try {
+                Field primitiveField = type.getField("TYPE");
+                primitiveClass = (Class<?>) primitiveField.get(null);
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {
+                continue;
+            }
+            list.add(Arguments.of(primitiveClass, param));
+        }
+        return list.stream();
     }
 
     private static Stream<Arguments> createMethodWithStringParameterArgumentsStream(

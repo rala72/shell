@@ -69,12 +69,12 @@ public class TestObject {
     }
 
     @Command
-    public void methodWithOneCharPrimitiveParameter(char c) {
+    public void methodWithOneCharacterPrimitiveParameter(char c) {
         printLine(String.valueOf(c));
     }
 
     @Command
-    public void methodWithOneCharObjectParameter(Character c) {
+    public void methodWithOneCharacterObjectParameter(Character c) {
         printLine(String.valueOf(c));
     }
 
@@ -89,12 +89,12 @@ public class TestObject {
     }
 
     @Command
-    public void methodWithOneIntPrimitiveParameter(int i) {
+    public void methodWithOneIntegerPrimitiveParameter(int i) {
         printLine(String.valueOf(i));
     }
 
     @Command
-    public void methodWithOneIntObjectParameter(Integer i) {
+    public void methodWithOneIntegerObjectParameter(Integer i) {
         printLine(String.valueOf(i));
     }
 

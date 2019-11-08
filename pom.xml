@@ -8,9 +8,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
-    <name>Subnet.jar</name>
-    <description>This library makes subnet-calculation easy.</description>
-    <url>https://www.at.rala.rala.io/library/subnet</url>
+    <name>shell.jar</name>
+    <description>This library makes shell io easy.</description>
+    <url>https://www.rala.io/library/shell</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

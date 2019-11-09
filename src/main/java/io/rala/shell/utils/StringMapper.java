@@ -20,7 +20,9 @@ public class StringMapper {
             return Byte.parseByte(getString());
         }
         if (char.class.isAssignableFrom(type) || Character.class.isAssignableFrom(type)) {
-            return getString().length() == 1 ? getString().charAt(0) : null;
+            if (getString().length() != 1)
+                throw new IllegalArgumentException("String is no character");
+            return getString().charAt(0);
         }
         if (short.class.isAssignableFrom(type) || Short.class.isAssignableFrom(type)) {
             return Short.parseShort(getString());

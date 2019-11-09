@@ -161,7 +161,7 @@ class PrimitiveParameterFactory {
 
     static Stream<String> invalidCharacterStream() {
         return Stream.of(
-            "null"
+            "null", "ab"
         );
     }
 

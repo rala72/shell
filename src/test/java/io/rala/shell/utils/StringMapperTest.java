@@ -25,13 +25,19 @@ class StringMapperTest {
         if (type.getSimpleName().equalsIgnoreCase("Boolean") && (type.isPrimitive() || !s.equals("null"))) {
             Object map = stringMapper.map(type);
             Assertions.assertEquals("false", String.valueOf(map));
-        } else if ((!type.isPrimitive() || type.getName().equals("char")) && s.equals("null")) {
+        } else if (!type.isPrimitive() && s.equals("null")) {
             Object map = stringMapper.map(type);
             Assertions.assertEquals(s, String.valueOf(map));
         } else {
-            Assertions.assertThrows(NumberFormatException.class,
-                () -> stringMapper.map(type)
-            );
+            if (type.isAssignableFrom(Number.class)) {
+                Assertions.assertThrows(NumberFormatException.class,
+                    () -> stringMapper.map(type)
+                );
+            } else {
+                Assertions.assertThrows(IllegalArgumentException.class,
+                    () -> stringMapper.map(type)
+                );
+            }
         }
     }
 

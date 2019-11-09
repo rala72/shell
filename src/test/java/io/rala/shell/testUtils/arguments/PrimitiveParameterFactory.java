@@ -1,4 +1,4 @@
-package io.rala.shell.testUtils;
+package io.rala.shell.testUtils.arguments;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

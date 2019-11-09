@@ -5,8 +5,8 @@ import io.rala.shell.annotation.CommandAnnotation;
 import io.rala.shell.annotation.CommandLoader;
 import io.rala.shell.annotation.CommandMethod;
 import io.rala.shell.exception.MethodCallException;
-import io.rala.shell.testUtils.ArgumentStreamFactory;
 import io.rala.shell.testUtils.TestContext;
+import io.rala.shell.testUtils.arguments.ParameterArgumentsStreamFactory;
 import io.rala.shell.testUtils.object.TestObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -200,15 +200,15 @@ class CommandMethodAdapterTest {
     // region arguments stream
 
     private static Stream<Arguments> getStringArguments() {
-        return ArgumentStreamFactory.getMethodStringParameterArguments();
+        return ParameterArgumentsStreamFactory.methodString();
     }
 
     private static Stream<Arguments> getValidMappingArguments() {
-        return ArgumentStreamFactory.getMethodValidMappingParameterArguments();
+        return ParameterArgumentsStreamFactory.methodValidMapping();
     }
 
     private static Stream<Arguments> getInvalidMappingArguments() {
-        return ArgumentStreamFactory.getMethodInvalidValidMappingParameterArguments();
+        return ParameterArgumentsStreamFactory.methodInvalidMapping();
     }
 
     // endregion

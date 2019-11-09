@@ -1,6 +1,6 @@
 package io.rala.shell.utils;
 
-import io.rala.shell.testUtils.ArgumentStreamFactory;
+import io.rala.shell.testUtils.arguments.ParameterArgumentsStreamFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,11 +43,11 @@ class StringMapperTest {
     // region arguments stream
 
     private static Stream<Arguments> getValidMappingArguments() {
-        return ArgumentStreamFactory.getValidMappingParameterArguments();
+        return ParameterArgumentsStreamFactory.validMapping();
     }
 
     private static Stream<Arguments> getInvalidMappingArguments() {
-        return ArgumentStreamFactory.getInvalidMappingParameterArguments();
+        return ParameterArgumentsStreamFactory.invalidMapping();
     }
 
     // endregion

@@ -1,4 +1,4 @@
-package io.rala.shell.testUtils;
+package io.rala.shell.testUtils.arguments;
 
 import io.rala.shell.Input;
 import org.junit.jupiter.params.provider.Arguments;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
-public class ArgumentStreamFactory {
-    private ArgumentStreamFactory() {
+public class ParameterArgumentsStreamFactory {
+    private ParameterArgumentsStreamFactory() {
     }
 
-    public static Stream<Arguments> getValidMappingParameterArguments() {
+    public static Stream<Arguments> validMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::validStreamHolderOf)
             .map(streamHolder -> createMappingParameterArgumentsStream(
@@ -24,7 +24,7 @@ public class ArgumentStreamFactory {
             )).flatMap(argumentsStream -> argumentsStream);
     }
 
-    public static Stream<Arguments> getInvalidMappingParameterArguments() {
+    public static Stream<Arguments> invalidMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::invalidStreamHolderOf)
             .map(streamHolder -> createMappingParameterArgumentsStream(
@@ -33,7 +33,7 @@ public class ArgumentStreamFactory {
             )).flatMap(argumentsStream -> argumentsStream);
     }
 
-    public static Stream<Arguments> getMethodStringParameterArguments() {
+    public static Stream<Arguments> methodString() {
         return Stream.of(
             createMethodWithStringParameterArgumentsStream(
                 "methodWithOneInputParameter", "input", 0, 4, null
@@ -59,7 +59,7 @@ public class ArgumentStreamFactory {
         ).flatMap(argumentsStream -> argumentsStream);
     }
 
-    public static Stream<Arguments> getMethodValidMappingParameterArguments() {
+    public static Stream<Arguments> methodValidMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::validStreamHolderOf)
             .map(streamHolder -> createMethodWithMappingParameterArgumentsStream(
@@ -68,7 +68,7 @@ public class ArgumentStreamFactory {
             )).flatMap(argumentsStream -> argumentsStream);
     }
 
-    public static Stream<Arguments> getMethodInvalidValidMappingParameterArguments() {
+    public static Stream<Arguments> methodInvalidMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::invalidStreamHolderOf)
             .map(streamHolder -> createMethodWithMappingParameterArgumentsStream(

@@ -21,8 +21,8 @@ public class ManualTest implements Runnable {
     }
 
     @Command(documentation = "prints arguments written afterwards", usage = "echo [text [text...]]")
-    public void echo(String s1, String s2, @Optional String s3) {
-        shell.printLine(String.join(" ", s1, s2, s3 == null ? "" : s3));
+    public void echo(String s1, String s2, @Optional("default") String s3) {
+        shell.printLine(String.join(" ", s1, s2, s3));
     }
 
     public static void main(String[] args) {

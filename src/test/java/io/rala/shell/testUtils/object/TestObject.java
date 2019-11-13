@@ -2,6 +2,7 @@ package io.rala.shell.testUtils.object;
 
 import io.rala.shell.Input;
 import io.rala.shell.annotation.Command;
+import io.rala.shell.annotation.Optional;
 import io.rala.shell.testUtils.TestContext;
 
 import java.util.List;
@@ -37,11 +38,31 @@ public class TestObject {
     }
 
     @Command
+    public void methodWithOneStringAndStringVarargsParameter(String s, String... v) {
+    }
+
+    @Command
     public void methodWithOneStringArrayParameter(String[] s) {
     }
 
     @Command
     public void methodWithOneStringListParameter(List<String> s) {
+    }
+
+    // endregion
+
+    // region optional
+
+    @Command
+    public void methodWithOneOptionalStringParameter(@Optional String o) {
+    }
+
+    @Command
+    public void methodWithOneStringAndOptionalStringParameter(String s, @Optional String o) {
+    }
+
+    @Command
+    public void methodWithOneOptionalStringParameterWithDefaultValue(@Optional("null") String o) {
     }
 
     // endregion

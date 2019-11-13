@@ -17,16 +17,24 @@ public class CommandParameter {
         return parameter;
     }
 
+    public Optional getOptionalAnnotation() {
+        return getParameter().getAnnotation(Optional.class);
+    }
+
     public Class<?> getType() {
         return getParameter().getType();
     }
 
-    public boolean isInput() {
-        return getParameter().getType().isAssignableFrom(Input.class);
+    public boolean isOptional() {
+        return getParameter().isAnnotationPresent(Optional.class);
     }
 
     public boolean isDynamic() {
         return isInput() || isArray() || isList();
+    }
+
+    public boolean isInput() {
+        return getParameter().getType().isAssignableFrom(Input.class);
     }
 
     public boolean isArray() {

@@ -27,4 +27,28 @@ class IllegalParameterExceptionTest {
             );
         }
     }
+
+    @Test
+    void newIfInputNoOther() {
+        try {
+            throw IllegalParameterException.createNewIfInputNoOther("method");
+        } catch (IllegalParameterException e) {
+            Assertions.assertEquals(
+                "method: if input present, no other parameter allowed",
+                e.getMessage()
+            );
+        }
+    }
+
+    @Test
+    void newOnlyLastParametersCanBeAbsent() {
+        try {
+            throw IllegalParameterException.createNewOnlyLastParametersCanBeAbsent("method");
+        } catch (IllegalParameterException e) {
+            Assertions.assertEquals(
+                "method: only last parameters can be absent",
+                e.getMessage()
+            );
+        }
+    }
 }

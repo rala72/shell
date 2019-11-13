@@ -5,6 +5,7 @@ import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
 
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,5 +55,26 @@ public class CommandLoader {
             throw IllegalParameterException.createNewOnlyOneDynamicInstance(commandMethod.getName());
         if (dynamicParameterCount == 1 && !commandMethod.isLastParameterDynamic())
             throw IllegalParameterException.createNewOnlyLastDynamicInstance(commandMethod.getName());
+        if (Arrays.stream(parameters).anyMatch(CommandParameter::isOptional)) {
+            int previousOptionalParameter = 0;
+            for (CommandParameter parameter : parameters) {
+                boolean parameterOptional = parameter.isOptional();
+                if (!parameterOptional && 0 < previousOptionalParameter)
+                    throw IllegalParameterException
+                        .createNewOnlyLastParametersCanBeAbsent(commandMethod.getName());
+                if (parameterOptional) previousOptionalParameter++;
+            }
+            for (CommandParameter parameter : parameters)
+                validateOptionalDefaultValue(parameter);
+        }
+    }
+
+    private static void validateOptionalDefaultValue(CommandParameter parameter) {
+        Optional annotation = parameter.getOptionalAnnotation();
+        if (annotation == null) return;
+        String value = annotation.value();
+        if (value.isEmpty()) return;
+        parameter.getType();
+        // TODO: validateOptionalDefaultValue
     }
 }

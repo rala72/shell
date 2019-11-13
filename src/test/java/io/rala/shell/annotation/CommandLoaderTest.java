@@ -34,6 +34,18 @@ class CommandLoaderTest {
     }
 
     @Test
+    void commandWithOneOptionalParameterLoading() {
+        CommandLoader commandLoader = new CommandLoader(new TestObjectWithOptional());
+        Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
+    }
+
+    @Test
+    void commandWithOneOptionalDefaultValueParameterLoading() {
+        CommandLoader commandLoader = new CommandLoader(new TestObjectWithOptionalDefaultValue());
+        Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
+    }
+
+    @Test
     void commandWithOneInputParameterException() {
         CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithOneInput();
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
@@ -89,6 +101,20 @@ class CommandLoaderTest {
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithArrayNotOnEnd: only last parameter may be dynamic",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
+    }
+
+    @Test
+    void commandWithOneOptionalParameterNotOnEndException() {
+        try {
+            new CommandLoader(new TestObjectWithOptionalNotOnEnd());
+        } catch (IllegalParameterException e) {
+            Assertions.assertEquals(
+                "commandWithOptionalNotOnEnd: only last parameters can be absent",
                 e.getMessage()
             );
             return;

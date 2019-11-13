@@ -65,11 +65,14 @@ class CommandMethodAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getStringArguments")
-    void commandWithoutAttributes(Input input, Integer expectedArguments) {
+    void commandWithOptionalParameters(Input input, Integer minExpected, Integer maxExpected) {
         executeCommand(input);
-        if (expectedArguments == null || input.getArguments().size() == expectedArguments)
+        if (maxExpected == null) maxExpected = Integer.MAX_VALUE;
+        if (minExpected == null ||
+            minExpected <= input.getArguments().size() &&
+                input.getArguments().size() <= maxExpected)
             assertOutputsAreEmpty();
-        else assertErrorOutputContainsExpectedArgumentCount(expectedArguments);
+        else assertErrorOutputContainsExpectedArgumentCount(minExpected, maxExpected);
     }
 
     @ParameterizedTest
@@ -164,13 +167,20 @@ class CommandMethodAdapterTest {
     // region assert
 
     private void assertOutputsAreEmpty() {
-        Assertions.assertTrue(context.getOutputHistory().isEmpty());
-        Assertions.assertTrue(context.getErrorHistory().isEmpty());
+        Assertions.assertTrue(context.getOutputHistory().isEmpty(),
+            "output history is not empty"
+        );
+        Assertions.assertTrue(context.getErrorHistory().isEmpty(),
+            "error history is not empty"
+        );
     }
 
-    private void assertErrorOutputContainsExpectedArgumentCount(int count) {
+    private void assertErrorOutputContainsExpectedArgumentCount(int min, int max) {
         Assertions.assertTrue(context.getOutputHistory().isEmpty());
         Assertions.assertFalse(context.getErrorHistory().isEmpty());
+        String count = min + "" + (min == max ? "" : "-" +
+            (max == Integer.MAX_VALUE ? '∞' : max)
+        );
         Assertions.assertTrue(context.getErrorHistory().contains(
             "error: expected argument count: " + count
         ));

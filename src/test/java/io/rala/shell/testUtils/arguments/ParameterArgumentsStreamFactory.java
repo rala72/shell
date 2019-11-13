@@ -45,10 +45,26 @@ public class ParameterArgumentsStreamFactory {
                 "methodWithOneStringParameter", "one", 0, 3, 1
             ),
             createMethodWithStringParameterArgumentsStream(
+                "methodWithOneOptionalStringParameter", "optional",
+                0, 3, 0, 1
+            ),
+            createMethodWithStringParameterArgumentsStream(
+                "methodWithOneStringAndOptionalStringParameter", "required",
+                0, 4, 1, 2
+            ),
+            createMethodWithStringParameterArgumentsStream(
+                "methodWithOneOptionalStringParameterWithDefaultValue", "default",
+                0, 3, 0, 1
+            ),
+            createMethodWithStringParameterArgumentsStream(
                 "methodWithTwoStringParameter", "two", 1, 4, 2
             ),
             createMethodWithStringParameterArgumentsStream(
                 "methodWithOneStringVarargsParameter", "vararg", 0, 4, null
+            ),
+            createMethodWithStringParameterArgumentsStream(
+                "methodWithOneStringAndStringVarargsParameter",
+                "required", 0, 4, 1, null
             ),
             createMethodWithStringParameterArgumentsStream(
                 "methodWithOneStringArrayParameter", "array", 0, 4, null
@@ -107,11 +123,21 @@ public class ParameterArgumentsStreamFactory {
     private static Stream<Arguments> createMethodWithStringParameterArgumentsStream(
         String name, String param, int from, int to, Integer expected
     ) {
+        return createMethodWithStringParameterArgumentsStream(
+            name, param, from, to, expected, expected
+        );
+    }
+
+    private static Stream<Arguments> createMethodWithStringParameterArgumentsStream(
+        String name, String param, int from, int to, Integer minExpected, Integer maxExpected
+    ) {
         List<Arguments> list = new ArrayList<>();
         if (param != null)
             for (int i = from; i < to; i++)
-                list.add(Arguments.of(new Input(name, Collections.nCopies(i, param)), expected));
-        if (list.isEmpty()) list.add(Arguments.of(new Input(name), expected));
+                list.add(Arguments.of(
+                    new Input(name, Collections.nCopies(i, param)), minExpected, maxExpected
+                ));
+        if (list.isEmpty()) list.add(Arguments.of(new Input(name), minExpected, maxExpected));
         return list.stream();
     }
 

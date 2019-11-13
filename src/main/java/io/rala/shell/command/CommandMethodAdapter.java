@@ -4,6 +4,7 @@ import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandMethod;
 import io.rala.shell.annotation.CommandParameter;
+import io.rala.shell.annotation.Optional;
 import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.utils.StringMapper;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class CommandMethodAdapter implements Command {
+    private static final char INFINITY = '∞';
     private final Object object;
     private final CommandMethod commandMethod;
 
@@ -36,7 +38,12 @@ public class CommandMethodAdapter implements Command {
     @Override
     public void execute(Input input, Context context) {
         if (!commandMethod.isParameterCountValid(input.getArguments().size())) {
-            context.printError("error: expected argument count: " + commandMethod.getMinParameterCount());
+            String expectedArgumentCount = String.valueOf(commandMethod.getMinParameterCount());
+            if (commandMethod.getMinParameterCount() != commandMethod.getMaxParameterCount() - 1)
+                expectedArgumentCount += "-" +
+                    (commandMethod.getMaxParameterCount() == Integer.MAX_VALUE ?
+                        INFINITY : commandMethod.getMaxParameterCount() - 1);
+            context.printError("error: expected argument count: " + expectedArgumentCount);
             if (!getUsage().isEmpty()) context.printError(getUsage());
             return;
         }
@@ -61,8 +68,13 @@ public class CommandMethodAdapter implements Command {
                         .toArray(n -> (Object[]) Array.newInstance(componentType, n));
                     value = parameter.isArray() ? array : List.of(array);
                 } else {
-                    String argument = input.get(i)
-                        .orElseThrow(() -> new MethodCallException("argument missing"));
+                    Optional optionalAnnotation = parameter.getOptionalAnnotation();
+                    String argument = input.getOrNull(i);
+                    if (argument == null && optionalAnnotation != null) {
+                        argument = optionalAnnotation.value().isEmpty() ?
+                            null : optionalAnnotation.value();
+                        // TODO: use Java default value if default is unset
+                    }
                     value = new StringMapper(argument).map(parameter.getType());
                 }
                 objects[i] = value;

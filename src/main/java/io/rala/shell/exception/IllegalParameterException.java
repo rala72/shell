@@ -8,6 +8,8 @@ public class IllegalParameterException extends RuntimeException {
         ": only last parameter may be dynamic";
     private static final String SUFFIX_IF_INPUT_NO_OTHER =
         ": if input present, no other parameter allowed";
+    private static final String SUFFIX_ONLY_LAST_PARAMETERS_CAN_BE_ABSENT =
+        ": only last parameters can be absent";
 
     protected IllegalParameterException(String message) {
         super(message);
@@ -23,5 +25,9 @@ public class IllegalParameterException extends RuntimeException {
 
     public static IllegalParameterException createNewIfInputNoOther(String method) {
         return new IllegalParameterException(method + SUFFIX_IF_INPUT_NO_OTHER);
+    }
+
+    public static IllegalParameterException createNewOnlyLastParametersCanBeAbsent(String method) {
+        return new IllegalParameterException(method + SUFFIX_ONLY_LAST_PARAMETERS_CAN_BE_ABSENT);
     }
 }

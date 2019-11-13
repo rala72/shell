@@ -27,12 +27,15 @@ public class CommandMethod {
     }
 
     public int getMinParameterCount() {
-        return 0 < getMethod().getParameterCount() && isLastParameterDynamic() ?
-            getMethod().getParameterCount() - 1 : getMethod().getParameterCount();
+        return Math.toIntExact(Arrays.stream(getParameters())
+            .filter(commandParameter -> !commandParameter.isOptional())
+            .filter(commandParameter -> !commandParameter.isDynamic())
+            .count()
+        );
     }
 
     public int getMaxParameterCount() {
-        return isLastParameterDynamic() ? Integer.MAX_VALUE : getMinParameterCount() + 1;
+        return isLastParameterDynamic() ? Integer.MAX_VALUE : getParameters().length + 1;
     }
 
     public boolean isParameterCountValid(int i) {

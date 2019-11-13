@@ -113,6 +113,13 @@ class CommandMethodAdapterTest {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("getOptionalDefaultValueArguments")
+    void commandWithOptionalParameterWithDefaultValue(Input input, String defaultValue) {
+        executeCommand(input);
+        assertArgumentPresentInOutput(defaultValue);
+    }
+
     // region execute exception
 
     @Test
@@ -219,6 +226,10 @@ class CommandMethodAdapterTest {
 
     private static Stream<Arguments> getInvalidMappingArguments() {
         return ParameterArgumentsStreamFactory.methodInvalidMapping();
+    }
+
+    private static Stream<Arguments> getOptionalDefaultValueArguments() {
+        return ParameterArgumentsStreamFactory.methodOptionalWithDefaultValue();
     }
 
     // endregion

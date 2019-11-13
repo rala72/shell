@@ -51,7 +51,7 @@ public class TestObject {
 
     // endregion
 
-    // region optional
+    // region string optional
 
     @Command
     public void methodWithOneOptionalStringParameter(@Optional String o) {
@@ -147,6 +147,20 @@ public class TestObject {
     @Command
     public void methodWithOneDoubleObjectParameter(Double d) {
         printLine(String.valueOf(d));
+    }
+
+    // endregion
+
+    // region primitive optional
+
+    @Command
+    public void methodWithOneOptionalIntegerParameter(@Optional int i) {
+        context.printLine(String.valueOf(i));
+    }
+
+    @Command
+    public void methodWithOneOptionalIntegerParameterWithDefaultValue(@Optional("1") int i) {
+        context.printLine(String.valueOf(i));
     }
 
     // endregion

@@ -6,6 +6,7 @@ import io.rala.shell.annotation.CommandMethod;
 import io.rala.shell.annotation.CommandParameter;
 import io.rala.shell.annotation.Optional;
 import io.rala.shell.exception.MethodCallException;
+import io.rala.shell.utils.Default;
 import io.rala.shell.utils.StringMapper;
 
 import java.lang.reflect.Array;
@@ -73,9 +74,10 @@ public class CommandMethodAdapter implements Command {
                     if (argument == null && optionalAnnotation != null) {
                         argument = optionalAnnotation.value().isEmpty() ?
                             null : optionalAnnotation.value();
-                        // TODO: use Java default value if default is unset
                     }
-                    value = new StringMapper(argument).map(parameter.getType());
+                    value = argument != null || optionalAnnotation == null ?
+                        new StringMapper(argument).map(parameter.getType()) :
+                        Default.of(parameter.getType());
                 }
                 objects[i] = value;
             }

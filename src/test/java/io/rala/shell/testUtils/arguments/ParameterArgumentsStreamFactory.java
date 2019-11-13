@@ -93,6 +93,19 @@ public class ParameterArgumentsStreamFactory {
             )).flatMap(argumentsStream -> argumentsStream);
     }
 
+    public static Stream<Arguments> methodOptionalWithDefaultValue() {
+        return Stream.of(
+            Arguments.of(
+                new Input("methodWithOneOptionalIntegerParameter"),
+                "0"
+            ),
+            Arguments.of(
+                new Input("methodWithOneOptionalIntegerParameterWithDefaultValue"),
+                "1"
+            )
+        );
+    }
+
     private static Stream<Arguments> createMappingParameterArgumentsStream(
         String name, String... strings
     ) {

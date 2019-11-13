@@ -41,8 +41,24 @@ class CommandLoaderTest {
 
     @Test
     void commandWithOneOptionalDefaultValueParameterLoading() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjectWithOptionalDefaultValue());
+        CommandLoader commandLoader = new CommandLoader(
+            new TestObjectWithOptionalDefaultValue()
+        );
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
+    }
+
+    @Test
+    void commandWithOneOptionalInvalidDefaultValueException() {
+        try {
+            new CommandLoader(new TestObjectWithOptionalInvalidDefaultValue());
+        } catch (IllegalParameterException e) {
+            Assertions.assertEquals(
+                "arg1: default value is invalid",
+                e.getMessage()
+            );
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test

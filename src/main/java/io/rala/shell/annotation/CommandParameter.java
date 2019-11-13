@@ -17,6 +17,10 @@ public class CommandParameter {
         return parameter;
     }
 
+    public String getName() {
+        return getParameter().getName();
+    }
+
     public Optional getOptionalAnnotation() {
         return getParameter().getAnnotation(Optional.class);
     }

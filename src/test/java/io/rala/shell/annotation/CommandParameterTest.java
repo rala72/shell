@@ -22,6 +22,7 @@ class CommandParameterTest {
             method.getParameters()[0],
             commandParameters[0].getParameter()
         );
+        Assertions.assertEquals("arg0", commandParameters[0].getName());
         Assertions.assertEquals(Input.class, commandParameters[0].getType());
         Assertions.assertFalse(commandParameters[0].isArray());
         Assertions.assertFalse(commandParameters[0].isList());
@@ -41,6 +42,7 @@ class CommandParameterTest {
             method.getParameters()[0],
             commandParameters[0].getParameter()
         );
+        Assertions.assertEquals("arg0", commandParameters[0].getName());
         Assertions.assertEquals(String.class, commandParameters[0].getType());
         Assertions.assertFalse(commandParameters[0].isArray());
         Assertions.assertFalse(commandParameters[0].isList());
@@ -61,6 +63,7 @@ class CommandParameterTest {
                 method.getParameters()[i],
                 commandParameters[i].getParameter()
             );
+            Assertions.assertEquals("arg" + i, commandParameters[i].getName());
             Assertions.assertEquals(String.class, commandParameters[i].getType());
             Assertions.assertFalse(commandParameters[i].isArray());
             Assertions.assertFalse(commandParameters[i].isList());
@@ -81,6 +84,7 @@ class CommandParameterTest {
             method.getParameters()[0],
             commandParameters[0].getParameter()
         );
+        Assertions.assertEquals("arg0", commandParameters[0].getName());
         Assertions.assertEquals(String[].class, commandParameters[0].getType());
         Assertions.assertTrue(commandParameters[0].isArray());
         Assertions.assertFalse(commandParameters[0].isList());
@@ -100,6 +104,7 @@ class CommandParameterTest {
             method.getParameters()[0],
             commandParameters[0].getParameter()
         );
+        Assertions.assertEquals("arg0", commandParameters[0].getName());
         Assertions.assertEquals(String[].class, commandParameters[0].getType());
         Assertions.assertTrue(commandParameters[0].isArray());
         Assertions.assertFalse(commandParameters[0].isList());

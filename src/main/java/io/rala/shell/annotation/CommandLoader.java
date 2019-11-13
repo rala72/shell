@@ -3,6 +3,7 @@ package io.rala.shell.annotation;
 import io.rala.shell.command.CommandMethodAdapter;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
+import io.rala.shell.utils.StringMapper;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -74,7 +75,10 @@ public class CommandLoader {
         if (annotation == null) return;
         String value = annotation.value();
         if (value.isEmpty()) return;
-        parameter.getType();
-        // TODO: validateOptionalDefaultValue
+        try {
+            new StringMapper(value).map(parameter.getType());
+        } catch (IllegalArgumentException e) {
+            throw IllegalParameterException.createNewOptionalDefaultValueIsInvalid(parameter.getName());
+        }
     }
 }

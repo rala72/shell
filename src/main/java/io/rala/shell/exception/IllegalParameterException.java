@@ -10,6 +10,8 @@ public class IllegalParameterException extends RuntimeException {
         ": if input present, no other parameter allowed";
     private static final String SUFFIX_ONLY_LAST_PARAMETERS_CAN_BE_ABSENT =
         ": only last parameters can be absent";
+    private static final String SUFFIX_DEFAULT_VALUE_INVALID =
+        ": default value is invalid";
 
     protected IllegalParameterException(String message) {
         super(message);
@@ -29,5 +31,9 @@ public class IllegalParameterException extends RuntimeException {
 
     public static IllegalParameterException createNewOnlyLastParametersCanBeAbsent(String method) {
         return new IllegalParameterException(method + SUFFIX_ONLY_LAST_PARAMETERS_CAN_BE_ABSENT);
+    }
+
+    public static IllegalParameterException createNewOptionalDefaultValueIsInvalid(String param) {
+        return new IllegalParameterException(param + SUFFIX_DEFAULT_VALUE_INVALID);
     }
 }

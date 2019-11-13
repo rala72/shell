@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ReaderQueue implements Runnable {
+    // TO DO: remove RQ to fix shell not stopping on request
     private final BlockingQueue<String> queue;
     private final BufferedReader bufferedReader;
     private IOException ioException = null;

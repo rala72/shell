@@ -1,10 +1,10 @@
 package io.rala.shell.testUtils;
 
 import io.rala.shell.annotation.CommandLoader;
-import io.rala.shell.testUtils.object.IllegalAccessErrorTestObject;
 import io.rala.shell.testUtils.object.TestObjectWithAttributes;
 import io.rala.shell.testUtils.object.TestObjectWithOneInput;
 import io.rala.shell.testUtils.object.TestObjectWithoutAttributes;
+import io.rala.shell.testUtils.object.exception.IllegalAccessErrorTestObject;
 
 @SuppressWarnings("unused")
 public class CommandLoaderFactory {

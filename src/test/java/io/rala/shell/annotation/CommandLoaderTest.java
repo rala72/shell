@@ -3,7 +3,10 @@ package io.rala.shell.annotation;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
 import io.rala.shell.testUtils.CommandLoaderFactory;
-import io.rala.shell.testUtils.object.*;
+import io.rala.shell.testUtils.object.TestObjectWithOptional;
+import io.rala.shell.testUtils.object.TestObjectWithOptionalDefaultValue;
+import io.rala.shell.testUtils.object.TestObjectWithoutAttributes;
+import io.rala.shell.testUtils.object.exception.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

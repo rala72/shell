@@ -1,4 +1,4 @@
-package io.rala.shell.testUtils.object;
+package io.rala.shell.testUtils.object.exception;
 
 import io.rala.shell.annotation.Command;
 

@@ -71,10 +71,9 @@ public class CommandMethodAdapter implements Command {
                 } else {
                     Optional optionalAnnotation = parameter.getOptionalAnnotation();
                     String argument = input.getOrNull(i);
-                    if (argument == null && optionalAnnotation != null) {
+                    if (argument == null && optionalAnnotation != null)
                         argument = optionalAnnotation.value().isEmpty() ?
                             null : optionalAnnotation.value();
-                    }
                     value = argument != null || optionalAnnotation == null ?
                         new StringMapper(argument).map(parameter.getType()) :
                         Default.of(parameter.getType());

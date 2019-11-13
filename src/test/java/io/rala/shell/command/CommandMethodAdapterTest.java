@@ -65,7 +65,7 @@ class CommandMethodAdapterTest {
 
     @ParameterizedTest
     @MethodSource("getStringArguments")
-    void commandWithOptionalParameters(Input input, Integer minExpected, Integer maxExpected) {
+    void commandWithoutAttributes(Input input, Integer minExpected, Integer maxExpected) {
         executeCommand(input);
         if (maxExpected == null) maxExpected = Integer.MAX_VALUE;
         if (minExpected == null ||

@@ -1,5 +1,3 @@
-package io.rala;
-
 import io.rala.shell.DefaultCommand;
 import io.rala.shell.Shell;
 import io.rala.shell.annotation.Command;

@@ -20,11 +20,8 @@ class Converter {
     }
 
     static String convertIntegerCollectionToString(Collection<Integer> collection) {
-        return new String(
-            collection.parallelStream().mapToInt(Integer::intValue)
-                .mapToObj(c -> Character.toString((char) c))
-                .collect(Collectors.joining())
-                .toCharArray()
-        );
+        return collection.parallelStream()
+            .map(integer -> String.valueOf((char) (int) integer))
+            .collect(Collectors.joining());
     }
 }

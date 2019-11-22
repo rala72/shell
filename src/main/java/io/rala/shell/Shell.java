@@ -52,12 +52,13 @@ public class Shell implements Runnable {
             while (isRunning()) {
                 printPrompt();
                 String line = readerQueue.peek();
-                while (line == null || line.isBlank()) {
+                while (line == null) {
                     if (!isRunning() || !isThreadRunning(thread)) break out;
                     line = readerQueue.peek();
                 }
                 if (!isRunning() || !isThreadRunning(thread)) break;
                 line = readerQueue.take();
+                if (line == null || line.isBlank()) continue;
                 boolean success = handleInput(Input.parse(line));
                 if (isStopOnInvalidCommandEnabled() && !success) break;
             }

@@ -86,7 +86,7 @@ class IoTest {
     }
 
     private static BlockingQueue<String> filterLineBreaks(Queue<String> queue) {
-        return queue.stream()
+        return queue.parallelStream()
             .map(s -> s.replace("\n", ""))
             .collect(Collectors.toCollection(LinkedBlockingQueue::new));
     }

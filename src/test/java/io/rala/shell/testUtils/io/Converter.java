@@ -21,7 +21,7 @@ class Converter {
 
     static String convertIntegerCollectionToString(Collection<Integer> collection) {
         return new String(
-            collection.stream().mapToInt(Integer::intValue)
+            collection.parallelStream().mapToInt(Integer::intValue)
                 .mapToObj(c -> Character.toString((char) c))
                 .collect(Collectors.joining())
                 .toCharArray()

@@ -85,7 +85,7 @@ public class BlockingQueueInputStream extends InputStream {
     }
 
     private int calcAvailable() {
-        return missing + queue.stream().mapToInt(String::length).sum();
+        return missing + queue.parallelStream().mapToInt(String::length).sum();
     }
 
     private boolean readNextEntryFailed() {

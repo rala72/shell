@@ -5,11 +5,13 @@ import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
 import io.rala.shell.utils.StringMapper;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CommandLoader {
@@ -18,17 +20,20 @@ public class CommandLoader {
     public CommandLoader(Object object) {
         if (!Modifier.isPublic(object.getClass().getModifiers()))
             throw new IllegalArgumentException("object has to be public");
-        List.of(object.getClass().getMethods())
+        List<Method> methodList = List.of(object.getClass().getMethods())
             .stream()
             .filter(method -> method.isAnnotationPresent(Command.class))
-            .forEach(method -> {
-                CommandMethod commandMethod = new CommandMethod(method.getAnnotation(Command.class), method);
-                validateCommandMethod(commandMethod);
-                getCommandMethodMap().put(
-                    commandMethod.getName(),
-                    new CommandMethodAdapter(object, commandMethod)
-                );
-            });
+            .collect(Collectors.toList());
+        if (methodList.isEmpty())
+            throw new IllegalArgumentException("object has no visible commands");
+        methodList.forEach(method -> {
+            CommandMethod commandMethod = new CommandMethod(method.getAnnotation(Command.class), method);
+            validateCommandMethod(commandMethod);
+            getCommandMethodMap().put(
+                commandMethod.getName(),
+                new CommandMethodAdapter(object, commandMethod)
+            );
+        });
     }
 
     public Map<String, io.rala.shell.command.Command> getCommandMethodMap() {

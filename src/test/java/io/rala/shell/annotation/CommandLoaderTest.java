@@ -154,8 +154,13 @@ class CommandLoaderTest {
 
     @Test
     void commandIllegalAccessException() {
-        CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForIllegalAccessErrorTestObject();
-        Assertions.assertTrue(commandLoader.getCommandMethodMap().isEmpty());
+        try {
+            new CommandLoader(new IllegalAccessErrorTestObject());
+        } catch (IllegalArgumentException e) {
+            Assertions.assertEquals("object has no visible commands", e.getMessage());
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test

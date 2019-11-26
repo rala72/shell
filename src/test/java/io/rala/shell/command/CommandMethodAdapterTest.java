@@ -126,24 +126,22 @@ class CommandMethodAdapterTest {
     void commandWithListParameterAndNull() {
         try {
             executeCommand(new Input("methodWithOneStringListParameter", "null"));
+            Assertions.fail();
         } catch (MethodCallException e) {
             Assertions.assertEquals("java.lang.NullPointerException", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void exceptionCommandWithoutAttributes() {
         try {
             executeCommand(new Input("exceptionCommandWithoutMessage"));
+            Assertions.fail();
         } catch (MethodCallException e) {
             Assertions.assertTrue(e.getCause() instanceof InvocationTargetException);
             InvocationTargetException cause = (InvocationTargetException) e.getCause();
             Assertions.assertNull(cause.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test

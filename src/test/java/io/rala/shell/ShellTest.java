@@ -307,11 +307,10 @@ class ShellTest {
         shell.register(DefaultCommand.HELP);
         try {
             shell.register(DefaultCommand.HELP);
+            Assertions.fail();
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("help", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
@@ -321,11 +320,10 @@ class ShellTest {
         shell.register("cmd", ECHO_COMMAND);
         try {
             shell.register(new TestObjectWithAttributes());
+            Assertions.fail();
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("cmd", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
@@ -335,11 +333,10 @@ class ShellTest {
         shell.register(new TestObjectWithAttributes());
         try {
             shell.register("cmd", ECHO_COMMAND);
+            Assertions.fail();
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("cmd", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test

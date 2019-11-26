@@ -15,11 +15,10 @@ class CommandLoaderTest {
     void privateObjectLoadingThrowsIllegalParameter() {
         try {
             new CommandLoader(new PrivateTestObject());
+            Assertions.fail();
         } catch (IllegalArgumentException e) {
             Assertions.assertEquals("object has to be public", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
@@ -54,14 +53,13 @@ class CommandLoaderTest {
     void commandWithOneOptionalInvalidDefaultValueException() {
         try {
             new CommandLoader(new TestObjectWithOptionalInvalidDefaultValue());
+            Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "arg1: default value is invalid",
                 e.getMessage()
             );
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
@@ -75,92 +73,85 @@ class CommandLoaderTest {
     void commandWithTwoInputParameterException() {
         try {
             new CommandLoader(new TestObjectWithTwoInputs());
+            Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoInputs: if input present, no other parameter allowed",
                 e.getMessage()
             );
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void commandWithTwoArrayParameterException() {
         try {
             new CommandLoader(new TestObjectWithTwoArrays());
+            Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoArrays: may only have one dynamic parameter",
                 e.getMessage()
             );
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void commandWithTwoListParameterException() {
         try {
             new CommandLoader(new TestObjectWithTwoLists());
+            Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithTwoLists: may only have one dynamic parameter",
                 e.getMessage()
             );
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void commandWithOneArrayParameterNotOnEndException() {
         try {
             new CommandLoader(new TestObjectWithArrayNotOnEnd());
+            Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithArrayNotOnEnd: only last parameter may be dynamic",
                 e.getMessage()
             );
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void commandWithOneOptionalParameterNotOnEndException() {
         try {
             new CommandLoader(new TestObjectWithOptionalNotOnEnd());
+            Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
                 "commandWithOptionalNotOnEnd: only last parameters can be absent",
                 e.getMessage()
             );
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void commandNotUniqueException() {
         try {
             new CommandLoader(new CommandNotUniqueErrorTestObject());
+            Assertions.fail();
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("cmd", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test
     void commandIllegalAccessException() {
         try {
             new CommandLoader(new IllegalAccessErrorTestObject());
+            Assertions.fail();
         } catch (IllegalArgumentException e) {
             Assertions.assertEquals("object has no visible commands", e.getMessage());
-            return;
         }
-        Assertions.fail();
     }
 
     @Test

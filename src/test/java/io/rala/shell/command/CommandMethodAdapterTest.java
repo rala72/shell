@@ -120,6 +120,13 @@ class CommandMethodAdapterTest {
         assertArgumentPresentInOutput(defaultValue);
     }
 
+    @ParameterizedTest
+    @MethodSource("getReturnValueArguments")
+    void commandWithParameterWitchReturns(Input input, String expected) {
+        executeCommand(input);
+        assertArgumentPresentInOutput(expected);
+    }
+
     // region execute exception
 
     @Test
@@ -228,6 +235,10 @@ class CommandMethodAdapterTest {
 
     private static Stream<Arguments> getOptionalDefaultValueArguments() {
         return ParameterArgumentsStreamFactory.methodOptionalWithDefaultValue();
+    }
+
+    private static Stream<Arguments> getReturnValueArguments() {
+        return ParameterArgumentsStreamFactory.methodWithReturnValue();
     }
 
     // endregion

@@ -106,6 +106,15 @@ public class ParameterArgumentsStreamFactory {
         );
     }
 
+    public static Stream<Arguments> methodWithReturnValue() {
+        return Stream.of(
+            Arguments.of(
+                new Input("methodWithOneStringParameterWhichReturns", "text"),
+                "text"
+            )
+        );
+    }
+
     private static Stream<Arguments> createMappingParameterArgumentsStream(
         String name, String... strings
     ) {

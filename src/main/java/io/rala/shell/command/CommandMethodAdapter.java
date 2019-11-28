@@ -80,7 +80,9 @@ public class CommandMethodAdapter implements Command {
                 }
                 objects[i] = value;
             }
-            commandMethod.getMethod().invoke(object, objects);
+            Object result = commandMethod.getMethod().invoke(object, objects);
+            if (result != null)
+                context.printLine(String.valueOf(result));
         } catch (IllegalArgumentException | NullPointerException | InvocationTargetException e) {
             throw new MethodCallException(e);
         } catch (IllegalAccessException e) {

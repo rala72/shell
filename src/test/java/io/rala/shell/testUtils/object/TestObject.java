@@ -67,6 +67,15 @@ public class TestObject {
 
     // endregion
 
+    // region string return
+
+    @Command
+    public String methodWithOneStringParameterWhichReturns(String s) {
+        return s;
+    }
+
+    // endregion
+
     // region primitive
 
     @Command

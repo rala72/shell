@@ -63,6 +63,12 @@ class CommandMethodAdapterTest {
 
     // endregion
 
+    @Test
+    void commandWithContextParameter() {
+        executeCommand(new Input("methodWithContextParameter"));
+        assertOutputsAreEmpty();
+    }
+
     @ParameterizedTest
     @MethodSource("getStringArguments")
     void commandWithoutAttributes(Input input, Integer minExpected, Integer maxExpected) {

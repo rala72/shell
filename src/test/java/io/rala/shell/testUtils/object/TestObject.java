@@ -1,5 +1,6 @@
 package io.rala.shell.testUtils.object;
 
+import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.annotation.Command;
 import io.rala.shell.annotation.Optional;
@@ -18,6 +19,14 @@ public class TestObject {
     @Command
     public void methodWithOneInputParameter(Input input) {
     }
+
+    // region context
+
+    @Command
+    public void methodWithContextParameter(Context context) {
+    }
+
+    // endregion
 
     // region string
 

@@ -56,6 +56,8 @@ public class CommandMethodAdapter implements Command {
                 CommandParameter parameter = parameters[i];
                 if (parameter.isInput()) {
                     value = input;
+                } else if (parameter.isContext()) {
+                    value = context;
                 } else if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
                     Class<?> componentType =
                         parameter.isArray() ?

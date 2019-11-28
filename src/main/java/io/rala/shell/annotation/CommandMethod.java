@@ -30,12 +30,18 @@ public class CommandMethod {
         return Math.toIntExact(Arrays.stream(getParameters())
             .filter(commandParameter -> !commandParameter.isOptional())
             .filter(commandParameter -> !commandParameter.isDynamic())
+            .filter(commandParameter -> !commandParameter.isContext())
             .count()
         );
     }
 
     public int getMaxParameterCount() {
-        return isLastParameterDynamic() ? Integer.MAX_VALUE : getParameters().length + 1;
+        return isLastParameterDynamic() ? Integer.MAX_VALUE :
+            Math.toIntExact(
+                Arrays.stream(getParameters())
+                    .filter(commandParameter -> !commandParameter.isContext())
+                    .count()
+            ) + 1;
     }
 
     public boolean isParameterCountValid(int i) {

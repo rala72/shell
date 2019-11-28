@@ -1,5 +1,6 @@
 package io.rala.shell.annotation;
 
+import io.rala.shell.Context;
 import io.rala.shell.Input;
 
 import java.lang.reflect.Parameter;
@@ -39,6 +40,10 @@ public class CommandParameter {
 
     public boolean isInput() {
         return getParameter().getType().isAssignableFrom(Input.class);
+    }
+
+    public boolean isContext() {
+        return getParameter().getType().isAssignableFrom(Context.class);
     }
 
     public boolean isArray() {

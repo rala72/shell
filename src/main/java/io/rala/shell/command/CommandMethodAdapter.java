@@ -110,7 +110,7 @@ public class CommandMethodAdapter implements Command {
             .filter(type -> type instanceof ParameterizedType)
             .map(type -> (ParameterizedType) type)
             .map(ParameterizedType::getActualTypeArguments)
-            .map(types -> 0 < types.length ? (Class) types[0] : String.class)
+            .map(types -> 0 < types.length ? (Class<?>) types[0] : String.class)
             .findFirst().orElse(String.class);
     }
 }

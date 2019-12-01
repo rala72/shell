@@ -59,26 +59,9 @@ public class CommandMethodAdapter implements Command {
                 } else if (parameter.isContext()) {
                     value = context;
                 } else if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
-                    Class<?> componentType =
-                        parameter.isArray() ?
-                            parameter.getType().getComponentType() :
-                            getFirstGenericClass(commandMethod.getMethod());
-                    Object[] array = input.getArguments()
-                        .subList(i, input.getArguments().size())
-                        .stream()
-                        .map(s -> new StringMapper(s).map(componentType))
-                        .map(componentType::cast)
-                        .toArray(n -> (Object[]) Array.newInstance(componentType, n));
-                    value = parameter.isArray() ? array : List.of(array);
+                    value = handleDynamicParameter(input, parameter, i);
                 } else {
-                    Optional optionalAnnotation = parameter.getOptionalAnnotation();
-                    String argument = input.getOrNull(i);
-                    if (argument == null && optionalAnnotation != null)
-                        argument = optionalAnnotation.value().isEmpty() ?
-                            null : optionalAnnotation.value();
-                    value = argument != null || optionalAnnotation == null ?
-                        new StringMapper(argument).map(parameter.getType()) :
-                        Default.of(parameter.getType());
+                    value = handleParameter(input, parameter, i);
                 }
                 objects[i] = value;
             }
@@ -102,6 +85,31 @@ public class CommandMethodAdapter implements Command {
 
     CommandMethod getCommandMethod() {
         return commandMethod;
+    }
+
+    private Object handleDynamicParameter(Input input, CommandParameter parameter, int i) {
+        Class<?> componentType =
+            parameter.isArray() ?
+                parameter.getType().getComponentType() :
+                getFirstGenericClass(commandMethod.getMethod());
+        Object[] array = input.getArguments()
+            .subList(i, input.getArguments().size())
+            .stream()
+            .map(s -> new StringMapper(s).map(componentType))
+            .map(componentType::cast)
+            .toArray(n -> (Object[]) Array.newInstance(componentType, n));
+        return parameter.isArray() ? array : List.of(array);
+    }
+
+    private Object handleParameter(Input input, CommandParameter parameter, int i) {
+        Optional optionalAnnotation = parameter.getOptionalAnnotation();
+        String argument = input.getOrNull(i);
+        if (argument == null && optionalAnnotation != null)
+            argument = optionalAnnotation.value().isEmpty() ?
+                null : optionalAnnotation.value();
+        return argument != null || optionalAnnotation == null ?
+            new StringMapper(argument).map(parameter.getType()) :
+            Default.of(parameter.getType());
     }
 
     private static Class<?> getFirstGenericClass(Method method) {

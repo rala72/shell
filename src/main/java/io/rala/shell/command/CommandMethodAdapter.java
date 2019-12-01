@@ -38,16 +38,7 @@ public class CommandMethodAdapter implements Command {
 
     @Override
     public void execute(Input input, Context context) {
-        if (!commandMethod.isParameterCountValid(input.getArguments().size())) {
-            String expectedArgumentCount = String.valueOf(commandMethod.getMinParameterCount());
-            if (commandMethod.getMinParameterCount() != commandMethod.getMaxParameterCount() - 1)
-                expectedArgumentCount += "-" +
-                    (commandMethod.getMaxParameterCount() == Integer.MAX_VALUE ?
-                        INFINITY : commandMethod.getMaxParameterCount() - 1);
-            context.printError("error: expected argument count: " + expectedArgumentCount);
-            if (!getUsage().isEmpty()) context.printError(getUsage());
-            return;
-        }
+        if (!validateParameterCount(input, context)) return;
         try {
             CommandParameter[] parameters = commandMethod.getParameters();
             Object[] objects = new Object[parameters.length];
@@ -85,6 +76,19 @@ public class CommandMethodAdapter implements Command {
 
     CommandMethod getCommandMethod() {
         return commandMethod;
+    }
+
+    private boolean validateParameterCount(Input input, Context context) {
+        if (commandMethod.isParameterCountValid(input.getArguments().size()))
+            return true;
+        String expectedArgumentCount = String.valueOf(commandMethod.getMinParameterCount());
+        if (commandMethod.getMinParameterCount() != commandMethod.getMaxParameterCount() - 1)
+            expectedArgumentCount += "-" +
+                (commandMethod.getMaxParameterCount() == Integer.MAX_VALUE ?
+                    INFINITY : commandMethod.getMaxParameterCount() - 1);
+        context.printError("error: expected argument count: " + expectedArgumentCount);
+        if (!getUsage().isEmpty()) context.printError(getUsage());
+        return false;
     }
 
     private Object handleDynamicParameter(Input input, CommandParameter parameter, int i) {

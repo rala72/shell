@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class TestContext extends Context {
     private final BlockingQueue<String> outputHistory;
     private final BlockingQueue<String> errorHistory;

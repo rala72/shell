@@ -12,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
 
-@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Shell implements Runnable {
     public static final String DEFAULT_PROMPT = "> ";
 

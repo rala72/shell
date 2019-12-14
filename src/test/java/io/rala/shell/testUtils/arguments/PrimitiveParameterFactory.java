@@ -3,7 +3,7 @@ package io.rala.shell.testUtils.arguments;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings("unused")
 class PrimitiveParameterFactory {
     @SuppressWarnings("SpellCheckingInspection")
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";

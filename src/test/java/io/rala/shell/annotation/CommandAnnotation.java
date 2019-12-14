@@ -2,7 +2,7 @@ package io.rala.shell.annotation;
 
 import java.lang.annotation.Annotation;
 
-@SuppressWarnings({"ClassExplicitlyAnnotation", "unused", "WeakerAccess"})
+@SuppressWarnings("ClassExplicitlyAnnotation")
 public class CommandAnnotation implements Command {
     private final String value;
     private final String documentation;

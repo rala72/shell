@@ -7,7 +7,7 @@ import io.rala.shell.testUtils.io.HistoryOutputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings("unused")
 public class TestShell {
     private final Shell shell;
     private final BlockingQueueInputStream inputStream;

@@ -9,7 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static io.rala.shell.testUtils.io.Converter.convertIntegerCollectionToString;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class HistoryOutputStream extends OutputStream {
     private static final int CARRIAGE_RETURN_CODE_POINT = 13;
     private final OutputStream passThrough;

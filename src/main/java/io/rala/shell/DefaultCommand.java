@@ -4,7 +4,6 @@ import io.rala.shell.command.Command;
 import io.rala.shell.command.ExitCommand;
 import io.rala.shell.command.HelpCommand;
 
-@SuppressWarnings("unused")
 public enum DefaultCommand {
     EXIT("exit", new ExitCommand()),
     HELP("help", new HelpCommand());

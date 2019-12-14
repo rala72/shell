@@ -4,7 +4,6 @@ import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.exception.StopShellException;
 
-@SuppressWarnings("unused")
 public class ExitCommand implements Command {
     @Override
     public String getDocumentation() {

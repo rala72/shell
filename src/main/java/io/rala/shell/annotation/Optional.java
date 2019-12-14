@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-@SuppressWarnings("unused")
 public @interface Optional {
     String value() default "";
 }

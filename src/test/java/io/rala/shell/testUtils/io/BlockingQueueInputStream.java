@@ -8,7 +8,6 @@ import java.util.concurrent.BlockingQueue;
 import static io.rala.shell.testUtils.io.Converter.convertByteArrayToCharArray;
 import static io.rala.shell.testUtils.io.Converter.convertCharArrayToByteArray;
 
-@SuppressWarnings("unused")
 public class BlockingQueueInputStream extends InputStream {
     private final BlockingQueue<String> queue;
     private StringReader stringReader;

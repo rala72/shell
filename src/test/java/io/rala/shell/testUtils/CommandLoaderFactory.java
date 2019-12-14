@@ -5,7 +5,6 @@ import io.rala.shell.testUtils.object.TestObjectWithAttributes;
 import io.rala.shell.testUtils.object.TestObjectWithOneInput;
 import io.rala.shell.testUtils.object.TestObjectWithoutAttributes;
 
-@SuppressWarnings("unused")
 public class CommandLoaderFactory {
     private CommandLoaderFactory() {
     }

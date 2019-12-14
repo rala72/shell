@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-@SuppressWarnings("unused")
 class ContextTest {
     @Test
     void emptyCommands() {

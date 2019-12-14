@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class Input {
     private final String command;
     private final List<String> arguments;

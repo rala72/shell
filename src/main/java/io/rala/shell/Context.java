@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Map;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class Context {
     private final PrintWriter output;
     private final PrintWriter error;

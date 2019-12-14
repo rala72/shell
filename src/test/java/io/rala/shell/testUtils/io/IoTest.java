@@ -10,7 +10,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("SameParameterValue")
 class IoTest {
     @Test
     void newLines() throws InterruptedException {
@@ -95,6 +94,7 @@ class IoTest {
 
     // region countPhrase
 
+    @SuppressWarnings("SameParameterValue")
     private static int countPhrase(Collection<String> strings, String phrase) {
         return countPhrase(String.join("", strings), phrase);
     }

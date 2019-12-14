@@ -2,7 +2,6 @@ package io.rala.shell.testUtils;
 
 import java.util.concurrent.Callable;
 
-@SuppressWarnings("unused")
 public class WaitUtils {
     private WaitUtils() {
     }

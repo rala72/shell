@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class CommandMethod {
     private final Command command;
     private final Method method;

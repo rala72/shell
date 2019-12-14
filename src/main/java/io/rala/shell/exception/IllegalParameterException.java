@@ -1,6 +1,5 @@
 package io.rala.shell.exception;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class IllegalParameterException extends RuntimeException {
     private static final String SUFFIX_ONLY_ONE_DYNAMIC =
         ": may only have one dynamic parameter";

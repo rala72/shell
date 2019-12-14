@@ -2,7 +2,6 @@ package io.rala.shell.utils;
 
 import java.lang.reflect.Array;
 
-@SuppressWarnings("unused")
 public class Default {
     private Default() {
     }

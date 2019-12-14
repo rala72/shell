@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class HelpCommand implements Command {
     private static final String DEFAULT_DOCUMENTATION = "<no documentation found>";
 

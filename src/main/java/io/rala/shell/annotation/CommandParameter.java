@@ -6,7 +6,6 @@ import io.rala.shell.Input;
 import java.lang.reflect.Parameter;
 import java.util.List;
 
-@SuppressWarnings("WeakerAccess")
 public class CommandParameter {
     private final Parameter parameter;
 

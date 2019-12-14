@@ -31,7 +31,6 @@ class ContextTest {
 
     @Test
     void constructorWithDifferentOutputs() {
-        PrintWriter outPrintWriter = getSystemOutPrintWriter();
         Context context = new Context(
             getSystemOutPrintWriter(),
             getSystemErrorPrintWriter(),

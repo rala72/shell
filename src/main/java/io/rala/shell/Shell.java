@@ -12,6 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * shell which calls methods based on input commands
+ */
 public class Shell implements Runnable {
     public static final String DEFAULT_PROMPT = "> ";
 
@@ -23,14 +26,30 @@ public class Shell implements Runnable {
     private String prompt = DEFAULT_PROMPT;
     private boolean isStopOnInvalidCommandEnabled = false;
 
+    /**
+     * new shell based on {@link System} streams
+     *
+     * @see #Shell(InputStream, OutputStream, OutputStream)
+     */
     public Shell() {
         this(System.in, System.out, System.err);
     }
 
+    /**
+     * {@code errorStream} is equals to {@code outputStream}
+     *
+     * @param inputStream  inputStream of shell
+     * @param outputStream outputStream of shell
+     */
     public Shell(InputStream inputStream, OutputStream outputStream) {
         this(inputStream, outputStream, outputStream);
     }
 
+    /**
+     * @param inputStream  inputStream of shell
+     * @param outputStream outputStream of shell
+     * @param errorStream  errorStream of shell
+     */
     public Shell(InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         this.readerQueue = new ReaderQueue(reader);
@@ -66,55 +85,95 @@ public class Shell implements Runnable {
         thread.interrupt();
     }
 
+    /**
+     * @param fallback fallback command if none is found
+     */
     public void setFallback(Command fallback) {
         this.fallback = fallback;
     }
 
+    /**
+     * @param exceptionHandler exceptionHandler to customize exception handling
+     */
     public void setExceptionHandler(ExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
 
+    /**
+     * @param prompt promot to show before user input
+     */
     public void setPrompt(String prompt) {
         this.prompt = prompt != null ? prompt : DEFAULT_PROMPT;
     }
 
+    /**
+     * @return {@code true} if enabled
+     */
     public boolean isStopOnInvalidCommandEnabled() {
         return isStopOnInvalidCommandEnabled;
     }
 
+    /**
+     * @param stopOnInvalidCommandEnabled {@code true} if invalid command should stop shell
+     */
     public void setStopOnInvalidCommandEnabled(boolean stopOnInvalidCommandEnabled) {
         isStopOnInvalidCommandEnabled = stopOnInvalidCommandEnabled;
     }
 
+    /**
+     * @param object object to register all {@link io.rala.shell.annotation.Command} annotations
+     */
     public void register(Object object) {
         new CommandLoader(object).getCommandMethodMap()
             .forEach(this::register);
     }
 
+    /**
+     * @param command command to register
+     */
     public void register(DefaultCommand command) {
         register(command.getName(), command.getCommand());
     }
 
+    /**
+     * @param command         command to register
+     * @param furtherCommands further commands to register
+     */
     public void register(DefaultCommand command, DefaultCommand... furtherCommands) {
         if (command != null) register(command);
         register(furtherCommands);
     }
 
+    /**
+     * @param commands commands to register
+     */
     public void register(DefaultCommand[] commands) {
         for (DefaultCommand command : commands)
             register(command);
     }
 
+    /**
+     * @param name    name of command to register
+     * @param command command implementation to register
+     */
     public void register(String name, Command command) {
         if (commands.containsKey(name))
             throw new CommandAlreadyPresentException(name);
         commands.put(name, command);
     }
 
+    /**
+     * @param s string to print as line
+     * @see Context#printLine(String)
+     */
     public void printLine(String s) {
         context.printLine(s);
     }
 
+    /**
+     * @param s string to print as error line
+     * @see Context#printError(String)
+     */
     public void printError(String s) {
         context.printError(s);
     }

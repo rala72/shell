@@ -16,11 +16,18 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * adapter for {@link CommandMethod} to implement {@link Command}
+ */
 public class CommandMethodAdapter implements Command {
     private static final char INFINITY = '∞';
     private final Object object;
     private final CommandMethod commandMethod;
 
+    /**
+     * @param object        object which has the method
+     * @param commandMethod command method of object
+     */
     public CommandMethodAdapter(Object object, CommandMethod commandMethod) {
         this.object = object;
         this.commandMethod = commandMethod;

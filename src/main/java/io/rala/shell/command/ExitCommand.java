@@ -4,6 +4,9 @@ import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.exception.StopShellException;
 
+/**
+ * command which throws {@link StopShellException} to stop shell
+ */
 public class ExitCommand implements Command {
     @Override
     public String getDocumentation() {

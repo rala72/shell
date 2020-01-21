@@ -4,6 +4,9 @@ import io.rala.shell.command.Command;
 import io.rala.shell.command.ExitCommand;
 import io.rala.shell.command.HelpCommand;
 
+/**
+ * all supported default commands
+ */
 public enum DefaultCommand {
     EXIT("exit", new ExitCommand()),
     HELP("help", new HelpCommand());
@@ -16,10 +19,16 @@ public enum DefaultCommand {
         this.command = command;
     }
 
+    /**
+     * @return name of command
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return command implementation
+     */
     public Command getCommand() {
         return command;
     }

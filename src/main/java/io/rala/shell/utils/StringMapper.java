@@ -1,16 +1,29 @@
 package io.rala.shell.utils;
 
+/**
+ * maps a string to an object based on specified class
+ */
 public class StringMapper {
     private final String string;
 
+    /**
+     * @param string string to map
+     */
     public StringMapper(String string) {
         this.string = string != null ? string : "null";
     }
 
+    /**
+     * @return request string
+     */
     public String getString() {
         return string;
     }
 
+    /**
+     * @param type to get object from
+     * @return converted object - or request string if not supported
+     */
     public Object map(Class<?> type) {
         if (!type.isPrimitive() && getString().equals("null")) return null;
         if (boolean.class.isAssignableFrom(type) || Boolean.class.isAssignableFrom(type)) {

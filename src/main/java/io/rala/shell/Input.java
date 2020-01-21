@@ -6,36 +6,64 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * {@link Shell} input holder
+ */
 public class Input {
     private final String command;
     private final List<String> arguments;
 
+    /**
+     * @param command   command name
+     * @param arguments optional arguments
+     */
     public Input(String command, String... arguments) {
         this(command, Arrays.asList(arguments));
     }
 
+    /**
+     * @param command   command name
+     * @param arguments argument list
+     */
     public Input(String command, List<String> arguments) {
         this.command = command;
         this.arguments = Collections.unmodifiableList(arguments);
     }
 
+    /**
+     * @return command name
+     */
     public String getCommand() {
         return command;
     }
 
+    /**
+     * @return argument list
+     */
     public List<String> getArguments() {
         return arguments;
     }
 
+    /**
+     * @return {@code true} if arguments are present
+     */
     public boolean hasArguments() {
         return !getArguments().isEmpty();
     }
 
+    /**
+     * @param i index of parameter
+     * @return optional which has argument or is empty
+     */
     public Optional<String> get(int i) {
         return 0 <= i && i < getArguments().size() ?
             Optional.ofNullable(getArguments().get(i)) : Optional.empty();
     }
 
+    /**
+     * @param i index of parameter
+     * @return parameter or null
+     */
     public String getOrNull(int i) {
         return get(i).orElse(null);
     }
@@ -48,10 +76,20 @@ public class Input {
             '}';
     }
 
+    /**
+     * @param line line to parse
+     * @return new Input instance parsed by line without filtering blanks
+     * @see #parse(String, boolean)
+     */
     public static Input parse(String line) {
         return parse(line, false);
     }
 
+    /**
+     * @param line        line to parse
+     * @param filterBlank filter blank strings
+     * @return new Input instance parsed by line
+     */
     public static Input parse(String line, boolean filterBlank) {
         List<String> parts = List.of(line.split(" ")).stream()
             .filter(string -> !filterBlank || !string.isEmpty())

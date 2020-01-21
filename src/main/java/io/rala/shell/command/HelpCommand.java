@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * command which prints out the help of all commands or requested ones
+ */
 public class HelpCommand implements Command {
     private static final String DEFAULT_DOCUMENTATION = "<no documentation found>";
 

@@ -38,19 +38,19 @@ public class CommandParameter {
     }
 
     public boolean isInput() {
-        return getParameter().getType().isAssignableFrom(Input.class);
+        return getType().isAssignableFrom(Input.class);
     }
 
     public boolean isContext() {
-        return getParameter().getType().isAssignableFrom(Context.class);
+        return getType().isAssignableFrom(Context.class);
     }
 
     public boolean isArray() {
-        return getParameter().isVarArgs() || getParameter().getType().isArray();
+        return getParameter().isVarArgs() || getType().isArray();
     }
 
     public boolean isList() {
-        return getParameter().getType().isAssignableFrom(List.class);
+        return getType().isAssignableFrom(List.class);
     }
 
     @Override

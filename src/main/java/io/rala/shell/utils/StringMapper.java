@@ -4,8 +4,7 @@ public class StringMapper {
     private final String string;
 
     public StringMapper(String string) {
-        if (string == null) string = "null";
-        this.string = string;
+        this.string = string != null ? string : "null";
     }
 
     public String getString() {

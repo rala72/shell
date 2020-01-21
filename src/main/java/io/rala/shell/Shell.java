@@ -75,8 +75,7 @@ public class Shell implements Runnable {
     }
 
     public void setPrompt(String prompt) {
-        if (prompt == null) prompt = DEFAULT_PROMPT;
-        this.prompt = prompt;
+        this.prompt = prompt != null ? prompt : DEFAULT_PROMPT;
     }
 
     public boolean isStopOnInvalidCommandEnabled() {

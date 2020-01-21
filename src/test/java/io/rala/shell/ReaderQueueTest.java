@@ -70,9 +70,9 @@ class ReaderQueueTest {
 
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             queue.put("entry");
-            queue.put("\n");
             String peek = readerQueue.peek();
             Assertions.assertNull(peek);
+            queue.put("\n");
             String take = readerQueue.take();
             Assertions.assertEquals("entry", take);
         });

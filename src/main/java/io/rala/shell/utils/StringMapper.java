@@ -23,6 +23,7 @@ public class StringMapper {
     /**
      * @param type to get object from
      * @return converted object - or request string if not supported
+     * @throws IllegalArgumentException if target class is {@code char} and length is not {@code 1}
      */
     public Object map(Class<?> type) {
         if (!type.isPrimitive() && getString().equals("null")) return null;

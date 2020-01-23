@@ -2,6 +2,7 @@ package io.rala.shell.command;
 
 import io.rala.shell.Context;
 import io.rala.shell.Input;
+import io.rala.shell.exception.MethodCallException;
 
 /**
  * declaration of command implementation
@@ -26,6 +27,7 @@ public interface Command {
      *
      * @param input   input of command
      * @param context context of shell
+     * @throws MethodCallException if any known exception is thrown
      */
     void execute(Input input, Context context);
 }

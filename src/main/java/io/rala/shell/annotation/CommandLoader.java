@@ -23,7 +23,7 @@ public class CommandLoader {
     /**
      * @param object object to load all {@link Command}s from
      * @throws CommandAlreadyPresentException if multiple methods use the same command
-     * @throws IllegalParameterException      if any method or parameter is invalid
+     * @throws IllegalParameterException      if any parameter is invalid
      * @see IllegalParameterException
      */
     public CommandLoader(Object object) {

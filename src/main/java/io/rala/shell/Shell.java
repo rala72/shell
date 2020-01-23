@@ -122,6 +122,8 @@ public class Shell implements Runnable {
 
     /**
      * @param object object to register all {@link io.rala.shell.annotation.Command} annotations
+     * @see CommandLoader#CommandLoader(Object)
+     * @see #register(String, Command)
      */
     public void register(Object object) {
         new CommandLoader(object).getCommandMethodMap()
@@ -155,6 +157,8 @@ public class Shell implements Runnable {
     /**
      * @param name    name of command to register
      * @param command command implementation to register
+     * @throws CommandAlreadyPresentException if command is already present
+     * @throws IllegalArgumentException       if {@code name} contains space
      */
     public void register(String name, Command command) {
         if (commands.containsKey(name))

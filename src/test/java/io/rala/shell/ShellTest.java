@@ -340,6 +340,20 @@ class ShellTest {
     }
 
     @Test
+    void registerManualCommandWhichHasSpaceInName() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.register(new TestObjectWithAttributes());
+        try {
+            shell.register("cmd with spaces", ECHO_COMMAND);
+            Assertions.fail();
+        } catch (IllegalArgumentException e) {
+            final String prefix = "no space allowed in command name: ";
+            Assertions.assertEquals(prefix + "cmd with spaces", e.getMessage());
+        }
+    }
+
+    @Test
     void exceptionCommandWithoutMessage() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();

@@ -159,6 +159,8 @@ public class Shell implements Runnable {
     public void register(String name, Command command) {
         if (commands.containsKey(name))
             throw new CommandAlreadyPresentException(name);
+        if (name.contains(" "))
+            throw new IllegalArgumentException("no space allowed in command name: " + name);
         commands.put(name, command);
     }
 

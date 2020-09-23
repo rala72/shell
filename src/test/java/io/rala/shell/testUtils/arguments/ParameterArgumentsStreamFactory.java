@@ -17,19 +17,19 @@ public class ParameterArgumentsStreamFactory {
     public static Stream<Arguments> validMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::validStreamHolderOf)
-            .map(streamHolder -> createMappingParameterArgumentsStream(
+            .flatMap(streamHolder -> createMappingParameterArgumentsStream(
                 streamHolder.getClassName(),
                 streamHolder.getStream().toArray(String[]::new)
-            )).flatMap(argumentsStream -> argumentsStream);
+            ));
     }
 
     public static Stream<Arguments> invalidMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::invalidStreamHolderOf)
-            .map(streamHolder -> createMappingParameterArgumentsStream(
+            .flatMap(streamHolder -> createMappingParameterArgumentsStream(
                 streamHolder.getClassName(),
                 streamHolder.getStream().toArray(String[]::new)
-            )).flatMap(argumentsStream -> argumentsStream);
+            ));
     }
 
     public static Stream<Arguments> methodString() {
@@ -77,19 +77,19 @@ public class ParameterArgumentsStreamFactory {
     public static Stream<Arguments> methodValidMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::validStreamHolderOf)
-            .map(streamHolder -> createMethodWithMappingParameterArgumentsStream(
+            .flatMap(streamHolder -> createMethodWithMappingParameterArgumentsStream(
                 streamHolder.getClassName(),
                 streamHolder.getStream().toArray(String[]::new)
-            )).flatMap(argumentsStream -> argumentsStream);
+            ));
     }
 
     public static Stream<Arguments> methodInvalidMapping() {
         return Arrays.stream(PrimitiveParameterFactory.TYPE.values())
             .map(PrimitiveParameterFactory::invalidStreamHolderOf)
-            .map(streamHolder -> createMethodWithMappingParameterArgumentsStream(
+            .flatMap(streamHolder -> createMethodWithMappingParameterArgumentsStream(
                 streamHolder.getClassName(),
                 streamHolder.getStream().toArray(String[]::new)
-            )).flatMap(argumentsStream -> argumentsStream);
+            ));
     }
 
     public static Stream<Arguments> methodOptionalWithDefaultValue() {

@@ -62,6 +62,7 @@ public class Shell implements Runnable {
 
     @Override
     public void run() {
+        //noinspection InstantiatingAThreadWithDefaultRunMethod
         Thread thread = new Thread();
         try {
             thread = new Thread(readerQueue);
@@ -100,7 +101,7 @@ public class Shell implements Runnable {
     }
 
     /**
-     * @param prompt promot to show before user input
+     * @param prompt prompt to show before user input
      */
     public void setPrompt(String prompt) {
         this.prompt = prompt != null ? prompt : DEFAULT_PROMPT;

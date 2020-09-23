@@ -76,8 +76,6 @@ class ContextTest {
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
         Assertions.assertTrue(outputs.isEmpty());
-        Assertions.assertEquals(0, outputs.size());
-        Assertions.assertFalse(outputs.contains("error"));
     }
 
     @Test

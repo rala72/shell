@@ -24,7 +24,7 @@ public class Context {
      * @see #Context(PrintWriter, PrintWriter, Map)
      * @since 1.0.0
      */
-    public Context(PrintWriter output, Map<String, Command> commands) {
+    protected Context(PrintWriter output, Map<String, Command> commands) {
         this(output, output, commands);
     }
 
@@ -34,7 +34,7 @@ public class Context {
      * @param commands commands of shell
      * @since 1.0.0
      */
-    public Context(PrintWriter output, PrintWriter error, Map<String, Command> commands) {
+    protected Context(PrintWriter output, PrintWriter error, Map<String, Command> commands) {
         this.output = output;
         this.error = error;
         this.commands = Collections.unmodifiableMap(commands);

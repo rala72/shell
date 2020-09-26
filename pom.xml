@@ -34,10 +34,10 @@
         </developer>
     </developers>
 
-    <!--<scm>
+    <scm>
         <connection>git://github.com/rala72/shell.git</connection>
         <url>http://github.com/rala72/shell</url>
-    </scm>-->
+    </scm>
 
     <dependencies>
         <dependency>

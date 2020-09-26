@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * command which prints out the help of all commands or requested ones
+ *
+ * @since 1.0.0
  */
 public class HelpCommand implements Command {
     private static final String DEFAULT_DOCUMENTATION = "<no documentation found>";

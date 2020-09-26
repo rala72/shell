@@ -18,6 +18,8 @@ import java.util.stream.Stream;
 
 /**
  * adapter for {@link CommandMethod} to implement {@link Command}
+ *
+ * @since 1.0.0
  */
 public class CommandMethodAdapter implements Command {
     private static final char INFINITY = '∞';
@@ -27,6 +29,7 @@ public class CommandMethodAdapter implements Command {
     /**
      * @param object        object which has the method
      * @param commandMethod command method of object
+     * @since 1.0.0
      */
     public CommandMethodAdapter(Object object, CommandMethod commandMethod) {
         this.object = object;

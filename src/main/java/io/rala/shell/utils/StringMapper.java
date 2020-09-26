@@ -2,12 +2,15 @@ package io.rala.shell.utils;
 
 /**
  * maps a string to an object based on specified class
+ *
+ * @since 1.0.0
  */
 public class StringMapper {
     private final String string;
 
     /**
      * @param string string to map
+     * @since 1.0.0
      */
     public StringMapper(String string) {
         this.string = string != null ? string : "null";
@@ -15,6 +18,7 @@ public class StringMapper {
 
     /**
      * @return request string
+     * @since 1.0.0
      */
     public String getString() {
         return string;
@@ -24,6 +28,7 @@ public class StringMapper {
      * @param type to get object from
      * @return converted object - or request string if not supported
      * @throws IllegalArgumentException if target class is {@code char} and length is not {@code 1}
+     * @since 1.0.0
      */
     public Object map(Class<?> type) {
         if (!type.isPrimitive() && getString().equals("null")) return null;

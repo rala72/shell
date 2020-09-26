@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 /**
  * connection of {@link Command} and {@link Method}
+ *
+ * @since 1.0.0
  */
 public class CommandMethod {
     private final Command command;
@@ -14,6 +16,7 @@ public class CommandMethod {
     /**
      * @param command command of connection
      * @param method  method of connection
+     * @since 1.0.0
      */
     public CommandMethod(Command command, Method method) {
         this.command = command;
@@ -22,6 +25,7 @@ public class CommandMethod {
 
     /**
      * @return name of command
+     * @since 1.0.0
      */
     public String getName() {
         return !command.value().isEmpty() ? command.value() : method.getName();
@@ -29,6 +33,7 @@ public class CommandMethod {
 
     /**
      * @return command of connection
+     * @since 1.0.0
      */
     public Command getCommand() {
         return command;
@@ -36,6 +41,7 @@ public class CommandMethod {
 
     /**
      * @return method of connection
+     * @since 1.0.0
      */
     public Method getMethod() {
         return method;
@@ -43,6 +49,7 @@ public class CommandMethod {
 
     /**
      * @return min count of parameters
+     * @since 1.0.0
      */
     public int getMinParameterCount() {
         return Math.toIntExact(Arrays.stream(getParameters())
@@ -55,6 +62,7 @@ public class CommandMethod {
 
     /**
      * @return max count of parameters + 1
+     * @since 1.0.0
      */
     public int getMaxParameterCount() {
         return isLastParameterDynamic() ? Integer.MAX_VALUE :
@@ -68,6 +76,7 @@ public class CommandMethod {
     /**
      * @param i amount of parameters
      * @return {@code true} if amount is in boundaries
+     * @since 1.0.0
      */
     public boolean isParameterCountValid(int i) {
         return getMinParameterCount() <= i && i < getMaxParameterCount();
@@ -75,6 +84,7 @@ public class CommandMethod {
 
     /**
      * @return {@code true} if last parameter is dynamic
+     * @since 1.0.0
      */
     public boolean isLastParameterDynamic() {
         if (getMethod().getParameterCount() == 0) return false;
@@ -84,6 +94,7 @@ public class CommandMethod {
 
     /**
      * @return command parameters
+     * @since 1.0.0
      */
     public CommandParameter[] getParameters() {
         return Arrays.stream(getMethod().getParameters())

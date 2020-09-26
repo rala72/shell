@@ -14,6 +14,8 @@ import io.rala.shell.annotation.Optional;
  *     <li>only last parameters may be {@link Optional}</li>
  *     <li>default value of {@link Optional} has to be valid parsable</li>
  * </ul>
+ *
+ * @since 1.0.0
  */
 public class IllegalParameterException extends RuntimeException {
     private static final String SUFFIX_ONLY_ONE_DYNAMIC =
@@ -29,6 +31,7 @@ public class IllegalParameterException extends RuntimeException {
 
     /**
      * @param message message of exception
+     * @since 1.0.0
      */
     protected IllegalParameterException(String message) {
         super(message);
@@ -38,6 +41,7 @@ public class IllegalParameterException extends RuntimeException {
      * @param method method name of command
      * @return new {@link IllegalParameterException}
      * @see IllegalParameterException
+     * @since 1.0.0
      */
     public static IllegalParameterException createNewOnlyOneDynamicInstance(String method) {
         return new IllegalParameterException(method + SUFFIX_ONLY_ONE_DYNAMIC);
@@ -47,6 +51,7 @@ public class IllegalParameterException extends RuntimeException {
      * @param method method name of command
      * @return new {@link IllegalParameterException}
      * @see IllegalParameterException
+     * @since 1.0.0
      */
     public static IllegalParameterException createNewOnlyLastDynamicInstance(String method) {
         return new IllegalParameterException(method + SUFFIX_ONLY_LAST_DYNAMIC);
@@ -56,6 +61,7 @@ public class IllegalParameterException extends RuntimeException {
      * @param method method name of command
      * @return new {@link IllegalParameterException}
      * @see IllegalParameterException
+     * @since 1.0.0
      */
     public static IllegalParameterException createNewIfInputNoOther(String method) {
         return new IllegalParameterException(method + SUFFIX_IF_INPUT_NO_OTHER);
@@ -65,6 +71,7 @@ public class IllegalParameterException extends RuntimeException {
      * @param method method name of command
      * @return new {@link IllegalParameterException}
      * @see IllegalParameterException
+     * @since 1.0.0
      */
     public static IllegalParameterException createNewOnlyLastParametersCanBeAbsent(String method) {
         return new IllegalParameterException(method + SUFFIX_ONLY_LAST_PARAMETERS_CAN_BE_ABSENT);
@@ -74,6 +81,7 @@ public class IllegalParameterException extends RuntimeException {
      * @param param param name of method
      * @return new {@link IllegalParameterException}
      * @see IllegalParameterException
+     * @since 1.0.0
      */
     public static IllegalParameterException createNewOptionalDefaultValueIsInvalid(String param) {
         return new IllegalParameterException(param + SUFFIX_DEFAULT_VALUE_INVALID);

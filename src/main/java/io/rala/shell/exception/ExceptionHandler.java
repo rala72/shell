@@ -4,6 +4,8 @@ import io.rala.shell.Context;
 
 /**
  * this interface allows to customize exception handling
+ *
+ * @since 1.0.0
  */
 public interface ExceptionHandler {
     /**
@@ -11,6 +13,7 @@ public interface ExceptionHandler {
      *
      * @param exception current thrown exception
      * @param context   context of thrown exception
+     * @since 1.0.0
      */
     void handleException(Exception exception, Context context);
 }

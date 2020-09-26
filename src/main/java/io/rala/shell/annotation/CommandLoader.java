@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 
 /**
  * loads all {@link Command}s and {@link Optional}s and validates them
+ *
+ * @since 1.0.0
  */
 public class CommandLoader {
     private final Map<String, io.rala.shell.command.Command> commandMethodMap = new HashMap<>();
@@ -25,6 +27,7 @@ public class CommandLoader {
      * @throws CommandAlreadyPresentException if multiple methods use the same command
      * @throws IllegalParameterException      if any parameter is invalid
      * @see IllegalParameterException
+     * @since 1.0.0
      */
     public CommandLoader(Object object) {
         if (!Modifier.isPublic(object.getClass().getModifiers()))
@@ -47,6 +50,7 @@ public class CommandLoader {
 
     /**
      * @return loaded {@link io.rala.shell.command.Command} map
+     * @since 1.0.0
      */
     public Map<String, io.rala.shell.command.Command> getCommandMethodMap() {
         return commandMethodMap;

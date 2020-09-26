@@ -6,6 +6,8 @@ import io.rala.shell.exception.StopShellException;
 
 /**
  * command which throws {@link StopShellException} to stop shell
+ *
+ * @since 1.0.0
  */
 public class ExitCommand implements Command {
     @Override

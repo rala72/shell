@@ -14,6 +14,8 @@ import java.util.TreeMap;
 
 /**
  * shell which calls methods based on input commands
+ *
+ * @since 1.0.0
  */
 public class Shell implements Runnable {
     public static final String DEFAULT_PROMPT = "> ";
@@ -30,6 +32,7 @@ public class Shell implements Runnable {
      * new shell based on {@link System} streams
      *
      * @see #Shell(InputStream, OutputStream, OutputStream)
+     * @since 1.0.0
      */
     public Shell() {
         this(System.in, System.out, System.err);
@@ -40,6 +43,7 @@ public class Shell implements Runnable {
      *
      * @param inputStream  inputStream of shell
      * @param outputStream outputStream of shell
+     * @since 1.0.0
      */
     public Shell(InputStream inputStream, OutputStream outputStream) {
         this(inputStream, outputStream, outputStream);
@@ -49,6 +53,7 @@ public class Shell implements Runnable {
      * @param inputStream  inputStream of shell
      * @param outputStream outputStream of shell
      * @param errorStream  errorStream of shell
+     * @since 1.0.0
      */
     public Shell(InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -88,6 +93,7 @@ public class Shell implements Runnable {
 
     /**
      * @param fallback fallback command if none is found
+     * @since 1.0.0
      */
     public void setFallback(Command fallback) {
         this.fallback = fallback;
@@ -95,6 +101,7 @@ public class Shell implements Runnable {
 
     /**
      * @param exceptionHandler exceptionHandler to customize exception handling
+     * @since 1.0.0
      */
     public void setExceptionHandler(ExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
@@ -102,6 +109,7 @@ public class Shell implements Runnable {
 
     /**
      * @param prompt prompt to show before user input
+     * @since 1.0.0
      */
     public void setPrompt(String prompt) {
         this.prompt = prompt != null ? prompt : DEFAULT_PROMPT;
@@ -109,6 +117,7 @@ public class Shell implements Runnable {
 
     /**
      * @return {@code true} if enabled
+     * @since 1.0.0
      */
     public boolean isStopOnInvalidCommandEnabled() {
         return isStopOnInvalidCommandEnabled;
@@ -116,6 +125,7 @@ public class Shell implements Runnable {
 
     /**
      * @param stopOnInvalidCommandEnabled {@code true} if invalid command should stop shell
+     * @since 1.0.0
      */
     public void setStopOnInvalidCommandEnabled(boolean stopOnInvalidCommandEnabled) {
         isStopOnInvalidCommandEnabled = stopOnInvalidCommandEnabled;
@@ -125,6 +135,7 @@ public class Shell implements Runnable {
      * @param object object to register all {@link io.rala.shell.annotation.Command} annotations
      * @see CommandLoader#CommandLoader(Object)
      * @see #register(String, Command)
+     * @since 1.0.0
      */
     public void register(Object object) {
         new CommandLoader(object).getCommandMethodMap()
@@ -133,6 +144,7 @@ public class Shell implements Runnable {
 
     /**
      * @param command command to register
+     * @since 1.0.0
      */
     public void register(DefaultCommand command) {
         register(command.getName(), command.getCommand());
@@ -141,6 +153,7 @@ public class Shell implements Runnable {
     /**
      * @param command         command to register
      * @param furtherCommands further commands to register
+     * @since 1.0.0
      */
     public void register(DefaultCommand command, DefaultCommand... furtherCommands) {
         if (command != null) register(command);
@@ -149,6 +162,7 @@ public class Shell implements Runnable {
 
     /**
      * @param commands commands to register
+     * @since 1.0.0
      */
     public void register(DefaultCommand[] commands) {
         for (DefaultCommand command : commands)
@@ -160,6 +174,7 @@ public class Shell implements Runnable {
      * @param command command implementation to register
      * @throws CommandAlreadyPresentException if command is already present
      * @throws IllegalArgumentException       if {@code name} contains space
+     * @since 1.0.0
      */
     public void register(String name, Command command) {
         if (commands.containsKey(name))
@@ -172,6 +187,7 @@ public class Shell implements Runnable {
     /**
      * @param s string to print as line
      * @see Context#printLine(String)
+     * @since 1.0.0
      */
     public void printLine(String s) {
         context.printLine(s);
@@ -180,6 +196,7 @@ public class Shell implements Runnable {
     /**
      * @param s string to print as error line
      * @see Context#printError(String)
+     * @since 1.0.0
      */
     public void printError(String s) {
         context.printError(s);

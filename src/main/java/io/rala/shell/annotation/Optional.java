@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * optional optional annotation to indicate this parameter can be omitted
+ *
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
@@ -16,6 +18,7 @@ public @interface Optional {
      * default value is {@code null}
      *
      * @return default value
+     * @since 1.0.0
      */
     String value() default "";
 }

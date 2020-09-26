@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * decorator class for {@link Parameter} for {@link Command}s
+ *
+ * @since 1.0.0
  */
 public class CommandParameter {
     private final Parameter parameter;
@@ -18,6 +20,7 @@ public class CommandParameter {
 
     /**
      * @return parameter which gets decorated
+     * @since 1.0.0
      */
     public Parameter getParameter() {
         return parameter;
@@ -26,6 +29,7 @@ public class CommandParameter {
     /**
      * @return name of parameter
      * @see Parameter#getName()
+     * @since 1.0.0
      */
     public String getName() {
         return getParameter().getName();
@@ -35,6 +39,7 @@ public class CommandParameter {
      * @return {@link Optional} annotation or {@code null}
      * @see #isOptional()
      * @see Parameter#getAnnotation(Class)
+     * @since 1.0.0
      */
     public Optional getOptionalAnnotation() {
         return getParameter().getAnnotation(Optional.class);
@@ -43,6 +48,7 @@ public class CommandParameter {
     /**
      * @return parameter type
      * @see Parameter#getType()
+     * @since 1.0.0
      */
     public Class<?> getType() {
         return getParameter().getType();
@@ -51,6 +57,7 @@ public class CommandParameter {
     /**
      * @return {@code true} if {@link Optional} is present
      * @see Parameter#isAnnotationPresent(Class)
+     * @since 1.0.0
      */
     public boolean isOptional() {
         return getParameter().isAnnotationPresent(Optional.class);
@@ -59,6 +66,7 @@ public class CommandParameter {
     /**
      * @return {@code true} if {@link #isInput()},
      * {@link #isArray()} or {@link #isList()} holds
+     * @since 1.0.0
      */
     public boolean isDynamic() {
         return isInput() || isArray() || isList();
@@ -66,6 +74,7 @@ public class CommandParameter {
 
     /**
      * @return {@code true} if {@link Input} is assignable
+     * @since 1.0.0
      */
     public boolean isInput() {
         return getType().isAssignableFrom(Input.class);
@@ -73,6 +82,7 @@ public class CommandParameter {
 
     /**
      * @return {@code true} if {@link Context} is assignable
+     * @since 1.0.0
      */
     public boolean isContext() {
         return getType().isAssignableFrom(Context.class);
@@ -80,6 +90,7 @@ public class CommandParameter {
 
     /**
      * @return {@code true} if parameter is array or varargs
+     * @since 1.0.0
      */
     public boolean isArray() {
         return getParameter().isVarArgs() || getType().isArray();
@@ -87,6 +98,7 @@ public class CommandParameter {
 
     /**
      * @return {@code true} if {@link List} is assignable
+     * @since 1.0.0
      */
     public boolean isList() {
         return getType().isAssignableFrom(List.class);

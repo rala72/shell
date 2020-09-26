@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 /**
  * {@link Shell} input holder
+ *
+ * @since 1.0.0
  */
 public class Input {
     private final String command;
@@ -16,6 +18,7 @@ public class Input {
     /**
      * @param command   command name
      * @param arguments optional arguments
+     * @since 1.0.0
      */
     public Input(String command, String... arguments) {
         this(command, Arrays.asList(arguments));
@@ -24,6 +27,7 @@ public class Input {
     /**
      * @param command   command name
      * @param arguments argument list
+     * @since 1.0.0
      */
     public Input(String command, List<String> arguments) {
         this.command = command;
@@ -32,6 +36,7 @@ public class Input {
 
     /**
      * @return command name
+     * @since 1.0.0
      */
     public String getCommand() {
         return command;
@@ -39,6 +44,7 @@ public class Input {
 
     /**
      * @return argument list
+     * @since 1.0.0
      */
     public List<String> getArguments() {
         return arguments;
@@ -46,6 +52,7 @@ public class Input {
 
     /**
      * @return {@code true} if arguments are present
+     * @since 1.0.0
      */
     public boolean hasArguments() {
         return !getArguments().isEmpty();
@@ -54,6 +61,7 @@ public class Input {
     /**
      * @param i index of parameter
      * @return optional which has argument or is empty
+     * @since 1.0.0
      */
     public Optional<String> get(int i) {
         return 0 <= i && i < getArguments().size() ?
@@ -63,6 +71,7 @@ public class Input {
     /**
      * @param i index of parameter
      * @return parameter or null
+     * @since 1.0.0
      */
     public String getOrNull(int i) {
         return get(i).orElse(null);
@@ -80,6 +89,7 @@ public class Input {
      * @param line line to parse
      * @return new Input instance parsed by line without filtering blanks
      * @see #parse(String, boolean)
+     * @since 1.0.0
      */
     public static Input parse(String line) {
         return parse(line, false);
@@ -89,6 +99,7 @@ public class Input {
      * @param line        line to parse
      * @param filterBlank filter blank strings
      * @return new Input instance parsed by line
+     * @since 1.0.0
      */
     public static Input parse(String line, boolean filterBlank) {
         List<String> parts = List.of(line.split(" ")).stream()

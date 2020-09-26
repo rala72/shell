@@ -7,6 +7,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * {@link BlockingQueue} for {@link BufferedReader}
+ *
+ * @since 1.0.0
  */
 public class ReaderQueue implements Runnable {
     // TO DO: remove RQ to fix shell not stopping on request
@@ -20,6 +22,7 @@ public class ReaderQueue implements Runnable {
      *
      * @param bufferedReader buffered reader to queue
      * @see #ReaderQueue(BufferedReader, int)
+     * @since 1.0.0
      */
     protected ReaderQueue(BufferedReader bufferedReader) {
         this(bufferedReader, Integer.MAX_VALUE);
@@ -28,6 +31,7 @@ public class ReaderQueue implements Runnable {
     /**
      * @param bufferedReader buffered reader to queue
      * @param capacity       capacity of {@link BlockingQueue}
+     * @since 1.0.0
      */
     protected ReaderQueue(BufferedReader bufferedReader, int capacity) {
         this.queue = new LinkedBlockingQueue<>(capacity);
@@ -55,6 +59,7 @@ public class ReaderQueue implements Runnable {
     /**
      * @return {@link BlockingQueue#take()} or
      * {@code null} if {@link InterruptedException}
+     * @since 1.0.0
      */
     public final String take() {
         try {
@@ -66,6 +71,7 @@ public class ReaderQueue implements Runnable {
 
     /**
      * @return {@link BlockingQueue#peek()}
+     * @since 1.0.0
      */
     public final String peek() {
         return queue.peek();
@@ -74,6 +80,7 @@ public class ReaderQueue implements Runnable {
     /**
      * @return {@code true} if {@link #getIOException()} or
      * {@link #getInterruptedException()} is not {@code null}
+     * @since 1.0.0
      */
     protected boolean hasException() {
         return getIOException() != null || getInterruptedException() != null;
@@ -81,6 +88,7 @@ public class ReaderQueue implements Runnable {
 
     /**
      * @return caught exception from {@link #run()}
+     * @since 1.0.0
      */
     protected IOException getIOException() {
         return ioException;
@@ -88,6 +96,7 @@ public class ReaderQueue implements Runnable {
 
     /**
      * @return caught exception from {@link #run()}
+     * @since 1.0.0
      */
     protected InterruptedException getInterruptedException() {
         return interruptedException;

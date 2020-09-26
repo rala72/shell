@@ -11,6 +11,8 @@ import java.lang.annotation.Target;
 /**
  * command annotation to indicate that the method
  * should be registered in {@link Shell}
+ *
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -21,6 +23,7 @@ public @interface Command {
      * name must be unique
      *
      * @return command name of method
+     * @since 1.0.0
      */
     String value() default "";
 
@@ -29,6 +32,7 @@ public @interface Command {
      * which is used for example in {@link HelpCommand}
      *
      * @return documentation of method
+     * @since 1.0.0
      */
     String documentation() default "";
 
@@ -37,6 +41,7 @@ public @interface Command {
      * which is used for example in {@link HelpCommand}
      *
      * @return usage of method
+     * @since 1.0.0
      */
     String usage() default "";
 }

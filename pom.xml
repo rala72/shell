@@ -136,6 +136,9 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
+                <configuration>
+                    <repoToken>5sa9RyzRHMejrgHvItdGpEIfMGbg5EsUE</repoToken>
+                </configuration>
                 <!-- workaround (https://github.com/trautonen/coveralls-maven-plugin/issues/141) -->
                 <dependencies>
                     <dependency>

@@ -49,7 +49,7 @@ public class CommandMethodAdapter implements Command {
     public void execute(Input input, Context context) {
         if (!validateParameterCount(input, context)) return;
         try {
-            CommandParameter[] parameters = commandMethod.getParameters();
+            CommandParameter[] parameters = getCommandMethod().getParameters();
             Object[] objects = new Object[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
                 Object value;
@@ -58,14 +58,14 @@ public class CommandMethodAdapter implements Command {
                     value = input;
                 } else if (parameter.isContext()) {
                     value = context;
-                } else if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
+                } else if (i == parameters.length - 1 && getCommandMethod().isLastParameterDynamic()) {
                     value = handleDynamicParameter(input, context, parameter, i);
                 } else {
                     value = handleParameter(input, context, parameter, i);
                 }
                 objects[i] = value;
             }
-            Object result = commandMethod.getMethod().invoke(object, objects);
+            Object result = getCommandMethod().getMethod().invoke(object, objects);
             if (result != null)
                 context.printLine(String.valueOf(result));
         } catch (IllegalArgumentException | NullPointerException | InvocationTargetException e) {
@@ -88,13 +88,13 @@ public class CommandMethodAdapter implements Command {
     }
 
     private boolean validateParameterCount(Input input, Context context) {
-        if (commandMethod.isParameterCountValid(input.getArguments().size()))
+        if (getCommandMethod().isParameterCountValid(input.getArguments().size()))
             return true;
-        String expectedArgumentCount = String.valueOf(commandMethod.getMinParameterCount());
-        if (commandMethod.getMinParameterCount() != commandMethod.getMaxParameterCount() - 1)
+        String expectedArgumentCount = String.valueOf(getCommandMethod().getMinParameterCount());
+        if (getCommandMethod().getMinParameterCount() != getCommandMethod().getMaxParameterCount() - 1)
             expectedArgumentCount += "-" +
-                (commandMethod.getMaxParameterCount() == Integer.MAX_VALUE ?
-                    INFINITY : commandMethod.getMaxParameterCount() - 1);
+                (getCommandMethod().getMaxParameterCount() == Integer.MAX_VALUE ?
+                    INFINITY : getCommandMethod().getMaxParameterCount() - 1);
         context.printError("error: expected argument count: " + expectedArgumentCount);
         if (!getUsage().isEmpty()) context.printError(getUsage());
         return false;
@@ -106,7 +106,7 @@ public class CommandMethodAdapter implements Command {
         Class<?> componentType =
             parameter.isArray() ?
                 parameter.getType().getComponentType() :
-                getFirstGenericClass(commandMethod.getMethod());
+                getFirstGenericClass(getCommandMethod().getMethod());
         Object[] array = input.getArguments()
             .subList(i, input.getArguments().size())
             .stream()

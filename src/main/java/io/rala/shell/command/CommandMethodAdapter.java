@@ -1,5 +1,6 @@
 package io.rala.shell.command;
 
+import io.rala.StringMapper;
 import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandMethod;
@@ -7,7 +8,6 @@ import io.rala.shell.annotation.CommandParameter;
 import io.rala.shell.annotation.Optional;
 import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.utils.Default;
-import io.rala.shell.utils.StringMapper;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -109,7 +109,7 @@ public class CommandMethodAdapter implements Command {
         Object[] array = input.getArguments()
             .subList(i, input.getArguments().size())
             .stream()
-            .map(s -> new StringMapper(s).map(componentType))
+            .map(s -> StringMapper.getInstance().map(s, componentType))
             .map(componentType::cast)
             .toArray(n -> (Object[]) Array.newInstance(componentType, n));
         return parameter.isArray() ? array : List.of(array);
@@ -122,7 +122,7 @@ public class CommandMethodAdapter implements Command {
             argument = optionalAnnotation.value().isEmpty() ?
                 null : optionalAnnotation.value();
         return argument != null || optionalAnnotation == null ?
-            new StringMapper(argument).map(parameter.getType()) :
+            StringMapper.getInstance().map(argument, parameter.getType()) :
             Default.of(parameter.getType());
     }
 

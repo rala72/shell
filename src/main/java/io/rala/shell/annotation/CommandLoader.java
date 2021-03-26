@@ -1,9 +1,9 @@
 package io.rala.shell.annotation;
 
+import io.rala.StringMapper;
 import io.rala.shell.command.CommandMethodAdapter;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
-import io.rala.shell.utils.StringMapper;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -97,7 +97,7 @@ public class CommandLoader {
         String value = annotation.value();
         if (value.isEmpty()) return;
         try {
-            new StringMapper(value).map(parameter.getType());
+            StringMapper.getInstance().map(value, parameter.getType());
         } catch (IllegalArgumentException e) {
             throw IllegalParameterException.createNewOptionalDefaultValueIsInvalid(parameter.getName());
         }

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
-class PrimitiveParameterFactory {
+class PrimitiveParameterFactory { // see StringMapper
     @SuppressWarnings("SpellCheckingInspection")
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     @SuppressWarnings("SpellCheckingInspection")

@@ -41,6 +41,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.rala</groupId>
+            <artifactId>string-mapper</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>

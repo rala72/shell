@@ -96,7 +96,7 @@ public class CommandMethodAdapter implements Command {
                 (getCommandMethod().getMaxParameterCount() == Integer.MAX_VALUE ?
                     INFINITY : getCommandMethod().getMaxParameterCount() - 1);
         context.printError("error: expected argument count: " + expectedArgumentCount);
-        if (!getUsage().isEmpty()) context.printError(getUsage());
+        if (getUsage() != null && !getUsage().isEmpty()) context.printError(getUsage());
         return false;
     }
 

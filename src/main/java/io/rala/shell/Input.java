@@ -1,5 +1,9 @@
 package io.rala.shell;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +24,7 @@ public class Input {
      * @param arguments optional arguments
      * @since 1.0.0
      */
-    public Input(String command, String... arguments) {
+    public Input(@Nullable String command, @NotNull String... arguments) {
         this(command, Arrays.asList(arguments));
     }
 
@@ -29,7 +33,7 @@ public class Input {
      * @param arguments argument list
      * @since 1.0.0
      */
-    public Input(String command, List<String> arguments) {
+    public Input(@Nullable String command, @NotNull List<String> arguments) {
         this.command = command;
         this.arguments = Collections.unmodifiableList(arguments);
     }
@@ -38,6 +42,7 @@ public class Input {
      * @return command name
      * @since 1.0.0
      */
+    @Nullable
     public String getCommand() {
         return command;
     }
@@ -46,6 +51,8 @@ public class Input {
      * @return argument list
      * @since 1.0.0
      */
+    @NotNull
+    @Unmodifiable
     public List<String> getArguments() {
         return arguments;
     }
@@ -63,6 +70,7 @@ public class Input {
      * @return optional which has argument or is empty
      * @since 1.0.0
      */
+    @NotNull
     public Optional<String> get(int i) {
         return 0 <= i && i < getArguments().size() ?
             Optional.ofNullable(getArguments().get(i)) : Optional.empty();
@@ -73,11 +81,13 @@ public class Input {
      * @return parameter or null
      * @since 1.0.0
      */
+    @Nullable
     public String getOrNull(int i) {
         return get(i).orElse(null);
     }
 
     @Override
+    @NotNull
     public String toString() {
         return "Input{" +
             "command='" + getCommand() + '\'' +
@@ -91,7 +101,8 @@ public class Input {
      * @see #parse(String, boolean)
      * @since 1.0.0
      */
-    public static Input parse(String line) {
+    @NotNull
+    public static Input parse(@NotNull String line) {
         return parse(line, false);
     }
 
@@ -101,7 +112,8 @@ public class Input {
      * @return new Input instance parsed by line
      * @since 1.0.0
      */
-    public static Input parse(String line, boolean filterBlank) {
+    @NotNull
+    public static Input parse(@NotNull String line, boolean filterBlank) {
         List<String> parts = List.of(line.split(" ")).stream()
             .filter(string -> !filterBlank || !string.isEmpty())
             .collect(Collectors.toList());

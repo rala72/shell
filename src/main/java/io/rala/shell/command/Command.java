@@ -3,6 +3,8 @@ package io.rala.shell.command;
 import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.exception.MethodCallException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * declaration of command implementation
@@ -14,6 +16,7 @@ public interface Command {
      * @return optional documentation
      * @since 1.0.0
      */
+    @Nullable
     default String getDocumentation() {
         return null;
     }
@@ -22,6 +25,7 @@ public interface Command {
      * @return optional usage
      * @since 1.0.0
      */
+    @Nullable
     default String getUsage() {
         return null;
     }
@@ -34,5 +38,5 @@ public interface Command {
      * @throws MethodCallException if any known exception is thrown
      * @since 1.0.0
      */
-    void execute(Input input, Context context);
+    void execute(@NotNull Input input, @NotNull Context context);
 }

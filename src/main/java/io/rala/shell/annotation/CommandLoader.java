@@ -4,6 +4,7 @@ import io.rala.StringMapper;
 import io.rala.shell.command.CommandMethodAdapter;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -30,7 +31,7 @@ public class CommandLoader {
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public CommandLoader(Object object, StringMapper stringMapper) {
+    public CommandLoader(@NotNull Object object, @NotNull StringMapper stringMapper) {
         if (!Modifier.isPublic(object.getClass().getModifiers()))
             throw new IllegalArgumentException("object has to be public");
         List<Method> methodList = List.of(object.getClass().getMethods())
@@ -53,16 +54,20 @@ public class CommandLoader {
      * @return loaded {@link io.rala.shell.command.Command} map
      * @since 1.0.0
      */
+    @NotNull
     public Map<String, io.rala.shell.command.Command> getCommandMethodMap() {
         return commandMethodMap;
     }
 
     @Override
+    @NotNull
     public String toString() {
         return String.join(",", getCommandMethodMap().keySet());
     }
 
-    private void validateCommandMethod(CommandMethod commandMethod, StringMapper stringMapper) {
+    private void validateCommandMethod(
+        @NotNull CommandMethod commandMethod, @NotNull StringMapper stringMapper
+    ) {
         if (getCommandMethodMap().containsKey(commandMethod.getName()))
             throw new CommandAlreadyPresentException(commandMethod.getName());
         CommandParameter[] parameters = commandMethod.getParameters();
@@ -92,7 +97,9 @@ public class CommandLoader {
         }
     }
 
-    private static void validateOptionalDefaultValue(CommandParameter parameter, StringMapper stringMapper) {
+    private static void validateOptionalDefaultValue(
+        @NotNull CommandParameter parameter, @NotNull StringMapper stringMapper
+    ) {
         Optional annotation = parameter.getOptionalAnnotation();
         if (annotation == null) return;
         String value = annotation.value();

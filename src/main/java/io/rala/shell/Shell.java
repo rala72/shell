@@ -7,6 +7,8 @@ import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.ExceptionHandler;
 import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.exception.StopShellException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -47,7 +49,10 @@ public class Shell implements Runnable {
      * @param outputStream outputStream of shell
      * @since 1.0.0
      */
-    public Shell(InputStream inputStream, OutputStream outputStream) {
+    public Shell(
+        @NotNull InputStream inputStream,
+        @NotNull OutputStream outputStream
+    ) {
         this(inputStream, outputStream, outputStream);
     }
 
@@ -57,7 +62,11 @@ public class Shell implements Runnable {
      * @param errorStream  errorStream of shell
      * @since 1.0.0
      */
-    public Shell(InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
+    public Shell(
+        @NotNull InputStream inputStream,
+        @NotNull OutputStream outputStream,
+        @NotNull OutputStream errorStream
+    ) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         this.readerQueue = new ReaderQueue(reader);
         this.context = new Context(
@@ -97,7 +106,7 @@ public class Shell implements Runnable {
      * @param fallback fallback command if none is found
      * @since 1.0.0
      */
-    public void setFallback(Command fallback) {
+    public void setFallback(@Nullable Command fallback) {
         this.fallback = fallback;
     }
 
@@ -105,7 +114,7 @@ public class Shell implements Runnable {
      * @param exceptionHandler exceptionHandler to customize exception handling
      * @since 1.0.0
      */
-    public void setExceptionHandler(ExceptionHandler exceptionHandler) {
+    public void setExceptionHandler(@Nullable ExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
     }
 
@@ -113,7 +122,7 @@ public class Shell implements Runnable {
      * @param prompt prompt to show before user input
      * @since 1.0.0
      */
-    public void setPrompt(String prompt) {
+    public void setPrompt(@Nullable String prompt) {
         this.prompt = prompt != null ? prompt : DEFAULT_PROMPT;
     }
 
@@ -139,7 +148,7 @@ public class Shell implements Runnable {
      * @see #register(String, Command)
      * @since 1.0.0
      */
-    public void register(Object object) {
+    public void register(@NotNull Object object) {
         new CommandLoader(object, context.getStringMapper()).getCommandMethodMap()
             .forEach(this::register);
     }
@@ -148,7 +157,7 @@ public class Shell implements Runnable {
      * @param command command to register
      * @since 1.0.0
      */
-    public void register(DefaultCommand command) {
+    public void register(@NotNull DefaultCommand command) {
         register(command.getName(), command.getCommand());
     }
 
@@ -157,8 +166,8 @@ public class Shell implements Runnable {
      * @param furtherCommands further commands to register
      * @since 1.0.0
      */
-    public void register(DefaultCommand command, DefaultCommand... furtherCommands) {
-        if (command != null) register(command);
+    public void register(@NotNull DefaultCommand command, @NotNull DefaultCommand... furtherCommands) {
+        register(command);
         register(furtherCommands);
     }
 
@@ -166,7 +175,7 @@ public class Shell implements Runnable {
      * @param commands commands to register
      * @since 1.0.0
      */
-    public void register(DefaultCommand[] commands) {
+    public void register(@NotNull DefaultCommand[] commands) {
         for (DefaultCommand command : commands)
             register(command);
     }
@@ -178,7 +187,7 @@ public class Shell implements Runnable {
      * @throws IllegalArgumentException       if {@code name} contains space
      * @since 1.0.0
      */
-    public void register(String name, Command command) {
+    public void register(@NotNull String name, @NotNull Command command) {
         if (commands.containsKey(name))
             throw new CommandAlreadyPresentException(name);
         if (name.contains(" "))
@@ -195,7 +204,10 @@ public class Shell implements Runnable {
      * @see StringMapper#addCustomMapper(Class, Function)
      * @since 1.0.1
      */
-    public <T, R extends T> void addCustomStringMapper(Class<T> type, Function<String, R> mapper) {
+    public <T, R extends T> void addCustomStringMapper(
+        @NotNull Class<T> type,
+        @Nullable Function<String, R> mapper
+    ) {
         context.addCustomStringMapper(type, mapper);
     }
 
@@ -204,7 +216,7 @@ public class Shell implements Runnable {
      * @see Context#printLine(String)
      * @since 1.0.0
      */
-    public void printLine(String s) {
+    public void printLine(@NotNull String s) {
         context.printLine(s);
     }
 
@@ -213,16 +225,17 @@ public class Shell implements Runnable {
      * @see Context#printError(String)
      * @since 1.0.0
      */
-    public void printError(String s) {
+    public void printError(@NotNull String s) {
         context.printError(s);
     }
 
     @Override
+    @NotNull
     public String toString() {
         return "Shell";
     }
 
-    private boolean handleInput(Input input) {
+    private boolean handleInput(@NotNull Input input) {
         Command command = commands.get(input.getCommand());
         if (command == null && fallback == null) {
             printError("command not found: " + input.getCommand());
@@ -263,7 +276,7 @@ public class Shell implements Runnable {
         return isThreadRunning(Thread.currentThread());
     }
 
-    private static boolean isThreadRunning(Thread thread) {
+    private static boolean isThreadRunning(@NotNull Thread thread) {
         return thread.isAlive() && !thread.isInterrupted();
     }
 }

@@ -2,6 +2,7 @@ package io.rala.shell.command;
 
 import io.rala.shell.Context;
 import io.rala.shell.Input;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class CommandTest {
 
     private static class EmptyCommand implements Command {
         @Override
-        public void execute(Input input, Context context) {
+        public void execute(@NotNull Input input, @NotNull Context context) {
 
         }
     }

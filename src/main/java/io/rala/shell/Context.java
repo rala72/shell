@@ -2,6 +2,9 @@ package io.rala.shell;
 
 import io.rala.StringMapper;
 import io.rala.shell.command.Command;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.io.PrintWriter;
 import java.util.Collections;
@@ -27,7 +30,10 @@ public class Context {
      * @see #Context(PrintWriter, PrintWriter, Map)
      * @since 1.0.0
      */
-    protected Context(PrintWriter output, Map<String, Command> commands) {
+    protected Context(
+        @NotNull PrintWriter output,
+        @NotNull Map<String, Command> commands
+    ) {
         this(output, output, commands);
     }
 
@@ -37,7 +43,10 @@ public class Context {
      * @param commands commands of shell
      * @since 1.0.0
      */
-    protected Context(PrintWriter output, PrintWriter error, Map<String, Command> commands) {
+    protected Context(
+        @NotNull PrintWriter output, @NotNull PrintWriter error,
+        @NotNull Map<String, Command> commands
+    ) {
         this.output = output;
         this.error = error;
         this.commands = Collections.unmodifiableMap(commands);
@@ -47,7 +56,7 @@ public class Context {
      * @param s string to print as line
      * @since 1.0.0
      */
-    public void printLine(String s) {
+    public void printLine(@NotNull String s) {
         getOutput().println(s);
     }
 
@@ -55,7 +64,7 @@ public class Context {
      * @param s string to print as error line
      * @since 1.0.0
      */
-    public void printError(String s) {
+    public void printError(@NotNull String s) {
         getError().println(s);
     }
 
@@ -63,6 +72,8 @@ public class Context {
      * @return current supported commands
      * @since 1.0.0
      */
+    @NotNull
+    @Unmodifiable
     public Map<String, Command> getCommands() {
         return commands;
     }
@@ -70,6 +81,7 @@ public class Context {
     /**
      * @return current StringMapper
      */
+    @NotNull
     public StringMapper getStringMapper() {
         return stringMapper;
     }
@@ -82,12 +94,15 @@ public class Context {
      * @see StringMapper#addCustomMapper(Class, Function)
      * @since 1.0.1
      */
-    public <T, R extends T> void addCustomStringMapper(Class<T> type, Function<String, R> mapper) {
+    public <T, R extends T> void addCustomStringMapper(
+        @NotNull Class<T> type, @Nullable Function<String, R> mapper
+    ) {
         if (mapper == null) getStringMapper().removeCustomMapper(type);
         else getStringMapper().addCustomMapper(type, mapper);
     }
 
     @Override
+    @NotNull
     public String toString() {
         return "Context{" +
             "output==error=" + (getOutput() == getError()) +
@@ -99,6 +114,7 @@ public class Context {
      * @return output
      * @since 1.0.0
      */
+    @NotNull
     protected PrintWriter getOutput() {
         return output;
     }
@@ -107,7 +123,8 @@ public class Context {
      * @return error
      * @since 1.0.0
      */
+    @NotNull
     protected PrintWriter getError() {
-        return error != null ? error : output;
+        return error;
     }
 }

@@ -35,12 +35,14 @@ class CommandMethodAdapterTest {
     @Test
     void documentationOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
+        Assertions.assertNotNull(command.getDocumentation());
         Assertions.assertTrue(command.getDocumentation().isBlank());
     }
 
     @Test
     void usageOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
+        Assertions.assertNotNull(command.getUsage());
         Assertions.assertTrue(command.getUsage().isBlank());
     }
 
@@ -49,6 +51,7 @@ class CommandMethodAdapterTest {
         Assertions.assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
+        Assertions.assertNotNull(command.getDocumentation());
         Assertions.assertFalse(command.getDocumentation().isBlank());
         Assertions.assertEquals("documentation", command.getDocumentation());
     }
@@ -58,6 +61,7 @@ class CommandMethodAdapterTest {
         Assertions.assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
         Assertions.assertNotNull(command);
+        Assertions.assertNotNull(command.getUsage());
         Assertions.assertFalse(command.getUsage().isBlank());
         Assertions.assertEquals("usage", command.getUsage());
     }
@@ -86,6 +90,7 @@ class CommandMethodAdapterTest {
     @MethodSource("getValidMappingArguments")
     void commandWithValidParameterMapping(String name, boolean isPrimitive, Input input) {
         String command = input.getCommand();
+        Assertions.assertNotNull(command);
         Assertions.assertTrue(command.contains(name));
         Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
         Assertions.assertEquals(1, input.getArguments().size(), "config error");
@@ -101,6 +106,7 @@ class CommandMethodAdapterTest {
     @MethodSource("getInvalidMappingArguments")
     void commandWithInvalidParameterMapping(String name, boolean isPrimitive, Input input) {
         String command = input.getCommand();
+        Assertions.assertNotNull(command);
         Assertions.assertTrue(command.contains(name));
         Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
         Assertions.assertEquals(1, input.getArguments().size(), "config error");

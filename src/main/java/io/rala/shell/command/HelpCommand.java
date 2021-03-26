@@ -2,6 +2,8 @@ package io.rala.shell.command;
 
 import io.rala.shell.Context;
 import io.rala.shell.Input;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,18 +28,19 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public void execute(Input input, Context context) {
+    public void execute(@NotNull Input input, @NotNull Context context) {
         Collection<String> commands = input.hasArguments() ?
             input.getArguments() : context.getCommands().keySet();
         printCommands(context, commands);
     }
 
     @Override
+    @NotNull
     public String toString() {
         return "HelpCommand";
     }
 
-    private void printCommands(Context context, Collection<String> arguments) {
+    private void printCommands(@NotNull Context context, @NotNull Collection<String> arguments) {
         List<String> output = new ArrayList<>();
         int maxLength = arguments.stream().mapToInt(String::length).max().orElse(0);
         for (String argument : arguments) {
@@ -53,11 +56,13 @@ public class HelpCommand implements Command {
         context.printLine(output.isEmpty() ? "no commands found" : String.join("\n", output));
     }
 
-    private String formatLine(String command, String documentation, int maxLength) {
+    @NotNull
+    private String formatLine(@NotNull String command, @NotNull String documentation, int maxLength) {
         return String.format("%-" + maxLength + "s", command) + " \t" + documentation;
     }
 
-    private String getDocumentationOfCommand(Command command) {
+    @Nullable
+    private String getDocumentationOfCommand(@NotNull Command command) {
         if (command.getDocumentation() != null && !command.getDocumentation().isEmpty())
             return command.getDocumentation();
         if (command instanceof CommandMethodAdapter) {

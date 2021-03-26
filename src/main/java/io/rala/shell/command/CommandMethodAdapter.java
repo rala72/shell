@@ -7,6 +7,8 @@ import io.rala.shell.annotation.CommandParameter;
 import io.rala.shell.annotation.Optional;
 import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.utils.Default;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -36,17 +38,19 @@ public class CommandMethodAdapter implements Command {
     }
 
     @Override
+    @Nullable
     public String getDocumentation() {
         return getCommandMethod().getCommand().documentation();
     }
 
     @Override
+    @Nullable
     public String getUsage() {
         return getCommandMethod().getCommand().usage();
     }
 
     @Override
-    public void execute(Input input, Context context) {
+    public void execute(@NotNull Input input, @NotNull Context context) {
         if (!validateParameterCount(input, context)) return;
         try {
             CommandParameter[] parameters = getCommandMethod().getParameters();
@@ -83,11 +87,12 @@ public class CommandMethodAdapter implements Command {
             '}';
     }
 
+    @NotNull
     CommandMethod getCommandMethod() {
         return commandMethod;
     }
 
-    private boolean validateParameterCount(Input input, Context context) {
+    private boolean validateParameterCount(@NotNull Input input, @NotNull Context context) {
         if (getCommandMethod().isParameterCountValid(input.getArguments().size()))
             return true;
         String expectedArgumentCount = String.valueOf(getCommandMethod().getMinParameterCount());
@@ -100,8 +105,10 @@ public class CommandMethodAdapter implements Command {
         return false;
     }
 
+    @NotNull
     private Object handleDynamicParameter(
-        Input input, Context context, CommandParameter parameter, int i
+        @NotNull Input input, @NotNull Context context,
+        @NotNull CommandParameter parameter, int i
     ) {
         Class<?> componentType =
             parameter.isArray() ?
@@ -116,8 +123,10 @@ public class CommandMethodAdapter implements Command {
         return parameter.isArray() ? array : List.of(array);
     }
 
+    @Nullable
     private Object handleParameter(
-        Input input, Context context, CommandParameter parameter, int i
+        @NotNull Input input, @NotNull Context context,
+        @NotNull CommandParameter parameter, int i
     ) {
         Optional optionalAnnotation = parameter.getOptionalAnnotation();
         String argument = input.getOrNull(i);
@@ -129,6 +138,7 @@ public class CommandMethodAdapter implements Command {
             Default.of(parameter.getType());
     }
 
+    @NotNull
     private static Class<?> getFirstGenericClass(Method method) {
         // http://tutorials.jenkov.com/java-reflection/generics.html#parametertypes
         return Stream.of(method.getGenericParameterTypes())

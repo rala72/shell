@@ -1,5 +1,8 @@
 package io.rala.shell;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
@@ -24,7 +27,7 @@ public class ReaderQueue implements Runnable {
      * @see #ReaderQueue(BufferedReader, int)
      * @since 1.0.0
      */
-    protected ReaderQueue(BufferedReader bufferedReader) {
+    protected ReaderQueue(@NotNull BufferedReader bufferedReader) {
         this(bufferedReader, Integer.MAX_VALUE);
     }
 
@@ -33,7 +36,7 @@ public class ReaderQueue implements Runnable {
      * @param capacity       capacity of {@link BlockingQueue}
      * @since 1.0.0
      */
-    protected ReaderQueue(BufferedReader bufferedReader, int capacity) {
+    protected ReaderQueue(@NotNull BufferedReader bufferedReader, int capacity) {
         this.queue = new LinkedBlockingQueue<>(capacity);
         this.bufferedReader = bufferedReader;
     }
@@ -61,6 +64,7 @@ public class ReaderQueue implements Runnable {
      * {@code null} if {@link InterruptedException}
      * @since 1.0.0
      */
+    @Nullable
     public final String take() {
         try {
             return queue.take();
@@ -73,6 +77,7 @@ public class ReaderQueue implements Runnable {
      * @return {@link BlockingQueue#peek()}
      * @since 1.0.0
      */
+    @Nullable
     public final String peek() {
         return queue.peek();
     }
@@ -90,6 +95,7 @@ public class ReaderQueue implements Runnable {
      * @return caught exception from {@link #run()}
      * @since 1.0.0
      */
+    @Nullable
     protected IOException getIOException() {
         return ioException;
     }
@@ -98,6 +104,7 @@ public class ReaderQueue implements Runnable {
      * @return caught exception from {@link #run()}
      * @since 1.0.0
      */
+    @Nullable
     protected InterruptedException getInterruptedException() {
         return interruptedException;
     }

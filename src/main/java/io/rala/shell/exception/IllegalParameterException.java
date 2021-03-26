@@ -2,6 +2,7 @@ package io.rala.shell.exception;
 
 import io.rala.shell.Input;
 import io.rala.shell.annotation.Optional;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * indicates that a parameter is invalid
@@ -43,7 +44,9 @@ public class IllegalParameterException extends RuntimeException {
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public static IllegalParameterException createNewOnlyOneDynamicInstance(String method) {
+    public static IllegalParameterException createNewOnlyOneDynamicInstance(
+        @NotNull String method
+    ) {
         return new IllegalParameterException(method + SUFFIX_ONLY_ONE_DYNAMIC);
     }
 
@@ -53,7 +56,9 @@ public class IllegalParameterException extends RuntimeException {
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public static IllegalParameterException createNewOnlyLastDynamicInstance(String method) {
+    public static IllegalParameterException createNewOnlyLastDynamicInstance(
+        @NotNull String method
+    ) {
         return new IllegalParameterException(method + SUFFIX_ONLY_LAST_DYNAMIC);
     }
 
@@ -63,7 +68,9 @@ public class IllegalParameterException extends RuntimeException {
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public static IllegalParameterException createNewIfInputNoOther(String method) {
+    public static IllegalParameterException createNewIfInputNoOther(
+        @NotNull String method
+    ) {
         return new IllegalParameterException(method + SUFFIX_IF_INPUT_NO_OTHER);
     }
 
@@ -73,7 +80,9 @@ public class IllegalParameterException extends RuntimeException {
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public static IllegalParameterException createNewOnlyLastParametersCanBeAbsent(String method) {
+    public static IllegalParameterException createNewOnlyLastParametersCanBeAbsent(
+        @NotNull String method
+    ) {
         return new IllegalParameterException(method + SUFFIX_ONLY_LAST_PARAMETERS_CAN_BE_ABSENT);
     }
 
@@ -83,7 +92,9 @@ public class IllegalParameterException extends RuntimeException {
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public static IllegalParameterException createNewOptionalDefaultValueIsInvalid(String param) {
+    public static IllegalParameterException createNewOptionalDefaultValueIsInvalid(
+        @NotNull String param
+    ) {
         return new IllegalParameterException(param + SUFFIX_DEFAULT_VALUE_INVALID);
     }
 }

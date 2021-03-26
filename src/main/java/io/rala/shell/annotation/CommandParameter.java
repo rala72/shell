@@ -2,6 +2,8 @@ package io.rala.shell.annotation;
 
 import io.rala.shell.Context;
 import io.rala.shell.Input;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 public class CommandParameter {
     private final Parameter parameter;
 
-    CommandParameter(Parameter parameter) {
+    CommandParameter(@NotNull Parameter parameter) {
         this.parameter = parameter;
     }
 
@@ -22,6 +24,7 @@ public class CommandParameter {
      * @return parameter which gets decorated
      * @since 1.0.0
      */
+    @NotNull
     public Parameter getParameter() {
         return parameter;
     }
@@ -31,6 +34,7 @@ public class CommandParameter {
      * @see Parameter#getName()
      * @since 1.0.0
      */
+    @NotNull
     public String getName() {
         return getParameter().getName();
     }
@@ -41,6 +45,7 @@ public class CommandParameter {
      * @see Parameter#getAnnotation(Class)
      * @since 1.0.0
      */
+    @Nullable
     public Optional getOptionalAnnotation() {
         return getParameter().getAnnotation(Optional.class);
     }
@@ -50,6 +55,7 @@ public class CommandParameter {
      * @see Parameter#getType()
      * @since 1.0.0
      */
+    @NotNull
     public Class<?> getType() {
         return getParameter().getType();
     }
@@ -105,6 +111,7 @@ public class CommandParameter {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return getParameter().toString();
     }

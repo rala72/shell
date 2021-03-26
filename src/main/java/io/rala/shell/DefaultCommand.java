@@ -3,6 +3,7 @@ package io.rala.shell;
 import io.rala.shell.command.Command;
 import io.rala.shell.command.ExitCommand;
 import io.rala.shell.command.HelpCommand;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * all supported default commands
@@ -16,7 +17,7 @@ public enum DefaultCommand {
     private final String name;
     private final Command command;
 
-    DefaultCommand(String name, Command command) {
+    DefaultCommand(@NotNull String name, @NotNull Command command) {
         this.name = name;
         this.command = command;
     }
@@ -25,6 +26,7 @@ public enum DefaultCommand {
      * @return name of command
      * @since 1.0.0
      */
+    @NotNull
     public String getName() {
         return name;
     }
@@ -33,11 +35,13 @@ public enum DefaultCommand {
      * @return command implementation
      * @since 1.0.0
      */
+    @NotNull
     public Command getCommand() {
         return command;
     }
 
     @Override
+    @NotNull
     public String toString() {
         return getName();
     }

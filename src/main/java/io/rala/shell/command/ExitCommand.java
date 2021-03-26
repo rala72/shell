@@ -3,6 +3,7 @@ package io.rala.shell.command;
 import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.exception.StopShellException;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * command which throws {@link StopShellException} to stop shell
@@ -21,7 +22,7 @@ public class ExitCommand implements Command {
     }
 
     @Override
-    public void execute(Input input, Context context) {
+    public void execute(@NotNull Input input, @NotNull Context context) {
         if (input.hasArguments()) {
             context.printError("error: no arguments expected");
             return;
@@ -30,6 +31,7 @@ public class ExitCommand implements Command {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return "ExitCommand";
     }

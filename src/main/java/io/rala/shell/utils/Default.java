@@ -1,5 +1,8 @@
 package io.rala.shell.utils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Array;
 
 /**
@@ -17,7 +20,8 @@ public class Default {
      * @return default value of specified class - may be {@code null}
      * @since 1.0.0
      */
-    public static <T> T of(Class<T> c) {
+    @Nullable
+    public static <T> T of(@NotNull Class<T> c) {
         //noinspection unchecked
         return (T) Array.get(Array.newInstance(c, 1), 0);
     }

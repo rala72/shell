@@ -1,5 +1,8 @@
 package io.rala.shell.annotation;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -18,7 +21,7 @@ public class CommandMethod {
      * @param method  method of connection
      * @since 1.0.0
      */
-    public CommandMethod(Command command, Method method) {
+    public CommandMethod(@NotNull Command command, @NotNull Method method) {
         this.command = command;
         this.method = method;
     }
@@ -27,6 +30,7 @@ public class CommandMethod {
      * @return name of command
      * @since 1.0.0
      */
+    @NotNull
     public String getName() {
         return !command.value().isEmpty() ? command.value() : method.getName();
     }
@@ -35,6 +39,7 @@ public class CommandMethod {
      * @return command of connection
      * @since 1.0.0
      */
+    @NotNull
     public Command getCommand() {
         return command;
     }
@@ -43,6 +48,7 @@ public class CommandMethod {
      * @return method of connection
      * @since 1.0.0
      */
+    @NotNull
     public Method getMethod() {
         return method;
     }
@@ -96,6 +102,7 @@ public class CommandMethod {
      * @return command parameters
      * @since 1.0.0
      */
+    @NotNull
     public CommandParameter[] getParameters() {
         return Arrays.stream(getMethod().getParameters())
             .map(CommandParameter::new)
@@ -103,6 +110,7 @@ public class CommandMethod {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return "CommandMethod{" +
             "command=" + convertCommandToString(getCommand()) +
@@ -110,7 +118,8 @@ public class CommandMethod {
             '}';
     }
 
-    private static String convertCommandToString(Command command) {
+    @Nullable
+    private static String convertCommandToString(@Nullable Command command) {
         return command == null ? null :
             "Command(value=\"" + command.value() + "\"" +
                 ", documentation=\"" + command.documentation() + "\"" +

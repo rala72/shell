@@ -80,8 +80,8 @@ public class Input {
     @Override
     public String toString() {
         return "Input{" +
-            "command='" + command + '\'' +
-            ", arguments=" + arguments +
+            "command='" + getCommand() + '\'' +
+            ", arguments=" + getArguments() +
             '}';
     }
 

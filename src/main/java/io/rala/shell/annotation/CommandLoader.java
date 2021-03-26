@@ -58,7 +58,7 @@ public class CommandLoader {
 
     @Override
     public String toString() {
-        return String.join(",", commandMethodMap.keySet());
+        return String.join(",", getCommandMethodMap().keySet());
     }
 
     private void validateCommandMethod(CommandMethod commandMethod) {

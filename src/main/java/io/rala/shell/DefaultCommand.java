@@ -39,6 +39,6 @@ public enum DefaultCommand {
 
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
 }

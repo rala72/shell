@@ -67,8 +67,8 @@ public class Context {
     @Override
     public String toString() {
         return "Context{" +
-            "output==error=" + (output == error) +
-            ", commands=" + commands +
+            "output==error=" + (getOutput() == getError()) +
+            ", commands=" + getCommands() +
             '}';
     }
 

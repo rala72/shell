@@ -80,7 +80,7 @@ public class CommandMethodAdapter implements Command {
     public String toString() {
         return "CommandMethodAdapter{" +
             "object=" + object +
-            ", commandMethod=" + commandMethod +
+            ", commandMethod=" + getCommandMethod() +
             '}';
     }
 

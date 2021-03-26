@@ -105,8 +105,8 @@ public class CommandMethod {
     @Override
     public String toString() {
         return "CommandMethod{" +
-            "command=" + convertCommandToString(command) +
-            ", method=" + method.getName() +
+            "command=" + convertCommandToString(getCommand()) +
+            ", method=" + getMethod().getName() +
             '}';
     }
 

@@ -1,5 +1,6 @@
 package io.rala.shell.annotation;
 
+import io.rala.StringMapper;
 import io.rala.shell.exception.CommandAlreadyPresentException;
 import io.rala.shell.exception.IllegalParameterException;
 import io.rala.shell.testUtils.CommandLoaderFactory;
@@ -8,13 +9,21 @@ import io.rala.shell.testUtils.object.TestObjectWithOptionalDefaultValue;
 import io.rala.shell.testUtils.object.TestObjectWithoutAttributes;
 import io.rala.shell.testUtils.object.exception.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CommandLoaderTest {
+    private StringMapper stringMapper;
+
+    @BeforeEach
+    void setUp() {
+        stringMapper = new StringMapper();
+    }
+
     @Test
     void privateObjectLoadingThrowsIllegalParameter() {
         try {
-            new CommandLoader(new PrivateTestObject());
+            new CommandLoader(new PrivateTestObject(), stringMapper);
             Assertions.fail();
         } catch (IllegalArgumentException e) {
             Assertions.assertEquals("object has to be public", e.getMessage());
@@ -37,22 +46,22 @@ class CommandLoaderTest {
 
     @Test
     void commandWithOneOptionalParameterLoading() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjectWithOptional());
+        CommandLoader commandLoader = new CommandLoader(new TestObjectWithOptional(), stringMapper);
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
     }
 
     @Test
     void commandWithOneOptionalDefaultValueParameterLoading() {
         CommandLoader commandLoader = new CommandLoader(
-            new TestObjectWithOptionalDefaultValue()
-        );
+            new TestObjectWithOptionalDefaultValue(),
+            stringMapper);
         Assertions.assertEquals(1, commandLoader.getCommandMethodMap().size());
     }
 
     @Test
     void commandWithOneOptionalInvalidDefaultValueException() {
         try {
-            new CommandLoader(new TestObjectWithOptionalInvalidDefaultValue());
+            new CommandLoader(new TestObjectWithOptionalInvalidDefaultValue(), stringMapper);
             Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
@@ -72,7 +81,7 @@ class CommandLoaderTest {
     @Test
     void commandWithTwoInputParameterException() {
         try {
-            new CommandLoader(new TestObjectWithTwoInputs());
+            new CommandLoader(new TestObjectWithTwoInputs(), stringMapper);
             Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
@@ -85,7 +94,7 @@ class CommandLoaderTest {
     @Test
     void commandWithTwoArrayParameterException() {
         try {
-            new CommandLoader(new TestObjectWithTwoArrays());
+            new CommandLoader(new TestObjectWithTwoArrays(), stringMapper);
             Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
@@ -98,7 +107,7 @@ class CommandLoaderTest {
     @Test
     void commandWithTwoListParameterException() {
         try {
-            new CommandLoader(new TestObjectWithTwoLists());
+            new CommandLoader(new TestObjectWithTwoLists(), stringMapper);
             Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
@@ -111,7 +120,7 @@ class CommandLoaderTest {
     @Test
     void commandWithOneArrayParameterNotOnEndException() {
         try {
-            new CommandLoader(new TestObjectWithArrayNotOnEnd());
+            new CommandLoader(new TestObjectWithArrayNotOnEnd(), stringMapper);
             Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
@@ -124,7 +133,7 @@ class CommandLoaderTest {
     @Test
     void commandWithOneOptionalParameterNotOnEndException() {
         try {
-            new CommandLoader(new TestObjectWithOptionalNotOnEnd());
+            new CommandLoader(new TestObjectWithOptionalNotOnEnd(), stringMapper);
             Assertions.fail();
         } catch (IllegalParameterException e) {
             Assertions.assertEquals(
@@ -137,7 +146,7 @@ class CommandLoaderTest {
     @Test
     void commandNotUniqueException() {
         try {
-            new CommandLoader(new CommandNotUniqueErrorTestObject());
+            new CommandLoader(new CommandNotUniqueErrorTestObject(), stringMapper);
             Assertions.fail();
         } catch (CommandAlreadyPresentException e) {
             Assertions.assertEquals("cmd", e.getMessage());
@@ -147,7 +156,7 @@ class CommandLoaderTest {
     @Test
     void commandIllegalAccessException() {
         try {
-            new CommandLoader(new IllegalAccessErrorTestObject());
+            new CommandLoader(new IllegalAccessErrorTestObject(), stringMapper);
             Assertions.fail();
         } catch (IllegalArgumentException e) {
             Assertions.assertEquals("object has no visible commands", e.getMessage());
@@ -156,7 +165,7 @@ class CommandLoaderTest {
 
     @Test
     void toStringOfObjectWithoutAttributes() {
-        CommandLoader commandLoader = new CommandLoader(new TestObjectWithoutAttributes());
+        CommandLoader commandLoader = new CommandLoader(new TestObjectWithoutAttributes(), stringMapper);
         Assertions.assertEquals("commandWithoutAttributes", commandLoader.toString());
     }
 

@@ -1,5 +1,6 @@
 package io.rala.shell.command;
 
+import io.rala.StringMapper;
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandAnnotation;
 import io.rala.shell.annotation.CommandLoader;
@@ -24,7 +25,7 @@ class CommandMethodAdapterTest {
     @BeforeEach
     void setUp() {
         TestObject object = new TestObject();
-        CommandLoader commandLoader = new CommandLoader(object);
+        CommandLoader commandLoader = new CommandLoader(object, new StringMapper());
         context = TestContext.getInstanceWithDifferentStreams(commandLoader.getCommandMethodMap());
         object.setContext(context);
     }

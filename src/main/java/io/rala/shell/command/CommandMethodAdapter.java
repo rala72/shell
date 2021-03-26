@@ -1,6 +1,5 @@
 package io.rala.shell.command;
 
-import io.rala.StringMapper;
 import io.rala.shell.Context;
 import io.rala.shell.Input;
 import io.rala.shell.annotation.CommandMethod;
@@ -60,9 +59,9 @@ public class CommandMethodAdapter implements Command {
                 } else if (parameter.isContext()) {
                     value = context;
                 } else if (i == parameters.length - 1 && commandMethod.isLastParameterDynamic()) {
-                    value = handleDynamicParameter(input, parameter, i);
+                    value = handleDynamicParameter(input, context, parameter, i);
                 } else {
-                    value = handleParameter(input, parameter, i);
+                    value = handleParameter(input, context, parameter, i);
                 }
                 objects[i] = value;
             }
@@ -101,7 +100,9 @@ public class CommandMethodAdapter implements Command {
         return false;
     }
 
-    private Object handleDynamicParameter(Input input, CommandParameter parameter, int i) {
+    private Object handleDynamicParameter(
+        Input input, Context context, CommandParameter parameter, int i
+    ) {
         Class<?> componentType =
             parameter.isArray() ?
                 parameter.getType().getComponentType() :
@@ -109,20 +110,22 @@ public class CommandMethodAdapter implements Command {
         Object[] array = input.getArguments()
             .subList(i, input.getArguments().size())
             .stream()
-            .map(s -> StringMapper.getInstance().map(s, componentType))
+            .map(s -> context.getStringMapper().map(s, componentType))
             .map(componentType::cast)
             .toArray(n -> (Object[]) Array.newInstance(componentType, n));
         return parameter.isArray() ? array : List.of(array);
     }
 
-    private Object handleParameter(Input input, CommandParameter parameter, int i) {
+    private Object handleParameter(
+        Input input, Context context, CommandParameter parameter, int i
+    ) {
         Optional optionalAnnotation = parameter.getOptionalAnnotation();
         String argument = input.getOrNull(i);
         if (argument == null && optionalAnnotation != null)
             argument = optionalAnnotation.value().isEmpty() ?
                 null : optionalAnnotation.value();
         return argument != null || optionalAnnotation == null ?
-            StringMapper.getInstance().map(argument, parameter.getType()) :
+            context.getStringMapper().map(argument, parameter.getType()) :
             Default.of(parameter.getType());
     }
 

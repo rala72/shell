@@ -6,10 +6,12 @@ import io.rala.shell.exception.StopShellException;
 import io.rala.shell.testUtils.TestShell;
 import io.rala.shell.testUtils.object.TestObject;
 import io.rala.shell.testUtils.object.TestObjectWithAttributes;
+import io.rala.shell.testUtils.object.TestObjectWithLocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.time.LocalDate;
 
 import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
 
@@ -351,6 +353,25 @@ class ShellTest {
             final String prefix = "no space allowed in command name: ";
             Assertions.assertEquals(prefix + "cmd with spaces", e.getMessage());
         }
+    }
+
+    @Test
+    void addCustomStringMapperForLocalDate() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.addCustomStringMapper(LocalDate.class, LocalDate::parse);
+        shell.register(new TestObjectWithLocalDate());
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        Assertions.assertTrue(thread.isAlive());
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            testShell.putLine("commandWithLocalDate 2018-11-25");
+            Assertions.assertEquals("> 2018-11-25",
+                testShell.getOutputHistory().take()
+            );
+        });
+        thread.interrupt();
     }
 
     @Test

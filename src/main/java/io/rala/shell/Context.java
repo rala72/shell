@@ -1,10 +1,12 @@
 package io.rala.shell;
 
+import io.rala.StringMapper;
 import io.rala.shell.command.Command;
 
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * context of shell which holds output, error and commands
@@ -15,6 +17,7 @@ public class Context {
     private final PrintWriter output;
     private final PrintWriter error;
     private final Map<String, Command> commands;
+    private final StringMapper stringMapper = new StringMapper();
 
     /**
      * error writer will be the same as output
@@ -62,6 +65,26 @@ public class Context {
      */
     public Map<String, Command> getCommands() {
         return commands;
+    }
+
+    /**
+     * @return current StringMapper
+     */
+    public StringMapper getStringMapper() {
+        return stringMapper;
+    }
+
+    /**
+     * @param type   type of mapper
+     * @param mapper custom mapper to consider
+     * @param <T>    requested type
+     * @param <R>    result type (may be super class of {@code T})
+     * @see StringMapper#addCustomMapper(Class, Function)
+     * @since 1.0.1
+     */
+    public <T, R extends T> void addCustomStringMapper(Class<T> type, Function<String, R> mapper) {
+        if (mapper == null) getStringMapper().removeCustomMapper(type);
+        else getStringMapper().addCustomMapper(type, mapper);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.rala.shell;
 
+import io.rala.StringMapper;
 import io.rala.shell.annotation.CommandLoader;
 import io.rala.shell.command.Command;
 import io.rala.shell.exception.CommandAlreadyPresentException;
@@ -11,6 +12,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 /**
  * shell which calls methods based on input commands
@@ -133,12 +135,12 @@ public class Shell implements Runnable {
 
     /**
      * @param object object to register all {@link io.rala.shell.annotation.Command} annotations
-     * @see CommandLoader#CommandLoader(Object)
+     * @see CommandLoader#CommandLoader(Object, StringMapper)
      * @see #register(String, Command)
      * @since 1.0.0
      */
     public void register(Object object) {
-        new CommandLoader(object).getCommandMethodMap()
+        new CommandLoader(object, context.getStringMapper()).getCommandMethodMap()
             .forEach(this::register);
     }
 
@@ -182,6 +184,19 @@ public class Shell implements Runnable {
         if (name.contains(" "))
             throw new IllegalArgumentException("no space allowed in command name: " + name);
         commands.put(name, command);
+    }
+
+    /**
+     * @param type   type of mapper
+     * @param mapper custom mapper to consider
+     * @param <T>    requested type
+     * @param <R>    result type (may be super class of {@code T})
+     * @see Context#addCustomStringMapper(Class, Function)
+     * @see StringMapper#addCustomMapper(Class, Function)
+     * @since 1.0.1
+     */
+    public <T, R extends T> void addCustomStringMapper(Class<T> type, Function<String, R> mapper) {
+        context.addCustomStringMapper(type, mapper);
     }
 
     /**

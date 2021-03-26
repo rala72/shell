@@ -23,13 +23,14 @@ public class CommandLoader {
     private final Map<String, io.rala.shell.command.Command> commandMethodMap = new HashMap<>();
 
     /**
-     * @param object object to load all {@link Command}s from
+     * @param object       object to load all {@link Command}s from
+     * @param stringMapper stringMapper for argument to object mapping
      * @throws CommandAlreadyPresentException if multiple methods use the same command
      * @throws IllegalParameterException      if any parameter is invalid
      * @see IllegalParameterException
      * @since 1.0.0
      */
-    public CommandLoader(Object object) {
+    public CommandLoader(Object object, StringMapper stringMapper) {
         if (!Modifier.isPublic(object.getClass().getModifiers()))
             throw new IllegalArgumentException("object has to be public");
         List<Method> methodList = List.of(object.getClass().getMethods())
@@ -40,7 +41,7 @@ public class CommandLoader {
             throw new IllegalArgumentException("object has no visible commands");
         methodList.forEach(method -> {
             CommandMethod commandMethod = new CommandMethod(method.getAnnotation(Command.class), method);
-            validateCommandMethod(commandMethod);
+            validateCommandMethod(commandMethod, stringMapper);
             getCommandMethodMap().put(
                 commandMethod.getName(),
                 new CommandMethodAdapter(object, commandMethod)
@@ -61,7 +62,7 @@ public class CommandLoader {
         return String.join(",", getCommandMethodMap().keySet());
     }
 
-    private void validateCommandMethod(CommandMethod commandMethod) {
+    private void validateCommandMethod(CommandMethod commandMethod, StringMapper stringMapper) {
         if (getCommandMethodMap().containsKey(commandMethod.getName()))
             throw new CommandAlreadyPresentException(commandMethod.getName());
         CommandParameter[] parameters = commandMethod.getParameters();
@@ -87,17 +88,17 @@ public class CommandLoader {
                 if (parameterOptional) previousOptionalParameter++;
             }
             for (CommandParameter parameter : parameters)
-                validateOptionalDefaultValue(parameter);
+                validateOptionalDefaultValue(parameter, stringMapper);
         }
     }
 
-    private static void validateOptionalDefaultValue(CommandParameter parameter) {
+    private static void validateOptionalDefaultValue(CommandParameter parameter, StringMapper stringMapper) {
         Optional annotation = parameter.getOptionalAnnotation();
         if (annotation == null) return;
         String value = annotation.value();
         if (value.isEmpty()) return;
         try {
-            StringMapper.getInstance().map(value, parameter.getType());
+            stringMapper.map(value, parameter.getType());
         } catch (IllegalArgumentException e) {
             throw IllegalParameterException.createNewOptionalDefaultValueIsInvalid(parameter.getName());
         }

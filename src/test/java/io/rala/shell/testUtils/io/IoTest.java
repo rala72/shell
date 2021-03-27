@@ -1,6 +1,5 @@
 package io.rala.shell.testUtils.io;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -9,6 +8,8 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IoTest {
     @Test
@@ -108,11 +109,11 @@ class IoTest {
     // region assert queues
 
     private static void assertQueuesAreEqual(Queue<String> queue1, Queue<String> queue2) {
-        Assertions.assertEquals(String.join("", queue1), String.join("", queue2));
+        assertEquals(String.join("", queue1), String.join("", queue2));
     }
 
     private static void assertQueuesAreJoinedEqual(Queue<String> queue1, Queue<String> queue2) {
-        Assertions.assertEquals(
+        assertEquals(
             String.join("", queue1),
             String.join("", queue2)
         );

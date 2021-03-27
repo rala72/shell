@@ -1,7 +1,8 @@
 package io.rala.shell.exception;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IllegalParameterExceptionTest {
     @Test
@@ -9,7 +10,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewOnlyOneDynamicInstance("method");
         } catch (IllegalParameterException e) {
-            Assertions.assertEquals(
+            assertEquals(
                 "method: may only have one dynamic parameter",
                 e.getMessage()
             );
@@ -21,7 +22,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewOnlyLastDynamicInstance("method");
         } catch (IllegalParameterException e) {
-            Assertions.assertEquals(
+            assertEquals(
                 "method: only last parameter may be dynamic",
                 e.getMessage()
             );
@@ -33,7 +34,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewIfInputNoOther("method");
         } catch (IllegalParameterException e) {
-            Assertions.assertEquals(
+            assertEquals(
                 "method: if input present, no other parameter allowed",
                 e.getMessage()
             );
@@ -45,7 +46,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewOnlyLastParametersCanBeAbsent("method");
         } catch (IllegalParameterException e) {
-            Assertions.assertEquals(
+            assertEquals(
                 "method: only last parameters can be absent",
                 e.getMessage()
             );

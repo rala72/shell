@@ -2,7 +2,6 @@ package io.rala.shell;
 
 import io.rala.shell.command.ExitCommand;
 import io.rala.shell.testUtils.TestContext;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.OutputStream;
@@ -12,11 +11,13 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class ContextTest {
     @Test
     void emptyCommands() {
         Context context = new Context(getSystemOutPrintWriter(), Collections.emptyMap());
-        Assertions.assertTrue(context.getCommands().isEmpty());
+        assertTrue(context.getCommands().isEmpty());
     }
 
     @Test
@@ -25,7 +26,7 @@ class ContextTest {
             getSystemOutPrintWriter(),
             Collections.emptyMap()
         );
-        Assertions.assertEquals(context.getOutput(), context.getError());
+        assertEquals(context.getOutput(), context.getError());
     }
 
     @Test
@@ -35,15 +36,15 @@ class ContextTest {
             getSystemErrorPrintWriter(),
             Collections.emptyMap()
         );
-        Assertions.assertNotEquals(context.getOutput(), context.getError());
+        assertNotEquals(context.getOutput(), context.getError());
     }
 
     @Test
     void commandsWithExit() {
         Context context = new Context(getSystemOutPrintWriter(), Map.of("help", new ExitCommand()));
-        Assertions.assertFalse(context.getCommands().isEmpty());
-        Assertions.assertTrue(context.getCommands().containsKey("help"));
-        Assertions.assertNotNull(context.getCommands().get("help"));
+        assertFalse(context.getCommands().isEmpty());
+        assertTrue(context.getCommands().containsKey("help"));
+        assertNotNull(context.getCommands().get("help"));
     }
 
     @Test
@@ -53,14 +54,14 @@ class ContextTest {
         testContext.printLine("line");
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        Assertions.assertFalse(outputs.isEmpty());
-        Assertions.assertEquals(1, outputs.size());
-        Assertions.assertTrue(outputs.contains("line"));
+        assertFalse(outputs.isEmpty());
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.contains("line"));
 
         testContext.printError("error");
 
         BlockingQueue<String> errors = testContext.getErrorHistory();
-        Assertions.assertEquals(outputs, errors);
+        assertEquals(outputs, errors);
     }
 
     @Test
@@ -70,18 +71,18 @@ class ContextTest {
         testContext.printError("error");
 
         BlockingQueue<String> errors = testContext.getErrorHistory();
-        Assertions.assertFalse(errors.isEmpty());
-        Assertions.assertEquals(1, errors.size());
-        Assertions.assertTrue(errors.contains("error"));
+        assertFalse(errors.isEmpty());
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains("error"));
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        Assertions.assertTrue(outputs.isEmpty());
+        assertTrue(outputs.isEmpty());
     }
 
     @Test
     void toStringOfEmptyContext() {
         String toString = "Context{output==error=false, commands={}}";
-        Assertions.assertEquals(toString, new TestContext().toString());
+        assertEquals(toString, new TestContext().toString());
     }
 
     private static PrintWriter getSystemOutPrintWriter() {

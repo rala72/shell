@@ -9,7 +9,6 @@ import io.rala.shell.exception.MethodCallException;
 import io.rala.shell.testUtils.TestContext;
 import io.rala.shell.testUtils.arguments.ParameterArgumentsStreamFactory;
 import io.rala.shell.testUtils.object.TestObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +17,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CommandMethodAdapterTest {
     private TestContext context;
@@ -35,35 +36,35 @@ class CommandMethodAdapterTest {
     @Test
     void documentationOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
-        Assertions.assertNotNull(command.getDocumentation());
-        Assertions.assertTrue(command.getDocumentation().isBlank());
+        assertNotNull(command.getDocumentation());
+        assertTrue(command.getDocumentation().isBlank());
     }
 
     @Test
     void usageOfCommandWithoutAttributes() {
         Command command = getCommand("methodWithoutParameter");
-        Assertions.assertNotNull(command.getUsage());
-        Assertions.assertTrue(command.getUsage().isBlank());
+        assertNotNull(command.getUsage());
+        assertTrue(command.getUsage().isBlank());
     }
 
     @Test
     void documentationOfCommandWithAttributes() {
-        Assertions.assertNull(getCommand("commandWithAttributes"));
+        assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
-        Assertions.assertNotNull(command);
-        Assertions.assertNotNull(command.getDocumentation());
-        Assertions.assertFalse(command.getDocumentation().isBlank());
-        Assertions.assertEquals("documentation", command.getDocumentation());
+        assertNotNull(command);
+        assertNotNull(command.getDocumentation());
+        assertFalse(command.getDocumentation().isBlank());
+        assertEquals("documentation", command.getDocumentation());
     }
 
     @Test
     void usageOfCommandWithAttributes() {
-        Assertions.assertNull(getCommand("commandWithAttributes"));
+        assertNull(getCommand("commandWithAttributes"));
         Command command = getCommand("value");
-        Assertions.assertNotNull(command);
-        Assertions.assertNotNull(command.getUsage());
-        Assertions.assertFalse(command.getUsage().isBlank());
-        Assertions.assertEquals("usage", command.getUsage());
+        assertNotNull(command);
+        assertNotNull(command.getUsage());
+        assertFalse(command.getUsage().isBlank());
+        assertEquals("usage", command.getUsage());
     }
 
     // endregion
@@ -90,15 +91,15 @@ class CommandMethodAdapterTest {
     @MethodSource("getValidMappingArguments")
     void commandWithValidParameterMapping(String name, boolean isPrimitive, Input input) {
         String command = input.getCommand();
-        Assertions.assertNotNull(command);
-        Assertions.assertTrue(command.contains(name));
-        Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
-        Assertions.assertEquals(1, input.getArguments().size(), "config error");
+        assertNotNull(command);
+        assertTrue(command.contains(name));
+        assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
+        assertEquals(1, input.getArguments().size(), "config error");
 
         executeCommand(input);
 
         String argument = input.getOrNull(0);
-        Assertions.assertNotNull(argument);
+        assertNotNull(argument);
         assertArgumentPresentInOutput(argument);
     }
 
@@ -106,13 +107,13 @@ class CommandMethodAdapterTest {
     @MethodSource("getInvalidMappingArguments")
     void commandWithInvalidParameterMapping(String name, boolean isPrimitive, Input input) {
         String command = input.getCommand();
-        Assertions.assertNotNull(command);
-        Assertions.assertTrue(command.contains(name));
-        Assertions.assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
-        Assertions.assertEquals(1, input.getArguments().size(), "config error");
+        assertNotNull(command);
+        assertTrue(command.contains(name));
+        assertTrue(command.contains(isPrimitive ? "Primitive" : "Object"));
+        assertEquals(1, input.getArguments().size(), "config error");
 
         String argument = input.getOrNull(0);
-        Assertions.assertNotNull(argument);
+        assertNotNull(argument);
         if (name.equals("Boolean") && (isPrimitive || !argument.equals("null"))) {
             executeCommand(input);
             assertArgumentPresentInOutput("false");
@@ -120,7 +121,7 @@ class CommandMethodAdapterTest {
             executeCommand(input);
             assertArgumentPresentInOutput(argument);
         } else {
-            Assertions.assertThrows(MethodCallException.class,
+            assertThrows(MethodCallException.class,
                 () -> executeCommand(input)
             );
         }
@@ -146,9 +147,9 @@ class CommandMethodAdapterTest {
     void commandWithListParameterAndNull() {
         try {
             executeCommand(new Input("methodWithOneStringListParameter", "null"));
-            Assertions.fail();
+            fail();
         } catch (MethodCallException e) {
-            Assertions.assertEquals("java.lang.NullPointerException", e.getMessage());
+            assertEquals("java.lang.NullPointerException", e.getMessage());
         }
     }
 
@@ -156,11 +157,11 @@ class CommandMethodAdapterTest {
     void exceptionCommandWithoutAttributes() {
         try {
             executeCommand(new Input("exceptionCommandWithoutMessage"));
-            Assertions.fail();
+            fail();
         } catch (MethodCallException e) {
-            Assertions.assertTrue(e.getCause() instanceof InvocationTargetException);
+            assertTrue(e.getCause() instanceof InvocationTargetException);
             InvocationTargetException cause = (InvocationTargetException) e.getCause();
-            Assertions.assertNull(cause.getMessage());
+            assertNull(cause.getMessage());
         }
     }
 
@@ -172,7 +173,7 @@ class CommandMethodAdapterTest {
                 TestObject.class.getDeclaredMethod("illegalAccessCommand")
             )
         );
-        Assertions.assertThrows(MethodCallException.class,
+        assertThrows(MethodCallException.class,
             () -> illegalAccessCommand.execute(new Input("illegalAccessCommand"), context)
         );
     }
@@ -186,33 +187,33 @@ class CommandMethodAdapterTest {
             "commandMethod=CommandMethod{" +
             "command=Command(value=\"\", documentation=\"\"), " +
             "method=methodWithoutParameter}}";
-        Assertions.assertEquals(toString, command.toString());
+        assertEquals(toString, command.toString());
     }
 
     // region assert
 
     private void assertOutputsAreEmpty() {
-        Assertions.assertTrue(context.getOutputHistory().isEmpty(),
+        assertTrue(context.getOutputHistory().isEmpty(),
             "output history is not empty"
         );
-        Assertions.assertTrue(context.getErrorHistory().isEmpty(),
+        assertTrue(context.getErrorHistory().isEmpty(),
             "error history is not empty"
         );
     }
 
     private void assertErrorOutputContainsExpectedArgumentCount(int min, int max) {
-        Assertions.assertTrue(context.getOutputHistory().isEmpty());
-        Assertions.assertFalse(context.getErrorHistory().isEmpty());
+        assertTrue(context.getOutputHistory().isEmpty());
+        assertFalse(context.getErrorHistory().isEmpty());
         String count = min + "" + (min == max ? "" : "-" +
             (max == Integer.MAX_VALUE ? '∞' : max)
         );
-        Assertions.assertTrue(context.getErrorHistory().contains(
+        assertTrue(context.getErrorHistory().contains(
             "error: expected argument count: " + count
         ));
     }
 
     private void assertArgumentPresentInOutput(String argument) {
-        Assertions.assertTrue(
+        assertTrue(
             context.getOutputHistory().contains(argument),
             String.format("'%s' not present", argument)
         );
@@ -223,7 +224,7 @@ class CommandMethodAdapterTest {
 
     private void executeCommand(Input input) {
         Command command = getCommand(input.getCommand());
-        Assertions.assertNotNull(command, "command not found: " + input.getCommand());
+        assertNotNull(command, "command not found: " + input.getCommand());
         command.execute(input, context);
     }
 

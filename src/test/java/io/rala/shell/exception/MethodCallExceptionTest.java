@@ -1,7 +1,8 @@
 package io.rala.shell.exception;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodCallExceptionTest {
     @Test
@@ -9,7 +10,7 @@ class MethodCallExceptionTest {
         try {
             throw new MethodCallException("message");
         } catch (MethodCallException e) {
-            Assertions.assertEquals("message", e.getMessage());
+            assertEquals("message", e.getMessage());
         }
     }
 
@@ -18,7 +19,7 @@ class MethodCallExceptionTest {
         try {
             throw new MethodCallException(new IllegalArgumentException());
         } catch (MethodCallException e) {
-            Assertions.assertEquals(e.getCause().getClass(), IllegalArgumentException.class);
+            assertEquals(e.getCause().getClass(), IllegalArgumentException.class);
         }
     }
 }

@@ -7,13 +7,13 @@ import io.rala.shell.testUtils.TestShell;
 import io.rala.shell.testUtils.object.TestObject;
 import io.rala.shell.testUtils.object.TestObjectWithAttributes;
 import io.rala.shell.testUtils.object.TestObjectWithLocalDate;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDate;
 
 import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ShellTest {
     private static final int TIMEOUT = 1;
@@ -28,9 +28,9 @@ class ShellTest {
         TestShell testShell = TestShell.getInstanceWithSameOutputs();
         Shell shell = testShell.getShell();
         shell.printLine("line");
-        Assertions.assertTrue(testShell.getOutputHistory().contains("line"));
+        assertTrue(testShell.getOutputHistory().contains("line"));
         shell.printError("error");
-        Assertions.assertTrue(testShell.getOutputHistory().contains("error"));
+        assertTrue(testShell.getOutputHistory().contains("error"));
     }
 
     @Test
@@ -38,11 +38,11 @@ class ShellTest {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
         shell.printLine("line");
-        Assertions.assertTrue(testShell.getOutputHistory().contains("line"));
-        Assertions.assertFalse(testShell.getErrorHistory().contains("line"));
+        assertTrue(testShell.getOutputHistory().contains("line"));
+        assertFalse(testShell.getErrorHistory().contains("line"));
         shell.printError("error");
-        Assertions.assertFalse(testShell.getOutputHistory().contains("error"));
-        Assertions.assertTrue(testShell.getErrorHistory().contains("error"));
+        assertFalse(testShell.getOutputHistory().contains("error"));
+        assertTrue(testShell.getErrorHistory().contains("error"));
     }
 
     @Test
@@ -53,13 +53,13 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
-            Assertions.assertNotNull(take);
-            Assertions.assertEquals("> echo", take);
-            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+            assertNotNull(take);
+            assertEquals("> echo", take);
+            assertTrue(testShell.getErrorHistory().isEmpty());
         });
         thread.interrupt();
     }
@@ -72,29 +72,29 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
-            Assertions.assertNotNull(take);
-            Assertions.assertTrue(take.startsWith(Shell.DEFAULT_PROMPT));
-            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+            assertNotNull(take);
+            assertTrue(take.startsWith(Shell.DEFAULT_PROMPT));
+            assertTrue(testShell.getErrorHistory().isEmpty());
         });
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             shell.setPrompt("prompt> ");
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
-            Assertions.assertNotNull(take);
-            Assertions.assertTrue(take.startsWith(Shell.DEFAULT_PROMPT));
-            Assertions.assertFalse(take.startsWith("prompt> "));
-            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+            assertNotNull(take);
+            assertTrue(take.startsWith(Shell.DEFAULT_PROMPT));
+            assertFalse(take.startsWith("prompt> "));
+            assertTrue(testShell.getErrorHistory().isEmpty());
 
             testShell.putLine("echo echo");
             take = testShell.getOutputHistory().take();
-            Assertions.assertNotNull(take);
-            Assertions.assertTrue(take.startsWith("prompt> "));
-            Assertions.assertTrue(testShell.getErrorHistory().isEmpty());
+            assertNotNull(take);
+            assertTrue(take.startsWith("prompt> "));
+            assertTrue(testShell.getErrorHistory().isEmpty());
         });
         thread.interrupt();
     }
@@ -106,11 +106,11 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("close");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals("command not found: close", take);
+            assertEquals("command not found: close", take);
         });
         thread.interrupt();
     }
@@ -123,14 +123,14 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
-            Assertions.assertFalse(shell.isStopOnInvalidCommandEnabled());
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            assertFalse(shell.isStopOnInvalidCommandEnabled());
             testShell.putLine("close");
             String output = testShell.getOutputHistory().take();
-            Assertions.assertEquals("> fallback", output);
+            assertEquals("> fallback", output);
             String error = testShell.getErrorHistory().peek();
-            Assertions.assertNotEquals("command not found: close", error);
+            assertNotEquals("command not found: close", error);
         });
         thread.interrupt();
     }
@@ -146,13 +146,13 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals("errorHandler", take);
+            assertEquals("errorHandler", take);
         });
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
@@ -167,16 +167,16 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals(
+            assertEquals(
                 "error in exception handler: java.lang.RuntimeException",
                 take
             );
         });
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
@@ -187,15 +187,15 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.closeInputStream();
             waitUntilNot(thread::isAlive);
         });
 
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
@@ -205,15 +205,15 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             thread.interrupt();
             waitUntilNot(thread::isAlive);
         });
 
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
@@ -224,13 +224,13 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exit");
             waitUntilNot(thread::isAlive);
         });
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
@@ -241,14 +241,14 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exit");
             waitUntilNot(thread::isAlive);
         });
 
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
@@ -259,11 +259,11 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("help");
             String take = testShell.getOutputHistory().take();
-            Assertions.assertEquals("> help \tprints help of all commands or provided ones", take);
+            assertEquals("> help \tprints help of all commands or provided ones", take);
         });
         thread.interrupt();
     }
@@ -276,11 +276,11 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("help");
             for (int i = 0; i < 2; i++)
-                Assertions.assertFalse(testShell.getOutputHistory().take().isEmpty());
+                assertFalse(testShell.getOutputHistory().take().isEmpty());
         });
         thread.interrupt();
     }
@@ -293,11 +293,11 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("help");
             for (int i = 0; i < DefaultCommand.values().length; i++)
-                Assertions.assertFalse(testShell.getOutputHistory().take().isEmpty());
+                assertFalse(testShell.getOutputHistory().take().isEmpty());
         });
         thread.interrupt();
     }
@@ -309,9 +309,9 @@ class ShellTest {
         shell.register(DefaultCommand.HELP);
         try {
             shell.register(DefaultCommand.HELP);
-            Assertions.fail();
+            fail();
         } catch (CommandAlreadyPresentException e) {
-            Assertions.assertEquals("help", e.getMessage());
+            assertEquals("help", e.getMessage());
         }
     }
 
@@ -322,9 +322,9 @@ class ShellTest {
         shell.register("cmd", ECHO_COMMAND);
         try {
             shell.register(new TestObjectWithAttributes());
-            Assertions.fail();
+            fail();
         } catch (CommandAlreadyPresentException e) {
-            Assertions.assertEquals("cmd", e.getMessage());
+            assertEquals("cmd", e.getMessage());
         }
     }
 
@@ -335,9 +335,9 @@ class ShellTest {
         shell.register(new TestObjectWithAttributes());
         try {
             shell.register("cmd", ECHO_COMMAND);
-            Assertions.fail();
+            fail();
         } catch (CommandAlreadyPresentException e) {
-            Assertions.assertEquals("cmd", e.getMessage());
+            assertEquals("cmd", e.getMessage());
         }
     }
 
@@ -348,10 +348,10 @@ class ShellTest {
         shell.register(new TestObjectWithAttributes());
         try {
             shell.register("cmd with spaces", ECHO_COMMAND);
-            Assertions.fail();
+            fail();
         } catch (IllegalArgumentException e) {
             final String prefix = "no space allowed in command name: ";
-            Assertions.assertEquals(prefix + "cmd with spaces", e.getMessage());
+            assertEquals(prefix + "cmd with spaces", e.getMessage());
         }
     }
 
@@ -364,10 +364,10 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("commandWithLocalDate 2018-11-25");
-            Assertions.assertEquals("> 2018-11-25",
+            assertEquals("> 2018-11-25",
                 testShell.getOutputHistory().take()
             );
         });
@@ -382,15 +382,15 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithoutMessage");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals(
+            assertEquals(
                 "error during execution: RuntimeException", take
             );
         });
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
@@ -402,15 +402,15 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             testShell.putLine("exceptionCommandWithMessage");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals(
+            assertEquals(
                 "error during execution: RuntimeException: message", take
             );
         });
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
         thread.interrupt();
     }
 
@@ -421,28 +421,28 @@ class ShellTest {
 
         Thread thread = new Thread(shell);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
-            Assertions.assertFalse(shell.isStopOnInvalidCommandEnabled());
+        assertTrue(thread.isAlive());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            assertFalse(shell.isStopOnInvalidCommandEnabled());
             testShell.putLine("close");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals("command not found: close", take);
+            assertEquals("command not found: close", take);
         });
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
         shell.setStopOnInvalidCommandEnabled(true);
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
-            Assertions.assertTrue(shell.isStopOnInvalidCommandEnabled());
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+            assertTrue(shell.isStopOnInvalidCommandEnabled());
             testShell.putLine("close");
             String take = testShell.getErrorHistory().take();
-            Assertions.assertEquals("command not found: close", take);
+            assertEquals("command not found: close", take);
             waitUntilNot(thread::isAlive);
         });
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
     void toStringOfShellWithEmptyConstructor() {
-        Assertions.assertEquals("Shell", new Shell().toString());
+        assertEquals("Shell", new Shell().toString());
     }
 }

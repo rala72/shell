@@ -1,7 +1,6 @@
 package io.rala.shell;
 
 import io.rala.shell.testUtils.io.BlockingQueueInputStream;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static io.rala.shell.testUtils.WaitUtils.waitUntil;
 import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ReaderQueueTest {
     private static final int TIMEOUT = 1;
@@ -32,12 +32,12 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             queue.put("entry\n");
             String take = readerQueue.take();
-            Assertions.assertEquals("entry", take);
+            assertEquals("entry", take);
         });
         thread.interrupt();
     }
@@ -47,15 +47,15 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             Thread takeThread = new Thread(() -> {
                 String take = readerQueue.take();
-                Assertions.assertNull(take);
+                assertNull(take);
             });
             takeThread.start();
-            Assertions.assertTrue(takeThread.isAlive());
+            assertTrue(takeThread.isAlive());
             takeThread.interrupt();
         });
         thread.interrupt();
@@ -66,15 +66,15 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             queue.put("entry");
             String peek = readerQueue.peek();
-            Assertions.assertNull(peek);
+            assertNull(peek);
             queue.put("\n");
             String take = readerQueue.take();
-            Assertions.assertEquals("entry", take);
+            assertEquals("entry", take);
         });
         thread.interrupt();
     }
@@ -84,15 +84,15 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             thread.interrupt();
             waitUntilNot(thread::isAlive);
         });
 
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
@@ -100,19 +100,19 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             inputStream.requestIoException();
             waitUntil(readerQueue::hasException);
             waitUntilNot(thread::isAlive);
-            Assertions.assertFalse(thread.isAlive());
-            Assertions.assertNotNull(readerQueue.getIOException());
-            Assertions.assertNull(readerQueue.getInterruptedException());
+            assertFalse(thread.isAlive());
+            assertNotNull(readerQueue.getIOException());
+            assertNull(readerQueue.getInterruptedException());
         });
 
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 
     @Test
@@ -120,9 +120,9 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader, 1);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        Assertions.assertTrue(thread.isAlive());
+        assertTrue(thread.isAlive());
 
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
             queue.put("\n");
             waitUntil(() -> queue.isEmpty());
             queue.put("\n");
@@ -130,12 +130,12 @@ class ReaderQueueTest {
             thread.interrupt();
             waitUntil(readerQueue::hasException);
             waitUntilNot(thread::isAlive);
-            Assertions.assertFalse(thread.isAlive());
-            Assertions.assertNull(readerQueue.getIOException());
-            Assertions.assertNotNull(readerQueue.getInterruptedException());
+            assertFalse(thread.isAlive());
+            assertNull(readerQueue.getIOException());
+            assertNotNull(readerQueue.getInterruptedException());
         });
 
-        Assertions.assertFalse(thread.isAlive());
-        Assertions.assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertFalse(thread.isAlive());
+        assertEquals(thread.getState(), Thread.State.TERMINATED);
     }
 }

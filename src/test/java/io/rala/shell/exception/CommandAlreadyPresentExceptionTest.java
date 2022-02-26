@@ -2,7 +2,7 @@ package io.rala.shell.exception;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CommandAlreadyPresentExceptionTest {
     @Test
@@ -10,7 +10,7 @@ class CommandAlreadyPresentExceptionTest {
         try {
             throw new CommandAlreadyPresentException("cmd");
         } catch (CommandAlreadyPresentException e) {
-            assertEquals("cmd", e.getMessage());
+            assertThat(e.getMessage()).isEqualTo("cmd");
         }
     }
 }

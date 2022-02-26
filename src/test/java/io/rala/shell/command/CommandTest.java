@@ -5,14 +5,14 @@ import io.rala.shell.Input;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CommandTest {
     @Test
     void defaultCommand() {
         EmptyCommand emptyCommand = new EmptyCommand();
-        assertNull(emptyCommand.getDocumentation());
-        assertNull(emptyCommand.getUsage());
+        assertThat(emptyCommand.getDocumentation()).isNull();
+        assertThat(emptyCommand.getUsage()).isNull();
     }
 
     private static class EmptyCommand implements Command {

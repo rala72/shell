@@ -11,13 +11,13 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ContextTest {
     @Test
     void emptyCommands() {
         Context context = new Context(getSystemOutPrintWriter(), Collections.emptyMap());
-        assertTrue(context.getCommands().isEmpty());
+        assertThat(context.getCommands()).isEmpty();
     }
 
     @Test
@@ -26,7 +26,7 @@ class ContextTest {
             getSystemOutPrintWriter(),
             Collections.emptyMap()
         );
-        assertEquals(context.getOutput(), context.getError());
+        assertThat(context.getError()).isEqualTo(context.getOutput());
     }
 
     @Test
@@ -36,15 +36,14 @@ class ContextTest {
             getSystemErrorPrintWriter(),
             Collections.emptyMap()
         );
-        assertNotEquals(context.getOutput(), context.getError());
+        assertThat(context.getError()).isNotEqualTo(context.getOutput());
     }
 
     @Test
     void commandsWithExit() {
         Context context = new Context(getSystemOutPrintWriter(), Map.of("help", new ExitCommand()));
-        assertFalse(context.getCommands().isEmpty());
-        assertTrue(context.getCommands().containsKey("help"));
-        assertNotNull(context.getCommands().get("help"));
+        assertThat(context.getCommands())
+            .isNotEmpty().containsKey("help");
     }
 
     @Test
@@ -54,14 +53,14 @@ class ContextTest {
         testContext.printLine("line");
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("line"));
+        assertThat(outputs)
+            .isNotEmpty()
+            .contains("line");
 
         testContext.printError("error");
 
         BlockingQueue<String> errors = testContext.getErrorHistory();
-        assertEquals(outputs, errors);
+        assertThat(errors).isEqualTo(outputs);
     }
 
     @Test
@@ -71,18 +70,18 @@ class ContextTest {
         testContext.printError("error");
 
         BlockingQueue<String> errors = testContext.getErrorHistory();
-        assertFalse(errors.isEmpty());
-        assertEquals(1, errors.size());
-        assertTrue(errors.contains("error"));
+        assertThat(errors)
+            .hasSize(1)
+            .contains("error");
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertTrue(outputs.isEmpty());
+        assertThat(outputs).isEmpty();
     }
 
     @Test
     void toStringOfEmptyContext() {
         String toString = "Context{output==error=false, commands={}}";
-        assertEquals(toString, new TestContext().toString());
+        assertThat(new TestContext()).hasToString(toString);
     }
 
     private static PrintWriter getSystemOutPrintWriter() {

@@ -7,13 +7,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultTest {
     @ParameterizedTest
     @MethodSource("getDefaultValueArguments")
     <T> void defaultValue(Class<T> c, T defaultValue) {
-        assertEquals(defaultValue, Default.of(c));
+        assertThat(Default.of(c)).isEqualTo(defaultValue);
     }
 
     private static Stream<Arguments> getDefaultValueArguments() {

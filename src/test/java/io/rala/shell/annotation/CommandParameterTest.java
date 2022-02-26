@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CommandParameterTest {
     @Test
@@ -18,17 +18,14 @@ class CommandParameterTest {
             Input.class
         );
         CommandParameter[] commandParameters = extractCommandParameters(method);
-        assertEquals(1, commandParameters.length);
-        assertEquals(
-            method.getParameters()[0],
-            commandParameters[0].getParameter()
-        );
-        assertEquals("arg0", commandParameters[0].getName());
-        assertEquals(Input.class, commandParameters[0].getType());
-        assertFalse(commandParameters[0].isArray());
-        assertFalse(commandParameters[0].isList());
-        assertTrue(commandParameters[0].isDynamic());
-        assertTrue(commandParameters[0].isInput());
+        assertThat(commandParameters).hasSize(1);
+        assertThat(commandParameters[0].getParameter()).isEqualTo(method.getParameters()[0]);
+        assertThat(commandParameters[0].getName()).isEqualTo("arg0");
+        assertThat(commandParameters[0].getType()).isEqualTo(Input.class);
+        assertThat(commandParameters[0].isArray()).isFalse();
+        assertThat(commandParameters[0].isList()).isFalse();
+        assertThat(commandParameters[0].isDynamic()).isTrue();
+        assertThat(commandParameters[0].isInput()).isTrue();
     }
 
     @Test
@@ -38,17 +35,14 @@ class CommandParameterTest {
             String.class
         );
         CommandParameter[] commandParameters = extractCommandParameters(method);
-        assertEquals(1, commandParameters.length);
-        assertEquals(
-            method.getParameters()[0],
-            commandParameters[0].getParameter()
-        );
-        assertEquals("arg0", commandParameters[0].getName());
-        assertEquals(String.class, commandParameters[0].getType());
-        assertFalse(commandParameters[0].isArray());
-        assertFalse(commandParameters[0].isList());
-        assertFalse(commandParameters[0].isDynamic());
-        assertFalse(commandParameters[0].isInput());
+        assertThat(commandParameters).hasSize(1);
+        assertThat(commandParameters[0].getParameter()).isEqualTo(method.getParameters()[0]);
+        assertThat(commandParameters[0].getName()).isEqualTo("arg0");
+        assertThat(commandParameters[0].getType()).isEqualTo(String.class);
+        assertThat(commandParameters[0].isArray()).isFalse();
+        assertThat(commandParameters[0].isList()).isFalse();
+        assertThat(commandParameters[0].isDynamic()).isFalse();
+        assertThat(commandParameters[0].isInput()).isFalse();
     }
 
     @Test
@@ -58,18 +52,15 @@ class CommandParameterTest {
             String.class, String.class
         );
         CommandParameter[] commandParameters = extractCommandParameters(method);
-        assertEquals(2, commandParameters.length);
+        assertThat(commandParameters).hasSize(2);
         for (int i = 0; i < 2; i++) {
-            assertEquals(
-                method.getParameters()[i],
-                commandParameters[i].getParameter()
-            );
-            assertEquals("arg" + i, commandParameters[i].getName());
-            assertEquals(String.class, commandParameters[i].getType());
-            assertFalse(commandParameters[i].isArray());
-            assertFalse(commandParameters[i].isList());
-            assertFalse(commandParameters[i].isDynamic());
-            assertFalse(commandParameters[i].isInput());
+            assertThat(commandParameters[i].getParameter()).isEqualTo(method.getParameters()[i]);
+            assertThat(commandParameters[i].getName()).isEqualTo("arg" + i);
+            assertThat(commandParameters[i].getType()).isEqualTo(String.class);
+            assertThat(commandParameters[i].isArray()).isFalse();
+            assertThat(commandParameters[i].isList()).isFalse();
+            assertThat(commandParameters[i].isDynamic()).isFalse();
+            assertThat(commandParameters[i].isInput()).isFalse();
         }
     }
 
@@ -80,17 +71,14 @@ class CommandParameterTest {
             String[].class
         );
         CommandParameter[] commandParameters = extractCommandParameters(method);
-        assertEquals(1, commandParameters.length);
-        assertEquals(
-            method.getParameters()[0],
-            commandParameters[0].getParameter()
-        );
-        assertEquals("arg0", commandParameters[0].getName());
-        assertEquals(String[].class, commandParameters[0].getType());
-        assertTrue(commandParameters[0].isArray());
-        assertFalse(commandParameters[0].isList());
-        assertTrue(commandParameters[0].isDynamic());
-        assertFalse(commandParameters[0].isInput());
+        assertThat(commandParameters).hasSize(1);
+        assertThat(commandParameters[0].getParameter()).isEqualTo(method.getParameters()[0]);
+        assertThat(commandParameters[0].getName()).isEqualTo("arg0");
+        assertThat(commandParameters[0].getType()).isEqualTo(String[].class);
+        assertThat(commandParameters[0].isArray()).isTrue();
+        assertThat(commandParameters[0].isList()).isFalse();
+        assertThat(commandParameters[0].isDynamic()).isTrue();
+        assertThat(commandParameters[0].isInput()).isFalse();
     }
 
     @Test
@@ -100,17 +88,14 @@ class CommandParameterTest {
             String[].class
         );
         CommandParameter[] commandParameters = extractCommandParameters(method);
-        assertEquals(1, commandParameters.length);
-        assertEquals(
-            method.getParameters()[0],
-            commandParameters[0].getParameter()
-        );
-        assertEquals("arg0", commandParameters[0].getName());
-        assertEquals(String[].class, commandParameters[0].getType());
-        assertTrue(commandParameters[0].isArray());
-        assertFalse(commandParameters[0].isList());
-        assertTrue(commandParameters[0].isDynamic());
-        assertFalse(commandParameters[0].isInput());
+        assertThat(commandParameters).hasSize(1);
+        assertThat(commandParameters[0].getParameter()).isEqualTo(method.getParameters()[0]);
+        assertThat(commandParameters[0].getName()).isEqualTo("arg0");
+        assertThat(commandParameters[0].getType()).isEqualTo(String[].class);
+        assertThat(commandParameters[0].isArray()).isTrue();
+        assertThat(commandParameters[0].isList()).isFalse();
+        assertThat(commandParameters[0].isDynamic()).isTrue();
+        assertThat(commandParameters[0].isInput()).isFalse();
     }
 
     @Test
@@ -120,16 +105,13 @@ class CommandParameterTest {
             List.class
         );
         CommandParameter[] commandParameters = extractCommandParameters(method);
-        assertEquals(1, commandParameters.length);
-        assertEquals(
-            method.getParameters()[0],
-            commandParameters[0].getParameter()
-        );
-        assertEquals(List.class, commandParameters[0].getType());
-        assertFalse(commandParameters[0].isArray());
-        assertTrue(commandParameters[0].isList());
-        assertTrue(commandParameters[0].isDynamic());
-        assertFalse(commandParameters[0].isInput());
+        assertThat(commandParameters).hasSize(1);
+        assertThat(commandParameters[0].getParameter()).isEqualTo(method.getParameters()[0]);
+        assertThat(commandParameters[0].getType()).isEqualTo(List.class);
+        assertThat(commandParameters[0].isArray()).isFalse();
+        assertThat(commandParameters[0].isList()).isTrue();
+        assertThat(commandParameters[0].isDynamic()).isTrue();
+        assertThat(commandParameters[0].isInput()).isFalse();
     }
 
     @Test
@@ -140,7 +122,7 @@ class CommandParameterTest {
         );
         CommandParameter commandParameter = extractCommandParameters(method)[0];
         String toString = "java.lang.String arg0";
-        assertEquals(toString, commandParameter.toString());
+        assertThat(commandParameter).hasToString(toString);
     }
 
     private static CommandParameter[] extractCommandParameters(Method method) {

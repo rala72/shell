@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class HelpCommandTest {
     private static final String COMMAND = "help";
@@ -20,12 +20,12 @@ class HelpCommandTest {
 
     @Test
     void documentation() {
-        assertEquals(DOCUMENTATION, new HelpCommand().getDocumentation());
+        assertThat(new HelpCommand().getDocumentation()).isEqualTo(DOCUMENTATION);
     }
 
     @Test
     void usage() {
-        assertEquals(USAGE, new HelpCommand().getUsage());
+        assertThat(new HelpCommand().getUsage()).isEqualTo(USAGE);
     }
 
     @Test
@@ -35,9 +35,8 @@ class HelpCommandTest {
         new HelpCommand().execute(new Input(COMMAND), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("no commands found"));
+        assertThat(outputs)
+            .hasSize(1).contains("no commands found");
     }
 
     @Test
@@ -47,9 +46,9 @@ class HelpCommandTest {
         new HelpCommand().execute(new Input(COMMAND, "cmd"), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("error: command cmd not found"));
+        assertThat(outputs)
+            .hasSize(1)
+            .contains("error: command cmd not found");
     }
 
     @Test
@@ -60,9 +59,9 @@ class HelpCommandTest {
         helpCommand.execute(new Input(COMMAND), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("cmd \t<no documentation found>"));
+        assertThat(outputs)
+            .hasSize(1)
+            .contains("cmd \t<no documentation found>");
     }
 
     @Test
@@ -73,9 +72,9 @@ class HelpCommandTest {
         helpCommand.execute(new Input(COMMAND), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("help \tprints help of all commands or provided ones"));
+        assertThat(outputs)
+            .hasSize(1)
+            .contains("help \tprints help of all commands or provided ones");
     }
 
     @Test
@@ -87,10 +86,10 @@ class HelpCommandTest {
         helpCommand.execute(new Input(COMMAND), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(2, outputs.size());
-        assertTrue(outputs.contains("help \tprints help of all commands or provided ones"));
-        assertTrue(outputs.contains("exit \tstops shell"));
+        assertThat(outputs)
+            .hasSize(2)
+            .contains("help \tprints help of all commands or provided ones")
+            .contains("exit \tstops shell");
     }
 
     @Test
@@ -102,10 +101,10 @@ class HelpCommandTest {
         helpCommand.execute(new Input(COMMAND, "exit"), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertFalse(outputs.contains("help \tprints help of all commands or provided ones"));
-        assertTrue(outputs.contains("exit \tstops shell"));
+        assertThat(outputs)
+            .hasSize(1)
+            .doesNotContain("help \tprints help of all commands or provided ones")
+            .contains("exit \tstops shell");
     }
 
     @Test
@@ -117,9 +116,9 @@ class HelpCommandTest {
         helpCommand.execute(new Input(COMMAND), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("commandWithoutAttributes \t<no documentation found>"));
+        assertThat(outputs)
+            .hasSize(1)
+            .contains("commandWithoutAttributes \t<no documentation found>");
     }
 
     @Test
@@ -131,13 +130,13 @@ class HelpCommandTest {
         helpCommand.execute(new Input(COMMAND), testContext);
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
-        assertFalse(outputs.isEmpty());
-        assertEquals(1, outputs.size());
-        assertTrue(outputs.contains("cmd \tdocumentation"));
+        assertThat(outputs)
+            .hasSize(1)
+            .contains("cmd \tdocumentation");
     }
 
     @Test
     void toStringOfCommand() {
-        assertEquals("HelpCommand", new HelpCommand().toString());
+        assertThat(new HelpCommand()).hasToString("HelpCommand");
     }
 }

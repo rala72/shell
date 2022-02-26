@@ -4,23 +4,22 @@ import io.rala.shell.command.ExitCommand;
 import io.rala.shell.command.HelpCommand;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultCommandTest {
     @Test
     void exit() {
         DefaultCommand exit = DefaultCommand.EXIT;
-        assertEquals("exit", exit.getName());
-        assertEquals(exit.getName(), exit.toString());
-        assertTrue(exit.getCommand() instanceof ExitCommand);
+        assertThat(exit.getName()).isEqualTo("exit");
+        assertThat(exit).hasToString(exit.getName());
+        assertThat(exit.getCommand()).isInstanceOf(ExitCommand.class);
     }
 
     @Test
     void help() {
         DefaultCommand help = DefaultCommand.HELP;
-        assertEquals("help", help.getName());
-        assertEquals(help.getName(), help.toString());
-        assertTrue(help.getCommand() instanceof HelpCommand);
+        assertThat(help.getName()).isEqualTo("help");
+        assertThat(help).hasToString(help.getName());
+        assertThat(help.getCommand()).isInstanceOf(HelpCommand.class);
     }
 }

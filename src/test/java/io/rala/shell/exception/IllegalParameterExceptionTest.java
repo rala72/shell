@@ -2,7 +2,7 @@ package io.rala.shell.exception;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class IllegalParameterExceptionTest {
     @Test
@@ -10,10 +10,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewOnlyOneDynamicInstance("method");
         } catch (IllegalParameterException e) {
-            assertEquals(
-                "method: may only have one dynamic parameter",
-                e.getMessage()
-            );
+            assertThat(e.getMessage()).isEqualTo("method: may only have one dynamic parameter");
         }
     }
 
@@ -22,10 +19,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewOnlyLastDynamicInstance("method");
         } catch (IllegalParameterException e) {
-            assertEquals(
-                "method: only last parameter may be dynamic",
-                e.getMessage()
-            );
+            assertThat(e.getMessage()).isEqualTo("method: only last parameter may be dynamic");
         }
     }
 
@@ -34,10 +28,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewIfInputNoOther("method");
         } catch (IllegalParameterException e) {
-            assertEquals(
-                "method: if input present, no other parameter allowed",
-                e.getMessage()
-            );
+            assertThat(e.getMessage()).isEqualTo("method: if input present, no other parameter allowed");
         }
     }
 
@@ -46,10 +37,7 @@ class IllegalParameterExceptionTest {
         try {
             throw IllegalParameterException.createNewOnlyLastParametersCanBeAbsent("method");
         } catch (IllegalParameterException e) {
-            assertEquals(
-                "method: only last parameters can be absent",
-                e.getMessage()
-            );
+            assertThat(e.getMessage()).isEqualTo("method: only last parameters can be absent");
         }
     }
 }

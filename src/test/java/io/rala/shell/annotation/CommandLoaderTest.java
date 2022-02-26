@@ -11,7 +11,8 @@ import io.rala.shell.testUtils.object.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommandLoaderTest {
     private StringMapper stringMapper;
@@ -23,32 +24,29 @@ class CommandLoaderTest {
 
     @Test
     void privateObjectLoadingThrowsIllegalParameter() {
-        try {
-            new CommandLoader(new PrivateTestObject(), stringMapper);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("object has to be public", e.getMessage());
-        }
+        assertThatThrownBy(() -> new CommandLoader(new PrivateTestObject(), stringMapper))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("object has to be public");
     }
 
     @Test
     void commandWithoutAttributesLoading() {
         CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithoutAttributes();
-        assertEquals(1, commandLoader.getCommandMethodMap().size());
-        assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithoutAttributes"));
+        assertThat(commandLoader.getCommandMethodMap())
+            .hasSize(1).containsKey("commandWithoutAttributes");
     }
 
     @Test
     void commandWithAttributesLoading() {
         CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithAttributes();
-        assertEquals(1, commandLoader.getCommandMethodMap().size());
-        assertTrue(commandLoader.getCommandMethodMap().containsKey("cmd"));
+        assertThat(commandLoader.getCommandMethodMap())
+            .hasSize(1).containsKey("cmd");
     }
 
     @Test
     void commandWithOneOptionalParameterLoading() {
         CommandLoader commandLoader = new CommandLoader(new TestObjectWithOptional(), stringMapper);
-        assertEquals(1, commandLoader.getCommandMethodMap().size());
+        assertThat(commandLoader.getCommandMethodMap()).hasSize(1);
     }
 
     @Test
@@ -56,118 +54,84 @@ class CommandLoaderTest {
         CommandLoader commandLoader = new CommandLoader(
             new TestObjectWithOptionalDefaultValue(),
             stringMapper);
-        assertEquals(1, commandLoader.getCommandMethodMap().size());
+        assertThat(commandLoader.getCommandMethodMap()).hasSize(1);
     }
 
     @Test
     void commandWithOneOptionalInvalidDefaultValueException() {
-        try {
-            new CommandLoader(new TestObjectWithOptionalInvalidDefaultValue(), stringMapper);
-            fail();
-        } catch (IllegalParameterException e) {
-            assertEquals(
-                "arg1: default value is invalid",
-                e.getMessage()
-            );
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new TestObjectWithOptionalInvalidDefaultValue(), stringMapper)
+        ).isInstanceOf(IllegalParameterException.class)
+            .hasMessage("arg1: default value is invalid");
     }
 
     @Test
     void commandWithOneInputParameterException() {
         CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithOneInput();
-        assertEquals(1, commandLoader.getCommandMethodMap().size());
-        assertTrue(commandLoader.getCommandMethodMap().containsKey("commandWithOneInput"));
+        assertThat(commandLoader.getCommandMethodMap()).hasSize(1);
+        assertThat(commandLoader.getCommandMethodMap()).containsKey("commandWithOneInput");
     }
 
     @Test
     void commandWithTwoInputParameterException() {
-        try {
-            new CommandLoader(new TestObjectWithTwoInputs(), stringMapper);
-            fail();
-        } catch (IllegalParameterException e) {
-            assertEquals(
-                "commandWithTwoInputs: if input present, no other parameter allowed",
-                e.getMessage()
-            );
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new TestObjectWithTwoInputs(), stringMapper)
+        ).isInstanceOf(IllegalParameterException.class)
+            .hasMessage("commandWithTwoInputs: if input present, no other parameter allowed");
     }
 
     @Test
     void commandWithTwoArrayParameterException() {
-        try {
-            new CommandLoader(new TestObjectWithTwoArrays(), stringMapper);
-            fail();
-        } catch (IllegalParameterException e) {
-            assertEquals(
-                "commandWithTwoArrays: may only have one dynamic parameter",
-                e.getMessage()
-            );
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new TestObjectWithTwoArrays(), stringMapper)
+        ).isInstanceOf(IllegalParameterException.class)
+            .hasMessage("commandWithTwoArrays: may only have one dynamic parameter");
     }
 
     @Test
     void commandWithTwoListParameterException() {
-        try {
-            new CommandLoader(new TestObjectWithTwoLists(), stringMapper);
-            fail();
-        } catch (IllegalParameterException e) {
-            assertEquals(
-                "commandWithTwoLists: may only have one dynamic parameter",
-                e.getMessage()
-            );
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new TestObjectWithTwoLists(), stringMapper)
+        ).isInstanceOf(IllegalParameterException.class)
+            .hasMessage("commandWithTwoLists: may only have one dynamic parameter");
     }
 
     @Test
     void commandWithOneArrayParameterNotOnEndException() {
-        try {
-            new CommandLoader(new TestObjectWithArrayNotOnEnd(), stringMapper);
-            fail();
-        } catch (IllegalParameterException e) {
-            assertEquals(
-                "commandWithArrayNotOnEnd: only last parameter may be dynamic",
-                e.getMessage()
-            );
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new TestObjectWithArrayNotOnEnd(), stringMapper)
+        ).isInstanceOf(IllegalParameterException.class)
+            .hasMessage("commandWithArrayNotOnEnd: only last parameter may be dynamic");
     }
 
     @Test
     void commandWithOneOptionalParameterNotOnEndException() {
-        try {
-            new CommandLoader(new TestObjectWithOptionalNotOnEnd(), stringMapper);
-            fail();
-        } catch (IllegalParameterException e) {
-            assertEquals(
-                "commandWithOptionalNotOnEnd: only last parameters can be absent",
-                e.getMessage()
-            );
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new TestObjectWithOptionalNotOnEnd(), stringMapper)
+        ).isInstanceOf(IllegalParameterException.class)
+            .hasMessage("commandWithOptionalNotOnEnd: only last parameters can be absent");
     }
 
     @Test
     void commandNotUniqueException() {
-        try {
-            new CommandLoader(new CommandNotUniqueErrorTestObject(), stringMapper);
-            fail();
-        } catch (CommandAlreadyPresentException e) {
-            assertEquals("cmd", e.getMessage());
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new CommandNotUniqueErrorTestObject(), stringMapper)
+        ).isInstanceOf(CommandAlreadyPresentException.class)
+            .hasMessage("cmd");
     }
 
     @Test
     void commandIllegalAccessException() {
-        try {
-            new CommandLoader(new IllegalAccessErrorTestObject(), stringMapper);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals("object has no visible commands", e.getMessage());
-        }
+        assertThatThrownBy(() ->
+            new CommandLoader(new IllegalAccessErrorTestObject(), stringMapper)
+        ).isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("object has no visible commands");
     }
 
     @Test
     void toStringOfObjectWithoutAttributes() {
         CommandLoader commandLoader = new CommandLoader(new TestObjectWithoutAttributes(), stringMapper);
-        assertEquals("commandWithoutAttributes", commandLoader.toString());
+        assertThat(commandLoader).hasToString("commandWithoutAttributes");
     }
 
     private static class PrivateTestObject {

@@ -5,7 +5,8 @@ import io.rala.shell.exception.StopShellException;
 import io.rala.shell.testUtils.TestContext;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class ExitCommandTest {
     private static final String COMMAND = "exit";
@@ -14,32 +15,31 @@ class ExitCommandTest {
 
     @Test
     void documentation() {
-        assertEquals(DOCUMENTATION, new ExitCommand().getDocumentation());
+        assertThat(new ExitCommand().getDocumentation()).isEqualTo(DOCUMENTATION);
     }
 
     @Test
     void usage() {
-        assertEquals(USAGE, new ExitCommand().getUsage());
+        assertThat(new ExitCommand().getUsage()).isEqualTo(USAGE);
     }
 
     @Test
     void executeWithoutParameters() {
-        assertThrows(StopShellException.class, () ->
-            new ExitCommand().execute(new Input(COMMAND), new TestContext())
-        );
+        assertThatExceptionOfType(StopShellException.class).isThrownBy(() ->
+            new ExitCommand().execute(new Input(COMMAND), new TestContext()));
     }
 
     @Test
     void executeWithParameters() {
         TestContext testContext = TestContext.getInstanceWithDifferentStreams();
         new ExitCommand().execute(new Input(COMMAND, "cmd"), testContext);
-        assertTrue(testContext.getOutputHistory().isEmpty());
-        assertFalse(testContext.getErrorHistory().isEmpty());
-        assertTrue(testContext.getErrorHistory().contains("error: no arguments expected"));
+        assertThat(testContext.getOutputHistory()).isEmpty();
+        assertThat(testContext.getErrorHistory()).isNotEmpty()
+            .contains("error: no arguments expected");
     }
 
     @Test
     void toStringOfCommand() {
-        assertEquals("ExitCommand", new ExitCommand().toString());
+        assertThat(new ExitCommand()).hasToString("ExitCommand");
     }
 }

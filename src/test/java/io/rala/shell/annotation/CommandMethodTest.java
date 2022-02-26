@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CommandMethodTest {
     @Test
@@ -16,17 +16,11 @@ class CommandMethodTest {
             commandAnnotation,
             TestObject.class.getMethod("methodWithoutParameter")
         );
-        assertEquals(
-            "methodWithoutParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod("methodWithoutParameter"),
-            commandMethod.getMethod()
-        );
-        assertEquals(0, commandMethod.getMinParameterCount());
-        assertEquals(1, commandMethod.getMaxParameterCount());
+        assertThat(commandMethod.getName()).isEqualTo("methodWithoutParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod("methodWithoutParameter"));
+        assertThat(commandMethod.getMinParameterCount()).isZero();
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(1);
         assertParameterCount(commandMethod, -1, 2, 0, 1);
     }
 
@@ -40,20 +34,14 @@ class CommandMethodTest {
                 Input.class
             )
         );
-        assertEquals(
+        assertThat(commandMethod.getName()).isEqualTo("methodWithOneInputParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod(
             "methodWithOneInputParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod(
-                "methodWithOneInputParameter",
-                Input.class
-            ),
-            commandMethod.getMethod()
-        );
-        assertEquals(0, commandMethod.getMinParameterCount());
-        assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+            Input.class
+        ));
+        assertThat(commandMethod.getMinParameterCount()).isZero();
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(Integer.MAX_VALUE);
         assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
@@ -67,20 +55,14 @@ class CommandMethodTest {
                 String.class
             )
         );
-        assertEquals(
+        assertThat(commandMethod.getName()).isEqualTo("methodWithOneStringParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod(
             "methodWithOneStringParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod(
-                "methodWithOneStringParameter",
-                String.class
-            ),
-            commandMethod.getMethod()
-        );
-        assertEquals(1, commandMethod.getMinParameterCount());
-        assertEquals(2, commandMethod.getMaxParameterCount());
+            String.class
+        ));
+        assertThat(commandMethod.getMinParameterCount()).isEqualTo(1);
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(2);
         assertParameterCount(commandMethod, 0, 3, 1, 2);
     }
 
@@ -94,20 +76,14 @@ class CommandMethodTest {
                 String.class, String.class
             )
         );
-        assertEquals(
+        assertThat(commandMethod.getName()).isEqualTo("methodWithTwoStringParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod(
             "methodWithTwoStringParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod(
-                "methodWithTwoStringParameter",
-                String.class, String.class
-            ),
-            commandMethod.getMethod()
-        );
-        assertEquals(2, commandMethod.getMinParameterCount());
-        assertEquals(3, commandMethod.getMaxParameterCount());
+            String.class, String.class
+        ));
+        assertThat(commandMethod.getMinParameterCount()).isEqualTo(2);
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(3);
         assertParameterCount(commandMethod, 0, 4, 2, 3);
     }
 
@@ -121,20 +97,14 @@ class CommandMethodTest {
                 String[].class
             )
         );
-        assertEquals(
+        assertThat(commandMethod.getName()).isEqualTo("methodWithOneStringVarargsParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod(
             "methodWithOneStringVarargsParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod(
-                "methodWithOneStringVarargsParameter",
-                String[].class
-            ),
-            commandMethod.getMethod()
-        );
-        assertEquals(0, commandMethod.getMinParameterCount());
-        assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+            String[].class
+        ));
+        assertThat(commandMethod.getMinParameterCount()).isZero();
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(Integer.MAX_VALUE);
         assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
@@ -148,20 +118,14 @@ class CommandMethodTest {
                 String[].class
             )
         );
-        assertEquals(
+        assertThat(commandMethod.getName()).isEqualTo("methodWithOneStringArrayParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod(
             "methodWithOneStringArrayParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod(
-                "methodWithOneStringArrayParameter",
-                String[].class
-            ),
-            commandMethod.getMethod()
-        );
-        assertEquals(0, commandMethod.getMinParameterCount());
-        assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+            String[].class
+        ));
+        assertThat(commandMethod.getMinParameterCount()).isZero();
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(Integer.MAX_VALUE);
         assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
@@ -175,36 +139,31 @@ class CommandMethodTest {
                 List.class
             )
         );
-        assertEquals(
+        assertThat(commandMethod.getName()).isEqualTo("methodWithOneStringListParameter");
+        assertThat(commandMethod.getCommand()).isEqualTo(commandAnnotation);
+        assertThat(commandMethod.getMethod()).isEqualTo(TestObject.class.getMethod(
             "methodWithOneStringListParameter",
-            commandMethod.getName()
-        );
-        assertEquals(commandAnnotation, commandMethod.getCommand());
-        assertEquals(
-            TestObject.class.getMethod(
-                "methodWithOneStringListParameter",
-                List.class
-            ),
-            commandMethod.getMethod()
-        );
-        assertEquals(0, commandMethod.getMinParameterCount());
-        assertEquals(Integer.MAX_VALUE, commandMethod.getMaxParameterCount());
+            List.class
+        ));
+        assertThat(commandMethod.getMinParameterCount()).isZero();
+        assertThat(commandMethod.getMaxParameterCount()).isEqualTo(Integer.MAX_VALUE);
         assertParameterCount(commandMethod, -1, 4, 0, Integer.MAX_VALUE);
     }
 
     @Test
     void toStringOfEmptyCommandAndToStringMethod() throws NoSuchMethodException {
-        CommandMethod commandMethod = new CommandMethod(new CommandAnnotation(), TestObject.class.getMethod("toString"));
+        CommandMethod commandMethod = new CommandMethod(new CommandAnnotation(),
+            TestObject.class.getMethod("toString"));
         String toString = "CommandMethod{command=Command(value=\"\", documentation=\"\"), method=toString}";
-        assertEquals(toString, commandMethod.toString());
+        assertThat(commandMethod).hasToString(toString);
     }
 
-    private void assertParameterCount(CommandMethod commandMethod, int from, int to, int requestedMin, int requestedMax) {
+    private void assertParameterCount(CommandMethod commandMethod,
+                                      int from, int to,
+                                      int requestedMin, int requestedMax) {
         for (int i = from; i < to; i++) {
-            assertEquals(
-                requestedMin <= i && i < requestedMax,
-                commandMethod.isParameterCountValid(i),
-                String.valueOf(i));
+            assertThat(commandMethod.isParameterCountValid(i)).as(String.valueOf(i))
+                .isEqualTo(requestedMin <= i && i < requestedMax);
         }
     }
 }

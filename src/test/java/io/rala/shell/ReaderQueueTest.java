@@ -12,7 +12,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import static io.rala.shell.testUtils.WaitUtils.waitUntil;
 import static io.rala.shell.testUtils.WaitUtils.waitUntilNot;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 class ReaderQueueTest {
     private static final int TIMEOUT = 1;
@@ -32,12 +33,12 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        assertTrue(thread.isAlive());
+        assertThat(thread.isAlive()).isTrue();
 
-        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             queue.put("entry\n");
             String take = readerQueue.take();
-            assertEquals("entry", take);
+            assertThat(take).isEqualTo("entry");
         });
         thread.interrupt();
     }
@@ -47,15 +48,15 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        assertTrue(thread.isAlive());
+        assertThat(thread.isAlive()).isTrue();
 
-        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             Thread takeThread = new Thread(() -> {
                 String take = readerQueue.take();
-                assertNull(take);
+                assertThat(take).isNull();
             });
             takeThread.start();
-            assertTrue(takeThread.isAlive());
+            assertThat(takeThread.isAlive()).isTrue();
             takeThread.interrupt();
         });
         thread.interrupt();
@@ -66,15 +67,15 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        assertTrue(thread.isAlive());
+        assertThat(thread.isAlive()).isTrue();
 
-        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             queue.put("entry");
             String peek = readerQueue.peek();
-            assertNull(peek);
+            assertThat(peek).isNull();
             queue.put("\n");
             String take = readerQueue.take();
-            assertEquals("entry", take);
+            assertThat(take).isEqualTo("entry");
         });
         thread.interrupt();
     }
@@ -84,15 +85,15 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        assertTrue(thread.isAlive());
+        assertThat(thread.isAlive()).isTrue();
 
-        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             thread.interrupt();
             waitUntilNot(thread::isAlive);
         });
 
-        assertFalse(thread.isAlive());
-        assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertThat(thread.isAlive()).isFalse();
+        assertThat(thread.getState()).isEqualTo(Thread.State.TERMINATED);
     }
 
     @Test
@@ -100,19 +101,19 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        assertTrue(thread.isAlive());
+        assertThat(thread.isAlive()).isTrue();
 
-        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             inputStream.requestIoException();
             waitUntil(readerQueue::hasException);
             waitUntilNot(thread::isAlive);
-            assertFalse(thread.isAlive());
-            assertNotNull(readerQueue.getIOException());
-            assertNull(readerQueue.getInterruptedException());
+            assertThat(thread.isAlive()).isFalse();
+            assertThat(readerQueue.getIOException()).isNotNull();
+            assertThat(readerQueue.getInterruptedException()).isNull();
         });
 
-        assertFalse(thread.isAlive());
-        assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertThat(thread.isAlive()).isFalse();
+        assertThat(thread.getState()).isEqualTo(Thread.State.TERMINATED);
     }
 
     @Test
@@ -120,9 +121,9 @@ class ReaderQueueTest {
         ReaderQueue readerQueue = new ReaderQueue(bufferedReader, 1);
         Thread thread = new Thread(readerQueue);
         thread.start();
-        assertTrue(thread.isAlive());
+        assertThat(thread.isAlive()).isTrue();
 
-        assertTimeoutPreemptively(Duration.ofSeconds(TIMEOUT), () -> {
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             queue.put("\n");
             waitUntil(() -> queue.isEmpty());
             queue.put("\n");
@@ -130,12 +131,12 @@ class ReaderQueueTest {
             thread.interrupt();
             waitUntil(readerQueue::hasException);
             waitUntilNot(thread::isAlive);
-            assertFalse(thread.isAlive());
-            assertNull(readerQueue.getIOException());
-            assertNotNull(readerQueue.getInterruptedException());
+            assertThat(thread.isAlive()).isFalse();
+            assertThat(readerQueue.getIOException()).isNull();
+            assertThat(readerQueue.getInterruptedException()).isNotNull();
         });
 
-        assertFalse(thread.isAlive());
-        assertEquals(thread.getState(), Thread.State.TERMINATED);
+        assertThat(thread.isAlive()).isFalse();
+        assertThat(thread.getState()).isEqualTo(Thread.State.TERMINATED);
     }
 }

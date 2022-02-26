@@ -142,8 +142,8 @@ public class CommandMethodAdapter implements Command {
     private static Class<?> getFirstGenericClass(Method method) {
         // http://tutorials.jenkov.com/java-reflection/generics.html#parametertypes
         return Stream.of(method.getGenericParameterTypes())
-            .filter(type -> type instanceof ParameterizedType)
-            .map(type -> (ParameterizedType) type)
+            .filter(ParameterizedType.class::isInstance)
+            .map(ParameterizedType.class::cast)
             .map(ParameterizedType::getActualTypeArguments)
             .map(types -> 0 < types.length ? (Class<?>) types[0] : String.class)
             .findFirst().orElse(String.class);

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@link Shell} input holder
@@ -114,12 +115,12 @@ public class Input {
      */
     @NotNull
     public static Input parse(@NotNull String line, boolean filterBlank) {
-        List<String> parts = List.of(line.split(" ")).stream()
+        List<String> parts = Stream.of(line.split(" "))
             .filter(string -> !filterBlank || !string.isEmpty())
             .collect(Collectors.toList());
         return new Input(
-            1 <= parts.size() ? parts.get(0) : null,
-            1 <= parts.size() ? parts.subList(1, parts.size()) : Collections.emptyList()
+            !parts.isEmpty() ? parts.get(0) : null,
+            !parts.isEmpty() ? parts.subList(1, parts.size()) : Collections.emptyList()
         );
     }
 }

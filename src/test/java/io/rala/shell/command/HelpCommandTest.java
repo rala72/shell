@@ -87,9 +87,7 @@ class HelpCommandTest {
 
         BlockingQueue<String> outputs = testContext.getOutputHistory();
         assertThat(outputs)
-            .hasSize(2)
-            .contains("help \tprints help of all commands or provided ones")
-            .contains("exit \tstops shell");
+            .hasSize(2).contains("help \tprints help of all commands or provided ones", "exit \tstops shell");
     }
 
     @Test

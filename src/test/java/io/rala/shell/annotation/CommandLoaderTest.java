@@ -68,8 +68,8 @@ class CommandLoaderTest {
     @Test
     void commandWithOneInputParameterException() {
         CommandLoader commandLoader = CommandLoaderFactory.getCommandLoaderForTestObjectWithOneInput();
-        assertThat(commandLoader.getCommandMethodMap()).hasSize(1);
-        assertThat(commandLoader.getCommandMethodMap()).containsKey("commandWithOneInput");
+        assertThat(commandLoader.getCommandMethodMap())
+            .hasSize(1).containsKey("commandWithOneInput");
     }
 
     @Test

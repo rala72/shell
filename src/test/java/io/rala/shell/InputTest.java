@@ -3,7 +3,6 @@ package io.rala.shell;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,8 +29,9 @@ class InputTest {
         Input input = new Input("cmd", List.of("arg1", "arg2"));
         assertThat(input.getCommand()).isEqualTo("cmd");
         assertThat(input.hasArguments()).isTrue();
-        assertThat(input.getArguments()).isNotEmpty();
-        assertThat(input.getArguments()).isEqualTo(List.of("arg1", "arg2"));
+        assertThat(input.getArguments())
+            .isNotEmpty()
+            .isEqualTo(List.of("arg1", "arg2"));
     }
 
     @Test
@@ -56,7 +56,7 @@ class InputTest {
         assertThat(input.getArguments()).isNotEmpty();
         assertThat(input.get(-1)).isNotPresent();
         assertThat(input.getOrNull(-1)).isNull();
-        assertThat(input.get(0)).isEqualTo(Optional.of("arg"));
+        assertThat(input.get(0)).contains("arg");
         assertThat(input.getOrNull(0)).isEqualTo("arg");
         assertThat(input.get(1)).isNotPresent();
         assertThat(input.getOrNull(1)).isNull();
@@ -67,8 +67,8 @@ class InputTest {
         Input input = Input.parse("this is a very  fancy line");
         assertThat(input.getCommand()).isEqualTo("this");
         assertThat(input.hasArguments()).isTrue();
-        assertThat(input.getArguments()).isNotEmpty();
-        assertThat(input.getArguments()).isEqualTo(List.of("is", "a", "very", "", "fancy", "line"));
+        assertThat(input.getArguments())
+            .isNotEmpty().isEqualTo(List.of("is", "a", "very", "", "fancy", "line"));
     }
 
     @Test
@@ -76,8 +76,8 @@ class InputTest {
         Input input = Input.parse("this is a very  fancy line", true);
         assertThat(input.getCommand()).isEqualTo("this");
         assertThat(input.hasArguments()).isTrue();
-        assertThat(input.getArguments()).isNotEmpty();
-        assertThat(input.getArguments()).isEqualTo(List.of("is", "a", "very", "fancy", "line"));
+        assertThat(input.getArguments())
+            .isNotEmpty().isEqualTo(List.of("is", "a", "very", "fancy", "line"));
     }
 
     @Test

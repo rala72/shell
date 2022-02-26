@@ -59,8 +59,7 @@ class ShellTest {
         await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
-            assertThat(take).isNotNull();
-            assertThat(take).isEqualTo("> echo");
+            assertThat(take).isNotNull().isEqualTo("> echo");
             assertThat(testShell.getErrorHistory()).isEmpty();
         });
         thread.interrupt();
@@ -78,8 +77,7 @@ class ShellTest {
         await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
-            assertThat(take).isNotNull();
-            assertThat(take).startsWith(Shell.DEFAULT_PROMPT);
+            assertThat(take).isNotNull().startsWith(Shell.DEFAULT_PROMPT);
             assertThat(testShell.getErrorHistory()).isEmpty();
         });
 
@@ -87,15 +85,15 @@ class ShellTest {
             shell.setPrompt("prompt> ");
             testShell.putLine("echo echo");
             String take = testShell.getOutputHistory().take();
-            assertThat(take).isNotNull();
-            assertThat(take).startsWith(Shell.DEFAULT_PROMPT);
-            assertThat(take).doesNotStartWith("prompt> ");
+            assertThat(take)
+                .isNotNull()
+                .startsWith(Shell.DEFAULT_PROMPT)
+                .doesNotStartWith("prompt> ");
             assertThat(testShell.getErrorHistory()).isEmpty();
 
             testShell.putLine("echo echo");
             take = testShell.getOutputHistory().take();
-            assertThat(take).isNotNull();
-            assertThat(take).startsWith("prompt> ");
+            assertThat(take).isNotNull().startsWith("prompt> ");
             assertThat(testShell.getErrorHistory()).isEmpty();
         });
         thread.interrupt();

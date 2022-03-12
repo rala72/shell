@@ -34,8 +34,7 @@ public class CommandLoader {
     public CommandLoader(@NotNull Object object, @NotNull StringMapper stringMapper) {
         if (!Modifier.isPublic(object.getClass().getModifiers()))
             throw new IllegalArgumentException("object has to be public");
-        List<Method> methodList = List.of(object.getClass().getMethods())
-            .stream()
+        List<Method> methodList = Stream.of(object.getClass().getMethods())
             .filter(method -> method.isAnnotationPresent(Command.class))
             .collect(Collectors.toList());
         if (methodList.isEmpty())

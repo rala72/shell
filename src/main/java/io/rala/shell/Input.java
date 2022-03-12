@@ -54,7 +54,7 @@ public class Input {
      */
     @NotNull
     @Unmodifiable
-    public List<String> getArguments() {
+    public List<@Nullable String> getArguments() {
         return arguments;
     }
 
@@ -72,7 +72,7 @@ public class Input {
      * @since 1.0.0
      */
     @NotNull
-    public Optional<String> get(int i) {
+    public Optional<@NotNull String> get(int i) {
         return 0 <= i && i < getArguments().size() ?
             Optional.ofNullable(getArguments().get(i)) : Optional.empty();
     }

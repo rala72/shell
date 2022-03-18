@@ -79,7 +79,8 @@ public class Context {
     }
 
     /**
-     * @return current StringMapper
+     * @return current {@link StringMapper}
+     * @since 1.1.0
      */
     @NotNull
     public StringMapper getStringMapper() {
@@ -92,7 +93,7 @@ public class Context {
      * @param <T>    requested type
      * @param <R>    result type (may be super class of {@code T})
      * @see StringMapper#addCustomMapper(Class, Function)
-     * @since 1.0.1
+     * @since 1.1.0
      */
     public <T, R extends T> void addCustomStringMapper(
         @NotNull Class<T> type, @Nullable Function<String, R> mapper

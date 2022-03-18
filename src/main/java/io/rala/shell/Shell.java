@@ -202,7 +202,7 @@ public class Shell implements Runnable {
      * @param <R>    result type (may be super class of {@code T})
      * @see Context#addCustomStringMapper(Class, Function)
      * @see StringMapper#addCustomMapper(Class, Function)
-     * @since 1.0.1
+     * @since 1.1.0
      */
     public <T, R extends T> void addCustomStringMapper(
         @NotNull Class<T> type,

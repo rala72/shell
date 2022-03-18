@@ -6,6 +6,7 @@ import io.rala.shell.exception.StopShellException;
 import io.rala.shell.testUtils.TestShell;
 import io.rala.shell.testUtils.object.TestObject;
 import io.rala.shell.testUtils.object.TestObjectWithAttributes;
+import io.rala.shell.testUtils.object.TestObjectWithBigDecimal;
 import io.rala.shell.testUtils.object.TestObjectWithLocalDate;
 import org.junit.jupiter.api.Test;
 
@@ -342,6 +343,7 @@ class ShellTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void addCustomStringMapperForLocalDate() {
         TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
         Shell shell = testShell.getShell();
@@ -355,6 +357,24 @@ class ShellTest {
             testShell.putLine("commandWithLocalDate 2018-11-25");
             assertThat(testShell.getOutputHistory().take())
                 .isEqualTo("> 2018-11-25");
+        });
+        thread.interrupt();
+    }
+
+    @Test
+    void addCustomStringMapperForBigDecimal() {
+        TestShell testShell = TestShell.getInstanceWithDifferentOutputs();
+        Shell shell = testShell.getShell();
+        shell.getStringMapper().addMathMapper();
+        shell.register(new TestObjectWithBigDecimal());
+
+        Thread thread = new Thread(shell);
+        thread.start();
+        assertThat(thread.isAlive()).isTrue();
+        await().atMost(Duration.ofSeconds(TIMEOUT)).untilAsserted(() -> {
+            testShell.putLine("commandWithBigDecimal 1.23");
+            assertThat(testShell.getOutputHistory().take())
+                .isEqualTo("> 1.23");
         });
         thread.interrupt();
     }

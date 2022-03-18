@@ -94,7 +94,9 @@ public class Context {
      * @param <R>    result type (may be super class of {@code T})
      * @see StringMapper#addCustomMapper(Class, Function)
      * @since 1.1.0
+     * @deprecated prefer calling {@link #getStringMapper()} directly
      */
+    @Deprecated(since = "1.1.2")
     public <T, R extends T> void addCustomStringMapper(
         @NotNull Class<T> type, @Nullable Function<String, R> mapper
     ) {
